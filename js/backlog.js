@@ -34,13 +34,15 @@ function renderBacklog() {
 function generateBacklogHTML(task) {
     return `<tr ondblclick ="showInputForm(${task.id})" title ="double-click for edit">
                 <td class="${task.priority}">
-                    <img src="./img/${task.staff.image}" title="${task.staff.name}">
-                    <div class="name">
-                        <span>${task.staff.name}</span>
+                    <div class="backlog-name-container">
+                        <img src="./img/${task.staff.image}" title="${task.staff.name}">
+                        <div class="name">
+                            <span>${task.staff.name}</span>
+                        </div>
                     </div>
                 </td>
                 <td class=""><h5>${task.category}</h5></td>
-                <td class="">${task.description}</td>
+                <td class=""><span>${task.description}</span</td>
                 <td class="table-buttons" onclick="pushToBoard(${task.id})" title ="">TO BOARD</td>
             </tr>`;
 }

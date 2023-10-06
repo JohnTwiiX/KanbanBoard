@@ -149,12 +149,10 @@
     width: calc(100% / 4);
     background: rgb(238, 238, 238);
     /* min-height: 50rem; */
-    min-height: calc(99vh - var(--header-height) - 1rem);
+    min-height: calc(98vh - var(--header-height) - 1rem);
     margin: 0 8px;
     padding-bottom: 1rem;
 }
-
-
 
 .columns h3 {
     text-align: center;
@@ -180,8 +178,8 @@
 }
 
 .todo,
-.schedule,
-.progress,
+.scheduled,
+.inprogress,
 .done,
 .deleted {
     display: flex;
@@ -314,69 +312,61 @@
     .menubar li:hover {
         border-left: 4px solid whitesmoke;
     }
-
     .header {
         margin-bottom: 0;
     }
-
     .main-board {
         padding-bottom: 10px;
-        transform:rotateX(180deg);
+        transform: rotateX(180deg);
     }
-    
     .columns {
         min-width: 200px;
-        transform:rotateX(180deg);
+        transform: rotateX(180deg);
     }
-    
-
     .main-board {
         overflow-x: auto;
-        white-space: nowrap;
+        /* white-space: nowrap; */
     }
-
     .task {
         width: 125px;
     }
-    
-    
 }
 
 @media (max-width: 840px) {
     header h1 {
         display: none;
     }
-    .task {
-        /*height: 8rem !important;*/
-        /*width: 6rem !important;*/
+    /* .task {
+        height: 8rem !important;
+        width: 6rem !important;
         word-break: break-all;
-    }
-    .task h3 {
+    } */
+    /* .task h3 {
         font-size: 16px !important;
         padding: 0 2px 0 0 !important;
         height: 24px !important;
         margin: 0 !important;
-    }
-    .task p {
+    } */
+    /* .task p {
         font-size: 16px !important;
         padding: 4px !important;
-    }
-    .task img.task-icons {
+    } */
+    /* .task img.task-icons {
         width: 12px !important;
         height: 12px !important;
         top: 4px !important;
         right: 2px !important;
-    }
-    .description {
+    } */
+    /* .description {
         height: 2.8rem !important;
-    }
-    .task img.portrait {
+    } */
+    /* .task img.portrait {
         width: 1.5rem !important;
         height: 1.5rem !important;
-    }
-    .taskEnd {
+    } */
+    /* .taskEnd {
         flex-direction: column-reverse;
-    }
+    } */
 }
 
 @media (max-width: 600px) {
@@ -409,32 +399,37 @@
     .columns {
         margin: 0 8px;
     }
-    .columns h3 {
+    /* .columns h3 {
         font-size: 12px;
-    }
+    } */
 }
 
 @media (max-width: 410px) {
-    .task {
+    /* .task {
         /*height: 9rem !important;*/
-        /*width: 4rem !important;*/
-    }
-    .task img.task-icons {
-        display: none;
-    }
-    .task h3 {
-        width: 70% !important;
-    }
-    .searchbar input {
-        font-size: 14px;
-    }
-    .searchbar img {
-        height: 14px;
-    }
-    .logo {
-        height: 50px;
-    }
-    .menuHH {
-        padding: 1rem 0 1rem 0;
-    }
+    /*width: 4rem !important;*/
+}
+
+*/ .task img.task-icons {
+    display: none;
+}
+
+.task h3 {
+    width: 70% !important;
+}
+
+.searchbar input {
+    font-size: 14px;
+}
+
+.searchbar img {
+    height: 14px;
+}
+
+.logo {
+    height: 50px;
+}
+
+.menuHH {
+    padding: 1rem 0 1rem 0;
 }

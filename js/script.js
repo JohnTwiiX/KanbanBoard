@@ -49,7 +49,7 @@ function taskDownload() {
  * @param {Id of Task} id deletes a task completely from array and server
  */
 async function killTask(id) {
-    playSound('notify.mp3');
+    // playSound('notify.mp3');
     if (await msgBox(`Are you sure, you want to remove this task completely? <br>
         This operation cannot be reversed!`, 'Please confirm!', 'Yes,No', true, true) == 'Yes') {
         const findID = obj => obj.id === id; // define a search expression (on which index in the array is the id?)
@@ -57,7 +57,7 @@ async function killTask(id) {
         if (taskInd >= 0) {
             arrTasks.splice(taskInd, 1);
             renderTasks();
-            serverUpdate();             
+            serverUpdate();
         } else {
             playSound('wrong.mp3');
             msgBox(`Task with id# ${id} not found!`, 'Error!', 'OK', true, true);
@@ -82,8 +82,10 @@ async function addTask() {
         activateMenuItem(lastMenu);
     } else {
         deadline = deadline ? deadline : today();
+        foto = foto ? foto : objSettings.staff.images[3];
+        name = name ? name : objSettings.staff.names[3];
         arrTasks.push(generatedTask(name, foto, deadline));
-        activateMenuItem(0); // display the board after adding new task!
+        activateMenuItem(1); // display the board after adding new task!
     }
     serverUpdate();
     renderTasks();
@@ -142,7 +144,7 @@ function pushToBoard(id) {
 }
 
 // updates all ID's after deleting a task
-function updateTaskIDs () {
+function updateTaskIDs() {
     for (let i = 0; i < arrTasks.length; i++) {
         arrTasks[i].id = i;
     }
@@ -151,7 +153,7 @@ function updateTaskIDs () {
 // renders all existing tasks into the correct sections (todo, scheduled etc.)
 function renderTasks() {
     let boardSections = Array.from($('#divMainBoard .columns >div')); // first clear all Sections!
-    for (let i = 0; i < boardSections.length; i++) { boardSections[i].innerHTML = ''; } 
+    for (let i = 0; i < boardSections.length; i++) { boardSections[i].innerHTML = ''; }
     updateTaskIDs();
     // now render all tasks into the correct section with a double loop
     for (let i = 0; i < arrTasks.length; i++) {
@@ -216,6 +218,8 @@ function generateFilterTask(task, container, search) {
         container.innerHTML += generateTaskHTML(task);
     } else if (task.priority.toLowerCase().includes(search) && stateMatch) {
         container.innerHTML += generateTaskHTML(task);
+    } else if (task.category.toLowerCase().includes(search) && stateMatch) {
+        container.innerHTML += generateTaskHTML(task);
     }
 }
 
@@ -237,7 +241,9 @@ function generateTaskHTML(task) {
         <div class="taskEnd">
             <p>${task.deadline}</p> 
             <img class="portrait" src ="./img/${task.staff.image}" title="${task.staff.name}">
+            
         </div>
+        <div class="category-div">${task.category}</div>
     </div>`;
 }
 
@@ -293,12 +299,13 @@ function setHeaderIcons(status) {
     let activeMenu = getActiveMenuItem();
     $('imgBin').classList.toggle('hidden', !boardIsVisible);
     $('.searchbar').classList.toggle('hidden', (activeMenu > 1));
-    let arrNodes = $('#divMainBoard .columns.hidden'), columnsHidden;
+    let arrNodes = $('#divMainBoard .columns.hidden'),
+        columnsHidden;
     if (NodeList.prototype.isPrototypeOf(arrNodes)) {
         columnsHidden = arrNodes.length;
     } else {
         columnsHidden = arrNodes.classList.contains('trash') ? 0 : 1;
-    } 
+    }
     $('imgColumnAdd').classList.toggle('hidden', !(activeMenu == 0 && columnsHidden > 0));
 }
 
@@ -339,7 +346,7 @@ function initSelectionFields(selection) {
     let key = selection.substr(3).toLowerCase(),
         select = $(selection),
         srcArray = (key != 'staff') ? objSettings[key] : objSettings[key].names;
-        
+
     select.innerHTML = '<option value="">- please select -</option>';
     for (let i = 0; i < srcArray.length; i++) {
         const cat = srcArray[i];
@@ -556,7 +563,7 @@ function drop(event) {
 
     // we leave if dropping is forbidden, in order to avoid dropping tasks in each other
     if (!dropAllowed) {
-        playSound('wrong.mp3');
+        // playSound('wrong.mp3');
         return;
     }
     arrTasks[id].status = status;
@@ -580,7 +587,7 @@ function renderBoardColumns() {
     board.innerHTML = '';
     for (let i = 0; i < objSettings.columns.length; i++) {
         const title = objSettings.columns[i].toUpperCase(),
-              state =  title.toLowerCase().replaceAll(' ', '');
+            state = title.toLowerCase().replaceAll(' ', '');
         board.innerHTML += `
             <div class="columns">
                 <h3>${title}</h3>
@@ -592,19 +599,23 @@ function renderBoardColumns() {
 }
 
 // hides a column from board
-function hideColumn (index) {
-    let columns = $('.columns');
-    columns[index].classList.add('hidden');
-    setHeaderIcons();
+async function hideColumn(index) {
+    if (await msgBox(`Are you sure, you want to hide this column ? <br>
+        `, 'Please confirm!', 'Yes,No', true, true) == 'Yes') {
+        let columns = $('.columns');
+        columns[index].classList.add('hidden');
+        setHeaderIcons();
+    }
+
 }
 
 // displays all hidden columns again
-function showColumns () {
+function showColumns() {
     let hiddenColumns = Array.from($('.columns.hidden')),
         trash = $('divTrash');
     hiddenColumns.forEach(col => {
         col.classList.remove('hidden');
     });
-    trash.classList.toggle('hidden',trashState != 2);
+    trash.classList.toggle('hidden', trashState != 2);
     setHeaderIcons();
 }

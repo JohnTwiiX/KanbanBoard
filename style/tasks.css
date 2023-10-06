@@ -1,14 +1,14 @@
 :root {
-    --low:#008000;
-    --medium:#ffff00;
-    --important:#ffa500;
-    --high:#ff0000;
+    --low: #008000;
+    --medium: #ffff00;
+    --important: #ffa500;
+    --high: #ff0000;
 }
 
 .task {
     position: relative;
-    width: 12rem;
-    height: 10rem;
+    width: 90%;
+    height: 100%;
     /* word-break: break-all; */
     display: flex;
     flex-direction: column;
@@ -47,8 +47,8 @@ h3::-webkit-scrollbar {
 }
 
 .task:hover,
-.schedule .task:hover,
-.progress .task:hover,
+.scheduled .task:hover,
+.inprogress .task:hover,
 .done .task:hover {
     transform: scale(1.08);
 }
@@ -64,6 +64,8 @@ h3::-webkit-scrollbar {
     direction: rtl;
     width: 80%;
     margin: 0 2px 0 0;
+    text-align: left;
+    word-break: break-word;
 }
 
 .task p {
@@ -98,6 +100,15 @@ h3::-webkit-scrollbar {
 
 .task .task-icons:hover {
     opacity: 1;
+}
+
+.category-div {
+    display: flex;
+    justify-content: center;
+    background-color: #5279FC;
+    color: white;
+    margin: 8px;
+    border-radius: 5px;
 }
 
 
@@ -143,7 +154,8 @@ h3::-webkit-scrollbar {
 
 .task,
 .task hr {
-    background: #ffffff linear-gradient(193deg, #ffffff 0%, #767676 100%);
+    /* background: #ffffff linear-gradient(193deg, #ffffff 0%, #767676 100%); */
+    background: navajowhite;
 }
 
 .low {
