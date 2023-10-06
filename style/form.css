@@ -1,0 +1,370 @@
+/* ************************************************************** */
+
+
+/* FORMULAR */
+
+
+/* ************************************************************** */
+
+.edit-mode {
+    background: #ffffff linear-gradient(193deg, #ffffff 0%, #767676 100%);
+}
+
+.input-form {
+    /* centger div on screen */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* --------------------- */
+    padding: 1rem;
+    min-height: 33%;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    z-index: 11;
+}
+
+.input-form form {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    font-size: larger;
+}
+
+.imgCloseX, 
+.imgCloseX-small,
+.imgBacklog {
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    width: 2rem;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.imgCloseX-small {
+    width: 1rem;
+    top: 0;
+    right: 0;
+}
+
+.imgBacklog {right: 2rem;} /* overwrite previous definition! */
+
+.imgCloseX:hover, .imgBacklog:hover {
+    opacity: 1;
+}
+
+.form-title {
+    position: absolute;
+    top: 0;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    width: 45vmin;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+.input-form label[required]::after {
+    content: ' *';
+    color: red;
+}
+
+.input-form label,
+.input-form button {
+    color: navy;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.input-form input,
+textarea,
+select {
+    outline: none;
+    border: 1px solid silver;
+    border-radius: 4px;
+    font-size: large;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.input-form input:focus,
+textarea:focus,
+select:focus {
+    background-color: #d3ffd3;
+}
+
+.input-form textarea {
+    min-height: 14rem;
+    max-height: 26.5rem;
+    resize: vertical;
+}
+
+/* deactivates the calendar symbol in chrome-input-field */
+
+
+/* .input-form input[type="date"]::-webkit-inner-spin-button,
+.input-form input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+} */
+
+#imgClerk,
+#imgUser {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 100%;
+    background-color: darkgray;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2.85rem;
+}
+
+.form-buttons button {
+    padding: 0.5rem 1rem;
+    font-size: large;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: transparent;
+    color: navy;
+    cursor: pointer;
+}
+
+.form-buttons button:hover{    
+    background-color: navy;
+    color: whitesmoke;
+}
+
+.form-buttons button:focus {
+    outline: none;
+    border: 1px dotted navy;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+}
+
+.form-control.settings {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem;
+}
+
+.form-control.settings .select {
+    /* flex: 1; */
+    min-width: 12rem;
+}
+
+.form-control.settings label {
+    min-width: 5rem;
+}
+
+.form-control.settings input {
+    max-width: 12rem;
+}
+
+.form-control [type=color] {
+    height: 3rem;
+    width: 3rem;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.form-control [type=color]::-webkit-color-swatch,
+.form-control [type=color]::-moz-color-swatch {
+    border: none;
+    border-radius: 5px;
+}
+
+/* removes the calendar picker */
+/* .form-control input::-webkit-calendar-picker-indicator {
+    display: none;
+} */
+
+.form-control .btnPlus {
+    border: none;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-top: 4px;   
+    background-color: navy;
+    color: whitesmoke;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.form-control .btnPlus:hover {
+    opacity: 1;
+}
+
+/* .form-control label[data-list]::after {
+    content: '\002795';
+    padding: 10px 12px;
+    position: absolute;
+    top: 5px;
+    right: 0;    
+    background-color: navy;
+    color: whitesmoke;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    /* pointer-events: none;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.form-control label[data-list]:hover::after {
+    opacity: 1;
+} */
+
+
+/* <select>-element itself !! */
+
+.form-control select {
+    appearance: none;
+    box-shadow: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+/* class for the wrapping div! */
+
+.form-control .select {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+
+/* styling the down-arrow */
+
+.form-control .select::after {
+    content: '\25bc';
+    /* \25bc oder \2228 */
+    position: absolute;
+    top: 6px;
+    right: 1px;
+    height: calc(2rem - 9px);
+    background-color: navy;
+    color: whitesmoke;
+    padding: 8px 10px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    pointer-events: none;
+    opacity: 0.7;
+    /* filter: brightness(0.7); */
+}
+
+.form-control .select:hover::after {
+    opacity: 1;
+}
+
+.clerk {
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.plus {
+    position: relative;
+    background-color: navy;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: none;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.plus:hover {
+    transform: scale(1.1);
+}
+
+.plus::before,
+.plus::after {
+    content: "";
+    position: absolute;
+    background: whitesmoke;
+    opacity: 0.7;
+}
+
+.plus:hover::before,
+.plus:hover::after {
+    opacity: 1;
+}
+
+.plus::before {
+    left: 50%;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    transform: translateX(-50%);
+}
+
+.plus::after {
+    top: 50%;
+    left: 6px;
+    right: 6px;
+    height: 2px;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 800px) {
+    .input-form {
+        position: absolute;
+        padding: 0;
+        height: 95vh;
+        width: 90vw;
+        top: 60%;
+    }
+    .input-form form {
+        padding: 0;
+        gap: 0;
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-column {
+        padding: 0;
+        width: 75vmin;
+    }
+    #imgClerk {
+        height: 4rem;
+        width: 4rem;
+    }
+    .plus {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-left: 0.5rem;
+    }
+    .form-buttons {
+        margin-top: 2rem;
+        justify-content: space-between;
+    }
+    .form-buttons button {
+        padding: 0;
+        font-size: unset;
+        justify-content: center;
+    }
+    .imgCloseX {
+        top: 0;
+        right: 0;
+    }
+    .clerk {
+        justify-content: center;
+    }
+}

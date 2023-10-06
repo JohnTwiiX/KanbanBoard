@@ -1,0 +1,440 @@
+:root {
+    --header-height: 6rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    width: 100%;
+    background: navy;
+    color: whitesmoke;
+    margin-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 111;
+}
+
+.logo-div {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    margin: 0 1rem;
+    padding: 0.5rem 0;
+    z-index: 5;
+}
+
+
+/* #################################################### */
+
+
+/*          styling the menu and it's items             */
+
+
+/* #################################################### */
+
+.menuHH {
+    display: none;
+    color: white;
+    padding: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.menuHH:hover {
+    opacity: 1;
+}
+
+.menubar {
+    display: flex;
+    flex-direction: row;
+}
+
+.menu-items {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.menu-items ul {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    background-color: navy;
+}
+
+.menu-items li {
+    list-style: none;
+    padding: 0.25rem;
+    background-color: navy;
+    color: whitesmoke;
+    opacity: 0.7;
+    font-size: x-large;
+    cursor: pointer;
+    border-bottom: 4px solid transparent;
+    border-left: none;
+}
+
+.menu-items .active,
+.menu-items li:hover {
+    opacity: 1;
+    border-bottom: 4px solid whitesmoke;
+}
+
+
+/* #################################################### */
+
+
+/*                   styling the searchbar              */
+
+
+/* #################################################### */
+
+.searchbar {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    cursor: text;
+    max-width: 16rem;
+}
+
+.searchbar img {
+    height: 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.searchbar input {
+    font-size: larger;
+    padding: 0.25rem;
+    outline: none;
+    border: none;
+    width: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.flx-ctr {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: calc(100% - 2rem);
+    /* 100% minus the h3-headline! */
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+}
+
+.columns {
+    position: relative;
+    width: calc(100% / 4);
+    background: rgb(238, 238, 238);
+    /* min-height: 50rem; */
+    min-height: calc(99vh - var(--header-height) - 1rem);
+    margin: 0 8px;
+    padding-bottom: 1rem;
+}
+
+
+
+.columns h3 {
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.iconbar {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 9rem;
+}
+
+.icon {
+    height: 2rem;
+    opacity: 0.7;
+    padding: 0 0.5rem;
+    cursor: pointer;
+}
+
+.icon:hover {
+    opacity: 1;
+}
+
+.todo,
+.schedule,
+.progress,
+.done,
+.deleted {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    /* background-color: #eee; */
+}
+
+.trash-bin {
+    display: flex;
+    justify-content: flex-end;
+    position: sticky;
+    right: 1rem;
+    bottom: 1rem;
+    cursor: pointer;
+}
+
+.trash-bin img {
+    width: 6rem;
+    height: auto;
+}
+
+.grab {
+    cursor: pointer;
+}
+
+.grab:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.help-section {
+    padding: 1rem;
+}
+
+.help-section summary {
+    /* padding: 0.5rem 1rem 0.5rem 0; */
+    padding: 0.5rem 1rem;
+    font-size: larger;
+    font-weight: bold;
+    cursor: pointer;
+    max-width: fit-content;
+}
+
+.help-section summary:hover {
+    color: whitesmoke;
+    background-color: navy;
+}
+
+.help-section summary::marker {
+    color: navy;
+}
+
+.help-section summary:hover::marker {
+    color: whitesmoke;
+}
+
+.help-section details p {
+    padding: 1rem;
+}
+
+.help-section details[open] {
+    color: navy;
+}
+
+.help-section details ol {
+    font-weight: bold;
+    padding-left: 2rem;
+}
+
+.help-section .code {
+    border: 1px solid silver;
+    border-radius: 3px;
+    padding: 0.15rem 0.5rem;
+    margin: 2px;
+    background-color: #eee;
+    font-size: smaller;
+}
+
+.red {
+    color: red;
+}
+
+
+/* ############################################################################################# */
+
+
+/*                             R  E  S  P  O  N  S  I  V  E                                      */
+
+
+/* ############################################################################################# */
+
+@media (max-width: 1100px) {
+    /* .menuHH {
+     display: flex;
+        position: fixed;
+        left: 4rem;
+        top: 1rem; 
+    } */
+    .menuHH {
+        display: unset;
+    }
+    .menu-items {
+        display: none;
+    }
+    .menu-items ul {
+        position: absolute;
+        padding-top: 1rem;
+        top: calc(var(--header-height) - 1rem);
+        /* top is the height of the header less than padding-top */
+        left: 0;
+        width: max-content;
+        padding-bottom: 1rem;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
+    }
+    .menubar:hover,
+    .menubar:hover .menu-items,
+    .menubar:hover .menu-items ul {
+        display: flex;
+        flex-direction: column;
+    }
+    .menubar:hover li {
+        margin: 0.5rem 0 0 1rem;
+        padding: 0 1.25rem 0 0.33rem;
+        border-bottom: none;
+        border-left: 4px solid transparent;
+    }
+    .menu-items li.active,
+    .menubar li:hover {
+        border-left: 4px solid whitesmoke;
+    }
+
+    .header {
+        margin-bottom: 0;
+    }
+
+    .main-board {
+        padding-bottom: 10px;
+        transform:rotateX(180deg);
+    }
+    
+    .columns {
+        min-width: 200px;
+        transform:rotateX(180deg);
+    }
+    
+
+    .main-board {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .task {
+        width: 125px;
+    }
+    
+    
+}
+
+@media (max-width: 840px) {
+    header h1 {
+        display: none;
+    }
+    .task {
+        /*height: 8rem !important;*/
+        /*width: 6rem !important;*/
+        word-break: break-all;
+    }
+    .task h3 {
+        font-size: 16px !important;
+        padding: 0 2px 0 0 !important;
+        height: 24px !important;
+        margin: 0 !important;
+    }
+    .task p {
+        font-size: 16px !important;
+        padding: 4px !important;
+    }
+    .task img.task-icons {
+        width: 12px !important;
+        height: 12px !important;
+        top: 4px !important;
+        right: 2px !important;
+    }
+    .description {
+        height: 2.8rem !important;
+    }
+    .task img.portrait {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+    }
+    .taskEnd {
+        flex-direction: column-reverse;
+    }
+}
+
+@media (max-width: 600px) {
+    /* header {
+        flex-direction: column-reverse;
+        align-items: flex-end !important;
+        gap: 1rem;
+        height: auto !important;
+        padding: 1rem 0;    
+    } */
+    /* .logo-div {
+        position: absolute;
+        top: 0.25rem;
+        left: 0;
+    } */
+    /* .menuHH {
+        top: 0;
+    } */
+    .menu-items ul {
+        top: calc(var(--header-height) - 0.8rem);
+        /* top is the height of the header less than padding-top */
+        left: 2rem;
+    }
+    .iconbar {
+        min-width: 7rem;
+    }
+    .searchbar img {
+        margin-right: 0;
+    }
+    .columns {
+        margin: 0 8px;
+    }
+    .columns h3 {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 410px) {
+    .task {
+        /*height: 9rem !important;*/
+        /*width: 4rem !important;*/
+    }
+    .task img.task-icons {
+        display: none;
+    }
+    .task h3 {
+        width: 70% !important;
+    }
+    .searchbar input {
+        font-size: 14px;
+    }
+    .searchbar img {
+        height: 14px;
+    }
+    .logo {
+        height: 50px;
+    }
+    .menuHH {
+        padding: 1rem 0 1rem 0;
+    }
+}

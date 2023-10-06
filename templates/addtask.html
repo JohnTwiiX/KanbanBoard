@@ -1,0 +1,47 @@
+<form id="frmInput" onsubmit="event.preventDefault(), addTask()" autocomplete="off">
+    <img class="imgCloseX" src="./img/close-48.png" onclick="showInputForm(false)" title="close form">
+    <img class="imgBacklog" src="./img/backlog64.png" onclick="moveTaskToBacklog()" title="move task to backlog">
+    <div class="form-column">
+        <h2 id="frmTitle" class="form-title">Add task...</h2>
+        <div class="form-control">
+            <label for="inpTaskTitle" required>TITLE</label>
+            <input id="inpTaskTitle" type="text" required>
+        </div>
+
+        <div class="form-control">
+            <label for="optCategory">CATEGORY</label>
+            <div class="select"> <select id="optCategory"></select> </div>
+        </div>
+
+        <div class="form-control">
+            <label for="txtDescription" required>DESCRIPTION</label>
+            <textarea id="txtDescription" cols="20" rows="8" required></textarea>
+        </div>
+    </div>
+
+    <div class="form-column">
+        <div class="form-control">
+            <label for="inpDeadline">DUE DATE</label>
+            <input id="inpDeadline" type="date">
+        </div>
+
+        <div class="form-control">
+            <label for="optPriority" required>PRIORITY</label>
+            <div class="select"> <select id="optPriority" required></select> </div>
+        </div>
+
+        <div class="form-control">
+            <label for="divClerks">ASSIGNED TO</label>
+            <div id="divClerks" class="clerk" data-tooltip="select user">
+                <img id="imgClerk" src="./img/profile-dummy.png" alt="">
+                <div id="btnPlus" class="plus" type="button" onclick="changeStaff()"></div>
+            </div>
+
+            <div class="form-buttons">
+                <button type="reset" onclick="showInputForm(false)">CANCEL</button>
+                <!-- <button id="btnSubmit" type="button" onclick="addTask()">CREATE TASK</button> -->
+                <button id="btnSubmit" type="submit">CREATE TASK</button>
+            </div>
+        </div>
+    </div>
+</form>

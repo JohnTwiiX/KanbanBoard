@@ -1,0 +1,31 @@
+
+
+<div class="menubar">
+    <!-- <div class="menuHH"> &#x2630</div> -->
+    <div class="menuHH">
+        <img class="icon" src="./img/menu-wht.png">
+    </div>
+    <div class="menu-items">
+        <ul>
+            <li onclick="activateMenuItem(0)">Board</li>
+            <li onclick="activateMenuItem(1)">Backlog</li>
+            <li onclick="activateMenuItem(2)">Add Task</li>
+            <li onclick="activateMenuItem(3)">Help</li>
+        </ul>
+    </div>
+</div>
+
+<div class="logo-div">
+    <img onclick="activateMenuItem(0)" style="cursor: pointer;" class="logo" src="./img/logo.png">
+</div>
+
+<div class="searchbar">
+    <img src="./img/magnifying-glass.png">
+    <input id="search" onkeyup="filterTasks()" type="text" placeholder="search">
+</div>
+
+<div class="iconbar">
+    <img id="imgColumnAdd" class="icon hidden" src="./img/column-wht64.png" onclick="showColumns()" title ="show columns">
+    <img id="imgBin" class="icon" src="./img/trash-delete-bin.png" onclick="toggleTrash()" title="show / hide trash bin">
+    <img style="margin-right: 1rem;" class="icon" src="./img/settings-wht.png" onclick="showSettings(true)" title="show settings">
+</div>
