@@ -347,7 +347,6 @@ function initSelectionFields(selection) {
     let key = selection.substr(3).toLowerCase(),
         select = $(selection),
         srcArray = (key != 'staff') ? objSettings[key] : objSettings[key].names;
-    console.log(objSettings)
 
     select.innerHTML = '<option value="">- please select -</option>';
     for (let i = 0; i < srcArray.length; i++) {
@@ -505,9 +504,6 @@ function getIDNumber(task) {
  * @param {boolean | integer} state false or 0 = hide trash bin, integer: 1 = display icon | 2 = show column
  */
 function toggleTrash(state) {
-    console.log(state)
-    console.log(isTrashOpen)
-
     let trashBin = $('divTrashBin'),
         delColumn = $('divTrash');
 
