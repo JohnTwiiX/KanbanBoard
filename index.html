@@ -10,7 +10,9 @@
     <link rel="icon" type="image/png" href="./img/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="./style/kanban.css">
     <link rel="stylesheet" href="./style/tasks.css">
@@ -54,9 +56,11 @@
     <!--        T R A S H  B I N         -->
     <!-- ------------------------------- -->
     <div id="divTrashBin" class="trash-bin hidden" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <img class="deleted" src="./img/trash-blk-large.png" alt="bin" title="double click to open trash" ondblclick="toggleTrash(2)" data-candrop="true">
+        <!-- <img class="deleted" src="./img/trash-blk-large.png" alt="bin" title="double click to open trash"
+            onclick="toggleTrash(2)" data-candrop="true"> -->
     </div>
 
     <div id="divHelp" class="help-section hidden" w3-include-html="./templates/help.html"></div>
 </body>
+
 </html>

@@ -9,7 +9,7 @@ let editMode = false, // flag for edit-mode
     arrTasks = [], // array, holding the tasks
     MENUITEMS, // collection of all menu items - to be loaded after header is loaded from fnc 'includeHTML' !!
     objSettings = {
-        category: ["Marketing", "Product", "Sale", "Management"],
+        category: ["App-Development", "Web-Development", "Bug-Web", "Bug-App", "Marketing", "Product", "Sale", "Management"],
         priority: ["low", "medium", "important", "high"],
         staff: {
             names: ["Sebastian Zimmermann", "John Fieweger", "Olaf Müller", "Max Mustermann"],
@@ -20,11 +20,12 @@ let editMode = false, // flag for edit-mode
 
 // global constant for easier access
 const DELETED = 'deleted';
+let isTrashOpen = false;
 
 async function init() {
     await includeHTML();
     await downloadFromServer();
-    loadSettings();
+    // loadSettings();
     MENUITEMS = $('.menu-items li'); // must be initialized in this function, not before!!!
     renderBoardColumns();
     taskDownload();
@@ -126,7 +127,7 @@ function generatedTask(name, foto, deadlineDate) {
             image: foto
         },
         status: 'backlog'
-            // status: 'todo'
+        // status: 'todo'
     }
 }
 
@@ -346,6 +347,7 @@ function initSelectionFields(selection) {
     let key = selection.substr(3).toLowerCase(),
         select = $(selection),
         srcArray = (key != 'staff') ? objSettings[key] : objSettings[key].names;
+    console.log(objSettings)
 
     select.innerHTML = '<option value="">- please select -</option>';
     for (let i = 0; i < srcArray.length; i++) {
@@ -503,25 +505,29 @@ function getIDNumber(task) {
  * @param {boolean | integer} state false or 0 = hide trash bin, integer: 1 = display icon | 2 = show column
  */
 function toggleTrash(state) {
+    console.log(state)
+    console.log(isTrashOpen)
+
     let trashBin = $('divTrashBin'),
         delColumn = $('divTrash');
-    if (state === false) {
-        trashState = 0;
-    } else if (state) {
-        trashState = state;
-    } else {
-        trashState++;
-        if (trashState > 2) trashState = 0;
+
+    if (isTrashOpen) {
+        state = 0;
+        isTrashOpen = false;
+    } else if (state === false) {
+        isTrashOpen = false
     }
 
-    switch (trashState) {
+
+    switch (state) {
         case 1:
-            trashBin.classList.remove('hidden');
+            // trashBin.classList.remove('hidden');
             delColumn.classList.add('hidden');
             break;
         case 2:
             trashBin.classList.add('hidden');
             delColumn.classList.remove('hidden');
+            isTrashOpen = true;
             break;
         default: // 0 or false!!!
             trashBin.classList.add('hidden');

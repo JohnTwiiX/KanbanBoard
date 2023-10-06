@@ -59,7 +59,6 @@ h3::-webkit-scrollbar {
     padding: 0.33rem;
     /* background-color: #fefabc; */
     filter: brightness(0.9);
-    height: 2.5rem;
     overflow: auto;
     direction: rtl;
     width: 80%;
@@ -70,7 +69,7 @@ h3::-webkit-scrollbar {
 
 .task p {
     /* font-family: 'DPDorkDiary', cursive; */
-    font-family: 'PT Sans', sans-serif;
+    font-family: "PT Sans", sans-serif;
     font-size: 1rem;
     line-height: 1rem;
     padding: 0.33rem;
@@ -105,12 +104,11 @@ h3::-webkit-scrollbar {
 .category-div {
     display: flex;
     justify-content: center;
-    background-color: #5279FC;
+    background-color: #5279fc;
     color: white;
     margin: 8px;
     border-radius: 5px;
 }
-
 
 /*.task::before {
     content: "";
@@ -126,7 +124,6 @@ h3::-webkit-scrollbar {
     z-index: 5;
 } */
 
-
 /* .task::after {
     content: "";
     position: absolute;
@@ -140,12 +137,9 @@ h3::-webkit-scrollbar {
     filter: blur(2px);
 } */
 
-
 /* when 'todo' = red color & pin needle */
 
-
 /* ************************************ */
-
 
 /* .todo .task,
 .todo .task h3 {
@@ -178,62 +172,49 @@ h3::-webkit-scrollbar {
     border-left: 5px solid var(--high);
 }
 
-
 /* ************************************ */
-
 
 /* .schedule .task {
     transform: rotate(0deg);
 } */
-
 
 /* .schedule .task,
 .schedule h3 {
     background: #fefabc linear-gradient(150deg, #efec88 0%, #fefabc 100%);
 } */
 
-
 /* .schedule .task::before,
 .progress .task::before {
     content: none;
 } */
 
-
 /* ************************************ */
-
 
 /* .progress .task {
     transform: rotate(4deg);
     border-bottom-left-radius: 60px 12px;
 } */
 
-
 /* .progress .task,
 .progress h3 {
     background: #90ee90 linear-gradient(150deg, #90ee60 0%, #90ee90 100%);
 } */
 
-
 /* ************************************ */
-
 
 /* .done .task {
     transform: rotate(-3deg);
     border-bottom-left-radius: 70px 12px;
 } */
 
-
 /* .done .task,
 .done h3 {
     background: #b0c4de linear-gradient(150deg, #b0c4c0 0%, #b0c4de 100%);
 } */
 
-
 /* creating a paperclip */
 
-
 /* ************************************ */
-
 
 /* .done .task:before {
     content: url(/img/paperclip_2.png);
