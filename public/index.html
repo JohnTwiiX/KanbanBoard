@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Kanban</title>
-
-    <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="manifest" href="manifest.json" <link rel="icon" type="image/png" href="./img/logo_Sandra.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -27,6 +29,7 @@
     <script src="./js/settings_print.js"></script>
     <script src="./js/msgbox.js"></script>
     <script src="./js/backlog.js"></script>
+    <script type="module" src="./js/firestore.js"></script>
 </head>
 
 <body onload="init()">
@@ -55,8 +58,8 @@
     <!-- ------------------------------- -->
     <!--        T R A S H  B I N         -->
     <!-- ------------------------------- -->
-    <div id="divTrashBin" class="trash-bin hidden" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <!-- <img class="deleted" src="./img/trash-blk-large.png" alt="bin" title="double click to open trash"
+    <!-- <div id="divTrashBin" class="trash-bin hidden" ondrop="drop(event)" ondragover="allowDrop(event)">
+         <img class="deleted" src="../assets/trash-blk-large.png" alt="bin" title="double click to open trash"
             onclick="toggleTrash(2)" data-candrop="true"> -->
     </div>
 

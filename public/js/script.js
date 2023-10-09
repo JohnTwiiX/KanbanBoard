@@ -1,3 +1,5 @@
+
+
 // ##########################################################################
 //                          D E C L A R A T I O N S
 // ##########################################################################
@@ -6,17 +8,18 @@ let editMode = false, // flag for edit-mode
     trashState = 0, // triple-flag for trash bin to  hide [0] | display [1] | show column [2]
     currID = 0, // current id in edit mode (to apply changes)
     lastMenu = 0, // saving the last menu we have been
-    arrTasks = [], // array, holding the tasks
+    // arrTasks = [], // array, holding the tasks
     MENUITEMS, // collection of all menu items - to be loaded after header is loaded from fnc 'includeHTML' !!
     objSettings = {
         category: ["App-Development", "Web-Development", "Bug-Web", "Bug-App", "Marketing", "Product", "Sale", "Management"],
         priority: ["low", "medium", "important", "high"],
         staff: {
-            names: ["Sebastian Zimmermann", "John Fieweger", "Olaf Müller", "Max Mustermann"],
-            images: ["sebastian.jpg", "john.jpg", "olaf.jpg", "max.jpg"]
+            names: ["John Fieweger", "Sebastian Zimmermann", "Olaf Müller", "Max Mustermann"],
+            images: ["john.jpg", "sebastian.jpg", "olaf.jpg", "max.jpg"]
         },
         columns: ["to do", "scheduled", "in progress", "done"]
     };
+window.arrTasks = [];
 
 // global constant for easier access
 const DELETED = 'deleted';
@@ -24,11 +27,10 @@ let isTrashOpen = false;
 
 async function init() {
     await includeHTML();
-    await downloadFromServer();
+    // await downloadFromServer();
     // loadSettings();
     MENUITEMS = $('.menu-items li'); // must be initialized in this function, not before!!!
     renderBoardColumns();
-    taskDownload();
     renderTasks();
     activateMenuItem(0);
 }
@@ -36,13 +38,13 @@ async function init() {
 /**
  * Pushes all relevant arrays to the server after changes where made on the board (at the moment create & edit tasks)
  */
-function serverUpdate() {
-    backend.setItem('arrTasks', JSON.stringify(arrTasks));
-}
+// function serverUpdate() {
+//     backend.setItem('arrTasks', JSON.stringify(arrTasks));
+// }
 
-function taskDownload() {
-    arrTasks = JSON.parse(backend.getItem('arrTasks')) || [];
-}
+// function taskDownload() {
+//     arrTasks = JSON.parse(backend.getItem('arrTasks')) || [];
+// }
 
 // 
 /**
@@ -58,7 +60,10 @@ async function killTask(id) {
         if (taskInd >= 0) {
             arrTasks.splice(taskInd, 1);
             renderTasks();
-            serverUpdate();
+            listenForChangesInRealTime();
+            deleteTaskFB(id);
+            // serverUpdate();
+            saveTasksFB();
         } else {
             playSound('wrong.mp3');
             msgBox(`Task with id# ${id} not found!`, 'Error!', 'OK', true, true);
@@ -72,8 +77,6 @@ async function killTask(id) {
  * if flag 'editMode' is set to 'true'
  */
 async function addTask() {
-    await downloadFromServer();
-    taskDownload();
     let name = $('imgClerk').alt,
         foto = objSettings.staff.images[getStaffIndex(name)],
         deadline = $('inpDeadline').value.isDate();
@@ -83,12 +86,14 @@ async function addTask() {
         activateMenuItem(lastMenu);
     } else {
         deadline = deadline ? deadline : today();
-        foto = foto ? foto : objSettings.staff.images[3];
-        name = name ? name : objSettings.staff.names[3];
+        foto = foto ? foto : objSettings.staff.images[1];
+        name = name ? name : objSettings.staff.names[1];
+
         arrTasks.push(generatedTask(name, foto, deadline));
         activateMenuItem(1); // display the board after adding new task!
     }
-    serverUpdate();
+    // serverUpdate();
+    saveTasksFB();
     renderTasks();
 }
 
@@ -139,7 +144,8 @@ function pushToBoard(id) {
     let task = arrTasks[id];
     if (task.status == 'backlog') {
         task.status = 'todo';
-        serverUpdate();
+        // serverUpdate();
+        // saveTasksFB();
         renderBacklog();
     }
 }
@@ -175,11 +181,15 @@ function renderTasks() {
  */
 function setTaskIconState(task) {
     const icons = $('#task-' + task.id + ' .task-icons');
+
     if (task.status == DELETED) {
         icons[0].classList.add('hidden');
         icons[1].classList.remove('hidden');
-    } else {
+    } else if (task.status === 'done') {
         icons[0].classList.remove('hidden');
+        icons[1].classList.add('hidden');
+    } else {
+        icons[0].classList.add('hidden');
         icons[1].classList.add('hidden');
     }
 }
@@ -230,11 +240,12 @@ function generateFilterTask(task, container, search) {
  * @returns 
  */
 function generateTaskHTML(task) {
+    // <img class="task-icons hidden" src="../assets/img/printer48.png" onclick="printTask(${task.id})" title="print task">
     return /*html*/ `
     <div id="task-${task.id}" class="task grab ${task.priority}" draggable="true" ondragstart="drag(event)" 
         ondblclick ="showInputForm(${task.id})" title="double-click for edit!">
-        <img class="task-icons" src="./img/printer48.png" onclick="printTask(${task.id})" title ="print task">
-        <img class="task-icons hidden" src="./img/trash48.png" onclick="killTask(${task.id})" title ="remove task">
+        <img class="task-icons hidden"  src="./img/trash48.png" onclick="deleteTask(this,${task.id})" title ="remove task">
+        <img class="task-icons" src="./img/trash48.png" onclick="killTask(${task.id})" title ="delete task">
         <div>
             <h3>${task.title}</h3>
             <p class="description">${task.description}</p>
@@ -330,9 +341,9 @@ function resetForm() {
     let form = $('frmInput'),
         image = $('imgClerk');
 
-    image.src = './img/profile-dummy.png';
+    image.src = './img/john.jpg';
     image.alt = '';
-    $('divClerks').dataset.tooltip = 'select user';
+    $('divClerks').dataset.tooltip = 'John';
     form.reset();
     initSelectionFields('optCategory');
     initSelectionFields('optPriority');
@@ -382,7 +393,8 @@ function showBackLog(visible) {
     } else {
         backlog.classList.add('hidden');
     }
-    serverUpdate();
+    // serverUpdate();
+    saveTasksFB();
 }
 
 /**
@@ -521,12 +533,12 @@ function toggleTrash(state) {
             delColumn.classList.add('hidden');
             break;
         case 2:
-            trashBin.classList.add('hidden');
+            // trashBin.classList.add('hidden');
             delColumn.classList.remove('hidden');
             isTrashOpen = true;
             break;
         default: // 0 or false!!!
-            trashBin.classList.add('hidden');
+            // trashBin.classList.add('hidden');
             delColumn.classList.add('hidden');
             break;
     }
@@ -570,7 +582,6 @@ function drop(event) {
     }
     arrTasks[id].status = status;
     setTaskIconState(arrTasks[id]);
-
     // deleting per drag'n drop is an exception:
     // we can drag from another column or drop into the bin!
     if (status == DELETED) {
@@ -578,7 +589,16 @@ function drop(event) {
     } else {
         event.target.appendChild(task);
     }
-    serverUpdate();
+    saveTasksFB();
+    // serverUpdate();
+}
+
+function deleteTask(taskElement, id) {
+
+    const taskContainer = taskElement.parentElement;
+    arrTasks[id].status = DELETED;
+    $('#divTrash .deleted').appendChild(taskContainer);
+    saveTasksFB();
 }
 
 /**

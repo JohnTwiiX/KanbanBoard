@@ -45,16 +45,16 @@ function showColorPicker() {
     colorPicker.value = cssColor;
 }
 
-function loadSettings () {
-    objSettings = JSON.parse(backend.getItem('settings')) || objSettings;
+function loadSettings() {
+    // objSettings = JSON.parse(backend.getItem('settings')) || objSettings;
 }
 
-function saveSettings () {
-    let newColor =  $('inpColorPicker').value,
-    priority = $('selPriority').value;
+function saveSettings() {
+    let newColor = $('inpColorPicker').value,
+        priority = $('selPriority').value;
     // Set the value of the css variable -- ??? to another value  
     $(':root').style.setProperty(`--${priority}`, newColor);
-    backend.setItem('settings',JSON.stringify(objSettings));
+    // backend.setItem('settings', JSON.stringify(objSettings));
     showSettings(false);
 }
 
@@ -73,10 +73,10 @@ function showSettings(visible) {
         $('divSettings').classList.add('hidden');
         activateMenuItem(lastMenu);
     }
-    setHeaderIcons();  
+    setHeaderIcons();
 }
 
-function resetFormSettings () {
+function resetFormSettings() {
     initSelectionFields('selPriority');
     initSelectionFields('lstCategory');
     initSelectionFields('lstColumns');
@@ -93,7 +93,7 @@ function resetFormSettings () {
  */
 function changeList(control) {
     const PLUS = '&#x2795',
-          MINUS = '&#x2796';
+        MINUS = '&#x2796';
     let listID = control.list.id,
         listName = listID.substring(3),
         isUserName = listName.includes('Staff'),
@@ -103,12 +103,12 @@ function changeList(control) {
 
     if (isUserName) {
         let ind = getStaffIndex(value),
-            foundUser = !(ind === undefined || ind >  objSettings.staff.images.length - 1),
+            foundUser = !(ind === undefined || ind > objSettings.staff.images.length - 1),
             image = foundUser ? './img/' + objSettings.staff.images[ind] : './img/profile-dummy.png';
         $('imgUser').src = image;
         $('divUsers').dataset.tooltip = foundUser ? objSettings.staff.names[ind] : 'click to upload foto';
     }
-    
+
     button.classList.add('hidden');
     if (value.length < 4) {
         return false;
@@ -126,13 +126,13 @@ function changeList(control) {
  * @param {input} control contains the value to be updated
  * @param {button} button (plus or minus) is the pressed button that executed the function 
  */
-function updateList (control, button) {
+function updateList(control, button) {
     let value = $(control).value,
         listName = 'lst' + control.substring(3),
         isUserName = listName.includes('Staff'),
         arrDest = listName.includes('Category') ? objSettings.category : isUserName ? objSettings.staff.names : objSettings.columns;
     // if the new value ain't in the list and the button shows plus, we add it
-    if (!arrDest.includes(value) && button.innerHTML ==  '\u2795') {
+    if (!arrDest.includes(value) && button.innerHTML == '\u2795') {
         arrDest.push(value);
         if (isUserName) {
             let filename = $('imgUser').src;
@@ -140,11 +140,11 @@ function updateList (control, button) {
             filename = filename.includes('base64') ? filename : filename.getFileName();
             objSettings.staff.images.push(filename);
         }
-    // if the button shows a minus, we delete the item from list
-    } else if (arrDest.includes(value) && button.innerHTML ==  '\u2796') {
+        // if the button shows a minus, we delete the item from list
+    } else if (arrDest.includes(value) && button.innerHTML == '\u2796') {
         let index = arrDest.indexOf(value);
-        arrDest.splice(index,1);  
-        if (isUserName) objSettings.staff.images.splice(index,1);   
+        arrDest.splice(index, 1);
+        if (isUserName) objSettings.staff.images.splice(index, 1);
     }
     $(control).value = '';
     initSelectionFields(listName);
@@ -170,20 +170,20 @@ async function getFile(event) {
     const file = event.target.files[0];
 
     try {
-        const result = await getBase64(file);       
+        const result = await getBase64(file);
         return result
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         return;
     }
- }
+}
 
- /**
-  * helper function for 'getFile'
-  * @param {input} file input file that needs to be converted into base64 format
-  * @returns base64 string
-  */
- function getBase64(file) {
+/**
+ * helper function for 'getFile'
+ * @param {input} file input file that needs to be converted into base64 format
+ * @returns base64 string
+ */
+function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);

@@ -8,7 +8,7 @@
     justify-content: space-between;
     height: var(--header-height);
     width: 100%;
-    background: navy;
+    background: #b38349;
     color: whitesmoke;
     margin-bottom: 1rem;
     position: sticky;
@@ -27,12 +27,9 @@
     z-index: 5;
 }
 
-
 /* #################################################### */
 
-
 /*          styling the menu and it's items             */
-
 
 /* #################################################### */
 
@@ -64,13 +61,13 @@
     display: flex;
     gap: 1rem;
     margin: 0;
-    background-color: navy;
+    background-color: transparent;
 }
 
 .menu-items li {
     list-style: none;
     padding: 0.25rem;
-    background-color: navy;
+    background-color: transparent;
     color: whitesmoke;
     opacity: 0.7;
     font-size: x-large;
@@ -85,12 +82,9 @@
     border-bottom: 4px solid whitesmoke;
 }
 
-
 /* #################################################### */
 
-
 /*                   styling the searchbar              */
-
 
 /* #################################################### */
 
@@ -123,7 +117,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'PT Sans', sans-serif;
+    font-family: "PT Sans", sans-serif;
 }
 
 .hidden {
@@ -227,7 +221,7 @@
 
 .help-section summary:hover {
     color: whitesmoke;
-    background-color: navy;
+    background-color: transparent;
 }
 
 .help-section summary::marker {
@@ -264,12 +258,9 @@
     color: red;
 }
 
-
 /* ############################################################################################# */
 
-
 /*                             R  E  S  P  O  N  S  I  V  E                                      */
-
 
 /* ############################################################################################# */
 
@@ -410,9 +401,9 @@
     /*width: 4rem !important;*/
 }
 
-*/ .task img.task-icons {
+/* .task img.task-icons {
     display: none;
-}
+} */
 
 .task h3 {
     width: 70% !important;

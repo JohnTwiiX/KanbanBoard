@@ -14,6 +14,10 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": "/smallest_backend_ever/**",
+        "destination": "/smallest_backend_ever$1"
       }
     ]
   },
