@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
-import { collection, addDoc, doc, deleteDoc, onSnapshot, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
+import { collection, addDoc, doc, deleteDoc, onSnapshot, getDocs, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js";
 
 let firebaseConfig = {
     apiKey: "AIzaSyAZJuYw4XeaSTh4mJB-YnDci9whqK12tl8",
@@ -17,14 +17,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Definieren Sie Ihre Funktionen
-window.saveTasksFB = async function () {
-    const tasksCollection = collection(db, "tasks");
-    arrTasks.forEach(async (task) => {
-        const id = task.id.toString();
-        const docRef = doc(tasksCollection, id);
-        await setDoc(docRef, task);
-        console.log("Task gespeichert mit ID: ", id);
-    });
+window.createTask = async function (task) {
+    const docRef = await addDoc(collection(db, "tasks"), task);
+    return docRef.id;
+}
+
+window.updateTask = async function (task) {
+    const docRef = doc(db, "tasks", task.id);
+    await updateDoc(docRef, task.value);
 }
 
 window.deleteTaskFB = async function (id) {
@@ -41,7 +41,11 @@ window.listenForChangesInFirestore = function () {
         window.arrTasks.length = 0;
         // Fügen Sie alle Tasks aus Firestore in das Array hinzu
         snapshot.forEach((doc) => {
-            window.arrTasks.push(doc.data());
+            const task = {
+                id: doc.id,
+                value: doc.data()
+            }
+            window.arrTasks.push(task);
         });
         console.log("Tasks aus Firestore abgerufen und in arrTasks gespeichert");
         renderTasks();
