@@ -179,7 +179,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    filter: drop-shadow(2px 4px 6px black);
     /* background-color: #eee; */
+}
+
+.done {
+    filter: grayscale(0.7);
 }
 
 .trash-bin {

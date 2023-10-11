@@ -14,8 +14,8 @@ let editMode = false, // flag for edit-mode
         category: ["App-Development", "Web-Development", "Bug-Web", "Bug-App", "Marketing", "Product", "Sale", "Management"],
         priority: ["low", "medium", "important", "high"],
         staff: {
-            names: ["John Fieweger", "Sebastian Zimmermann", "Olaf Müller", "Max Mustermann"],
-            images: ["john.jpg", "sebastian.jpg", "olaf.jpg", "max.jpg"]
+            names: ["John", "Sandra", "Sebastian Zimmermann", "Olaf Müller", "Max Mustermann"],
+            images: ["john.jpg", "logo_Sandra.png", "sebastian.jpg", "olaf.jpg", "max.jpg"]
         },
         columns: ["to do", "scheduled", "in progress", "done"]
     };
@@ -58,7 +58,6 @@ async function killTask(id) {
         const findID = obj => obj.id === id; // define a search expression (on which index in the array is the id?)
         let taskInd = arrTasks.findIndex(findID);
         if (taskInd >= 0) {
-            arrTasks.splice(taskInd, 1);
             renderTasks();
             deleteTaskFB(id);
             // serverUpdate();
