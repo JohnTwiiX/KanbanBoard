@@ -128,7 +128,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    min-height: calc(100% - 2rem);
+    min-height: calc(100% - 5rem);
     /* 100% minus the h3-headline! */
 }
 
@@ -136,6 +136,7 @@
     display: flex;
     justify-content: space-between;
     padding: 0 8px;
+    height: calc(100vh - 8rem);
 }
 
 .columns {
@@ -146,6 +147,21 @@
     min-height: calc(98vh - var(--header-height) - 1rem);
     margin: 0 8px;
     padding-bottom: 1rem;
+    overflow: auto;
+}
+
+/* Stil der Scrollleiste */
+.columns::-webkit-scrollbar {
+    width: 8px; /* Breite der Scrollleiste */
+}
+
+.columns::-webkit-scrollbar-thumb {
+    background-color: #bfbfbf; /* Farbe des Scrollbalken-Daumens */
+    border-radius: 10px;
+}
+
+.columns::-webkit-scrollbar-track {
+    background-color: #eee; /* Farbe des Scrollbalken-Tracks */
 }
 
 .columns h3 {
