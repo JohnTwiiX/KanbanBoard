@@ -475,6 +475,7 @@ function loadTaskData(id) {
 function moveTaskToBacklog() {
     let task = arrTasks.find(task => task.id === currID);
     task.value.status = 'backlog';
+    updateTask(task);
     showInputForm(false);
 }
 
