@@ -57,5 +57,5 @@ node_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-.gitignore
+
 public/js/firestore.js
