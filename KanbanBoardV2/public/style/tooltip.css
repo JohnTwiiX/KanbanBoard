@@ -1,0 +1,47 @@
+.clerk {
+    position: relative;
+    width: max-content;
+  }
+  
+  .clerk::before,
+  .clerk::after {
+    --scale: 0;
+    --arrow-size: 10px;
+    --tooltip-color: #333;
+  
+    position: absolute;
+    top: -.25rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
+    transition: 150ms transform;
+    transform-origin: bottom left;
+  }
+  
+  .clerk::before {
+    --translate-y: calc(-100% - var(--arrow-size));
+  
+    content: attr(data-tooltip);
+    color: whitesmoke;
+    padding: .5rem;
+    border-radius: .3rem;
+    text-align: center;
+    font-size: medium;
+    width: max-content;
+    max-width: 100%;
+    background: var(--tooltip-color);
+  }
+  
+  .clerk:hover::before,
+  .clerk:hover::after {
+    --scale: 1;
+  }
+  
+  .clerk::after {
+    --translate-y: calc(-1 * var(--arrow-size) - 1px);
+  
+    content: '';
+    left: 40%;
+    border: var(--arrow-size) solid transparent;
+    border-top-color: var(--tooltip-color);
+    transform-origin: top left;
+  }

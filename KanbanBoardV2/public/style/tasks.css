@@ -1,0 +1,228 @@
+:root {
+    --low: #008000;
+    --medium: #ffff00;
+    --important: #ffa500;
+    --high: #ff0000;
+}
+
+.task {
+    position: relative;
+    width: 90%;
+    height: 100%;
+    /* word-break: break-all; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* style of the note */
+    /* light-yellow with a slight gradient */
+    /* background: #fefabc linear-gradient(150deg, #efec88 0%, #fefabc 100%); */
+    /* border, shadow and turning by 4 degrees */
+    border: 1px solid #cccccc;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    /* transform: rotate(-4deg); */
+    /* border-bottom-right-radius: 60px 8px; */
+    transition: 200ms ease-in-out;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.task p::-webkit-scrollbar,
+h3::-webkit-scrollbar {
+    display: none;
+}
+
+.description {
+    height: 4.5rem;
+    overflow: auto;
+    border-top: 2px solid rgb(179 171 171);
+}
+
+.taskEnd {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 4px 0;
+}
+
+.task:hover,
+.scheduled .task:hover,
+.inprogress .task:hover,
+.done .task:hover {
+    transform: scale(1.08);
+}
+
+.task h3 {
+    /* font-family: 'DPDorkDiary', cursive; */
+    font-size: 1.1rem;
+    padding: 0.33rem;
+    /* background-color: #fefabc; */
+    filter: brightness(0.9);
+    overflow: auto;
+    direction: rtl;
+    width: 80%;
+    margin: 0 2px 0 0;
+    text-align: left;
+    word-break: break-word;
+}
+
+.task p {
+    /* font-family: 'DPDorkDiary', cursive; */
+    font-family: "PT Sans", sans-serif;
+    font-size: 1rem;
+    line-height: 1rem;
+    padding: 0.33rem;
+}
+
+.task img.portrait {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.1rem;
+    background-color: whitesmoke;
+    border-radius: 100%;
+    /* position: absolute; */
+    bottom: 0.5rem;
+    /* right: 0.5rem; */
+}
+
+.task img.task-icons {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 1;
+    width: 1.25rem;
+    height: 1.25rem;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.task .task-icons:hover {
+    opacity: 1;
+}
+
+.category-div {
+    display: flex;
+    justify-content: center;
+    background-color: #5279fc;
+    color: white;
+    margin: 8px;
+    border-radius: 5px;
+}
+
+/*.task::before {
+    content: "";
+    background: #ff8c00 radial-gradient(at 8px 8px, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5));
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: calc(50% + 8px);
+     left:  50%;
+    box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+} */
+
+/* .task::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: -4px;
+    width: 100%;
+    height: 140px;
+    background-image: linear-gradient(173deg, rgba(0, 0, 0, 0) 92%, rgba(0, 0, 0, 0.4) 100%);
+    transform: rotate(6deg);
+    z-index: -1;
+    filter: blur(2px);
+} */
+
+/* when 'todo' = red color & pin needle */
+
+/* ************************************ */
+
+/* .todo .task,
+.todo .task h3 {
+    background: #ffa6a6 linear-gradient(150deg, #ffa688 0%, #ffa6a6 100%);
+} */
+
+.task,
+.task hr {
+    /* background: #ffffff linear-gradient(193deg, #ffffff 0%, #767676 100%); */
+    background: navajowhite;
+}
+
+.low {
+    /* border-left: 5px solid green; */
+    border-left: 5px solid var(--low);
+}
+
+.medium {
+    /* border-left: 5px solid yellow; */
+    border-left: 5px solid var(--medium);
+}
+
+.important {
+    /* border-left: 5px solid orange; */
+    border-left: 5px solid var(--important);
+}
+
+.high {
+    /* border-left: 5px solid red; */
+    border-left: 5px solid var(--high);
+}
+
+/* ************************************ */
+
+/* .schedule .task {
+    transform: rotate(0deg);
+} */
+
+/* .schedule .task,
+.schedule h3 {
+    background: #fefabc linear-gradient(150deg, #efec88 0%, #fefabc 100%);
+} */
+
+/* .schedule .task::before,
+.progress .task::before {
+    content: none;
+} */
+
+/* ************************************ */
+
+/* .progress .task {
+    transform: rotate(4deg);
+    border-bottom-left-radius: 60px 12px;
+} */
+
+/* .progress .task,
+.progress h3 {
+    background: #90ee90 linear-gradient(150deg, #90ee60 0%, #90ee90 100%);
+} */
+
+/* ************************************ */
+
+/* .done .task {
+    transform: rotate(-3deg);
+    border-bottom-left-radius: 70px 12px;
+} */
+
+/* .done .task,
+.done h3 {
+    background: #b0c4de linear-gradient(150deg, #b0c4c0 0%, #b0c4de 100%);
+} */
+
+/* creating a paperclip */
+
+/* ************************************ */
+
+/* .done .task:before {
+    content: url(/img/paperclip_2.png);
+    transform: scale(0.25);
+    background: initial !important;
+    border-radius: initial !important;
+    box-shadow: none !important;
+    top: -30px;
+    right: 48px;
+    z-index: 10;
+} */

@@ -1,0 +1,21 @@
+{
+  "name": "Kanbanboard",
+  "short_name": "kanban",
+  "theme_color": "#b38349",
+  "background_color": "#b38349",
+  "display": "fullscreen",
+  "scope": "/",
+  "start_url": "/index.html",
+  "icons": [
+    {
+      "src": "./img/logo_Sandra.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./img/logo_Sandra.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
