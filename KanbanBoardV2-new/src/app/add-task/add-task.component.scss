@@ -1,0 +1,46 @@
+.task-container {
+    height: 84%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .task-button-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    form {
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 90%;
+        min-width: 30%;
+        h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        .cp-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .ds-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .margin-top {
+                margin-top: 22px;
+            }
+            .img-container {
+                display: flex;
+                align-items: center;
+                img {
+                    height: 100px;
+                    width: 100px;
+                    border-radius: 100%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+<mat-card class="card" [ngClass]="{'done': task.status === 'DONE'}">
+
+
+    <div class="border-box" [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
+
+
+        <mat-card-header>
+            <img mat-card-avatar class="header-img" src="../../assets/img/{{task.staff.image}}"
+                alt="{{task.staff.name}}">
+            <mat-card-title>{{task.title}}</mat-card-title>
+            <mat-card-subtitle>{{task.category}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                {{task.description}}
+            </p>
+        </mat-card-content>
+    </div>
+    <!-- <mat-card-footer class="footer">
+        <span>Deadline: {{task.deadline}}</span>
+        <span>Started: {{task.deadline}}</span> 
+        <span>Finished: {{task.deadline}}</span>
+    </mat-card-footer> -->
+    @if(task.status === 'DONE'){
+    <button (click)="deleteTicket()" class="trash-done" mat-icon-button
+        aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>delete</mat-icon>
+    </button>
+    }@else {
+    <button [matMenuTriggerFor]="menu" class="trash-done" mat-icon-button
+        aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>more_vert</mat-icon>
+    </button>}
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="switchToBacklog(task)">Backlog</button>
+        <button mat-menu-item (click)="editTask(task)">Edit</button>
+        <button mat-menu-item (click)="deleteTask(task)">Delete</button>
+    </mat-menu>
+</mat-card>

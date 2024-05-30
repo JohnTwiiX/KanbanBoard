@@ -1,0 +1,51 @@
+.help-screen {
+    padding: 16px;
+}
+
+summary {
+    /* padding: 0.5rem 1rem 0.5rem 0; */
+    padding: 0.5rem 1rem;
+    font-size: larger;
+    font-weight: bold;
+    cursor: pointer;
+    max-width: fit-content;
+}
+
+summary:hover {
+    color: whitesmoke;
+    background-color: transparent;
+}
+
+summary::marker {
+    color: navy;
+}
+
+summary:hover::marker {
+    color: whitesmoke;
+}
+
+details p {
+    padding: 1rem;
+}
+
+details[open] {
+    color: navy;
+}
+
+details ol {
+    font-weight: bold;
+    padding-left: 2rem;
+}
+
+.code {
+    border: 1px solid silver;
+    border-radius: 3px;
+    padding: 0.15rem 0.5rem;
+    margin: 2px;
+    background-color: #eee;
+    font-size: smaller;
+}
+
+.red {
+    color: red;
+}

@@ -1,0 +1,71 @@
+.backlog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80%;
+}
+
+.task-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 90%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.2);
+    .backlog-list-header {
+        display: grid;
+        grid-template-columns: 20% 55% 15% 10%;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 8px;
+    }
+    .backlog-item {
+        display: grid;
+        grid-template-columns: 20% 55% 15% 10%;
+        height: 50px;
+        align-items: center;
+        margin: 8px;
+        background-color: snow;
+        border-radius: 10px;
+        div {
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            padding: 0 4px 0 4px;
+            overflow: hidden;
+            img {
+                height: 40px;
+                width: 40px;
+                object-fit: cover;
+                border-radius: 100%;
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+        }
+        .border-right {
+            border-right: 1px solid;
+        }
+        .ta-start {
+            justify-content: start;
+        }
+    }
+}
+// .task-container { //for task component
+//     display: flex;
+//     justify-content: center;
+//     flex-wrap: wrap;
+//     width: 60%;
+//     background-color: rgba(0, 0, 0, 0.5);
+// }
+
+.backlog-task-container {
+    position: relative;
+    width: 20%;
+    margin: 8px;
+    .menu-button {
+        position: absolute;
+        right: 4px;
+        top: 0px;
+    }
+}

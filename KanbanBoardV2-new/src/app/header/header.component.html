@@ -1,0 +1,36 @@
+<header>
+    <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="/" routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }">Board</a>
+        <a mat-menu-item routerLink="/backlog" routerLinkActive="active-link">Backlog</a>
+        <a mat-menu-item routerLink="/addTask" routerLinkActive="active-link">Add Task</a>
+        <a mat-menu-item routerLink="/help" routerLinkActive="active-link">Help</a>
+    </mat-menu>
+    <div class="nav-menu">
+        <button [matMenuTriggerFor]="menu" class="nav-menu-button" mat-icon-button
+            aria-label="Example icon button with a vertical three dot icon">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+    <div>
+        <img src="../../assets/img/logo_Sandra.png" alt="Logo">
+    </div>
+    <div class="nav">
+        <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Board</a>
+        <a routerLink="/backlog" routerLinkActive="active-link">Backlog</a>
+        <a routerLink="/addTask" routerLinkActive="active-link">Add Task</a>
+        <a routerLink="/help" routerLinkActive="active-link">Help</a>
+    </div>
+
+    <!-- <div>
+        <div class="searchbar">
+            <img src="../../assets/img/magnifying-glass.png">
+            <input id="search" onkeyup="value=>console.log(value);" type="text" placeholder="search">
+        </div>
+    </div> -->
+    <div>
+        <!-- <img src="../../assets/img/trash-delete-bin.png"> -->
+        <img src="../../assets/img/settings-wht.png">
+    </div>
+
+</header>
