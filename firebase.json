@@ -1,6 +1,5 @@
 {
   "firestore": {
-    "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
@@ -20,8 +19,5 @@
         "destination": "/smallest_backend_ever$1"
       }
     ]
-  },
-  "storage": {
-    "rules": "storage.rules"
   }
 }
