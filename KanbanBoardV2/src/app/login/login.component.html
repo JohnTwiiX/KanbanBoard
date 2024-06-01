@@ -1,0 +1,10 @@
+<h2>Login</h2>
+<div>
+    <label>Email: <input [(ngModel)]="email" type="email" /></label>
+    <label>Password: <input [(ngModel)]="password" type="password" /></label>
+    <button (click)="loginWithEmail()">Login mit Email</button>
+    <button (click)="registerWithEmail()">Registrieren mit Email</button>
+</div>
+<button (click)="loginWithGoogle()">Login mit Google</button>
+<button (click)="loginAnonymously()">Login als Gast</button>
+<button (click)="logout()">Logout</button>
