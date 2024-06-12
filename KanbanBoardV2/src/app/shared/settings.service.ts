@@ -4,6 +4,7 @@ import { Firestore, collection, collectionData, doc, updateDoc, addDoc, deleteDo
 import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { Staff } from '../types/Staff';
 import { Task } from '../types/Task';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class SettingsService {
     }
   ]);
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private authService: AuthService) { }
 
   getColumns(): Observable<string[]> {
     return this.columns.asObservable();
@@ -52,7 +53,7 @@ export class SettingsService {
 
   updateTaskColumn(taskId: string, newColumn: string): void {
     try {
-      const tasksRef = collection(this.firestore, 'tasks');
+      const tasksRef = this.authService.getCollection('tasks');
       const documentRef = doc(tasksRef, taskId);
       updateDoc(documentRef, { status: newColumn });
     } catch (error) {
@@ -62,7 +63,7 @@ export class SettingsService {
 
   updateTask(taskId: string, task: Task): void {
     try {
-      const tasksRef = collection(this.firestore, 'tasks');
+      const tasksRef = this.authService.getCollection('tasks');
       const documentRef = doc(tasksRef, taskId);
       setDoc(documentRef, task);
     } catch (error) {
@@ -72,7 +73,7 @@ export class SettingsService {
 
   addToCollection(col: string, task: Task) {
     try {
-      const colConnection = collection(this.firestore, col);
+      const colConnection = this.authService.getCollection(col);
       addDoc(colConnection, task);
     } catch (error) {
       console.error('Add task ERROR: ', error);
@@ -81,7 +82,7 @@ export class SettingsService {
 
   deleteFromCollection(col: string, id: string) {
     try {
-      const colConnection = collection(this.firestore, col);
+      const colConnection = this.authService.getCollection(col);
       const documentRef = doc(colConnection, id);
       deleteDoc(documentRef);
     } catch (error) {
@@ -90,7 +91,7 @@ export class SettingsService {
   }
 
   getFromCollection(col: string) {
-    const colConnection = collection(this.firestore, col);
+    const colConnection = this.authService.getCollection(col);
     return collectionData(colConnection, { idField: 'id' }) as Observable<Task[]>;
   }
 

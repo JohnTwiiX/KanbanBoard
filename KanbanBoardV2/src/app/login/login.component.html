@@ -1,10 +1,15 @@
 <h2>Login</h2>
-<div>
-    <label>Email: <input [(ngModel)]="email" type="email" /></label>
-    <label>Password: <input [(ngModel)]="password" type="password" /></label>
-    <button (click)="loginWithEmail()">Login mit Email</button>
-    <button (click)="registerWithEmail()">Registrieren mit Email</button>
-</div>
-<button (click)="loginWithGoogle()">Login mit Google</button>
-<button (click)="loginAnonymously()">Login als Gast</button>
-<button (click)="logout()">Logout</button>
+<form #form='ngForm' (ngSubmit)="loginWithEmail()">
+    <label for="email">Email:</label>
+    <input type="email" [(ngModel)]="email" name="email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" [(ngModel)]="password" name="password" required>
+
+    <button [disabled]="form.invalid" type="submit">Login</button>
+</form>
+
+<button (click)="loginWithGoogle()">Login with Google</button>
+<button (click)="loginAnonymously()">Login Anonymously</button>
+
+<p>Don't have an account? <a routerLink="/register">Register here</a></p>

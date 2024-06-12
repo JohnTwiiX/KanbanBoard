@@ -6,6 +6,7 @@
     .task-button-container {
         display: flex;
         flex-direction: row;
+        margin-top: 30px;
         justify-content: space-around;
     }
     form {
@@ -17,6 +18,18 @@
         justify-content: space-evenly;
         height: 90%;
         min-width: 30%;
+        @media (max-width: 450px) {
+            width: 100%;
+        }
+        .w-250 {
+            width: 250px;
+            @media (max-width: 450px) {
+                width: 150px;
+            }
+            @media (max-width: 350px) {
+                width: 100px;
+            }
+        }
         h2 {
             text-align: center;
             margin-top: 0;
@@ -24,21 +37,34 @@
         .cp-container {
             display: flex;
             justify-content: space-between;
+            margin: 0 50px;
+            @media (max-width: 450px) {
+                margin: 0 16px;
+            }
         }
         .ds-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin: 0 50px;
+            @media (max-width: 450px) {
+                margin: 0 16px;
+            }
             .margin-top {
                 margin-top: 22px;
             }
             .img-container {
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 img {
                     height: 100px;
                     width: 100px;
                     border-radius: 100%;
+                    @media (max-width: 450px) {
+                        height: 80px;
+                        width: 80px;
+                    }
                 }
             }
         }
