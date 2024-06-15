@@ -34,26 +34,31 @@ export class AuthService {
 
   async registerWithEmail(email: string, password: string): Promise<void> {
     await createUserWithEmailAndPassword(this.auth, email, password);
+    this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
   async loginWithEmail(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(this.auth, email, password);
+    this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
   async loginWithGoogle(): Promise<void> {
     await signInWithPopup(this.auth, new GoogleAuthProvider());
+    this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
   async loginAnonymously(): Promise<void> {
     await signInAnonymously(this.auth);
+    this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
   async logout(): Promise<void> {
     await signOut(this.auth);
+    localStorage.removeItem('loginTime');
     this.router.navigate(['/login']);
   }
 
@@ -61,6 +66,11 @@ export class AuthService {
     return this.user$.pipe(
       map(user => !!user)
     );
+  }
+
+  setTimeInStorage() {
+    const loginTimestamp = Date.now();
+    localStorage.setItem('loginTime', loginTimestamp.toString());
   }
 
   getUser(): Observable<any> {
