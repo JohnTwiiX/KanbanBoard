@@ -7,7 +7,8 @@ import {
   GoogleAuthProvider,
   signInAnonymously,
   signOut,
-  User
+  User,
+  sendEmailVerification
 } from '@angular/fire/auth';
 import { CollectionReference, Firestore, collection } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -26,16 +27,25 @@ export class AuthService {
 
   constructor(private auth: Auth, private firestore: Firestore, private router: Router) {
     this.user$ = authState(this.auth);
-    this.backlogCollection = collection(this.firestore, 'backlog');
     this.anonymousBacklogCollection = collection(this.firestore, 'anonymousBacklog');
-    this.boardCollection = collection(this.firestore, 'tasks');
     this.anonymousBoardCollection = collection(this.firestore, 'anonymousBoard');
+    this.backlogCollection = collection(this.firestore, 'backlog');
+    this.boardCollection = collection(this.firestore, 'tasks');
   }
 
   async registerWithEmail(email: string, password: string): Promise<void> {
-    await createUserWithEmailAndPassword(this.auth, email, password);
-    this.setTimeInStorage();
-    this.router.navigate(['/board']);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const user = userCredential.user;
+      this.sendVerification();
+      if (user) {
+        this.setTimeInStorage();
+        this.router.navigate(['/verified']);
+      }
+    } catch (error) {
+      console.error('Registration error: ', error);
+      throw error;
+    }
   }
 
   async loginWithEmail(email: string, password: string): Promise<void> {
@@ -62,11 +72,20 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn(): Observable<boolean> {
+  isLoggedIn(): Observable<User | null> {
     return this.user$.pipe(
-      map(user => !!user)
+      map(user => user)
     );
   }
+
+  async sendVerification() {
+    const user = this.auth.currentUser;
+    if (user) {
+      await sendEmailVerification(user);
+      console.log('Verification email sent.');
+    }
+  }
+
 
   setTimeInStorage() {
     const loginTimestamp = Date.now();
@@ -85,8 +104,6 @@ export class AuthService {
 
   getCollection(col: string) {
     const user = this.auth.currentUser;
-    console.log(user);
-
     if (user && user.isAnonymous) {
       if (col === 'tasks') return this.anonymousBoardCollection;
       return this.anonymousBacklogCollection;

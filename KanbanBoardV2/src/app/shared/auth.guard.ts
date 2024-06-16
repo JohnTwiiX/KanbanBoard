@@ -13,6 +13,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   return authService.isLoggedIn().pipe(
     switchMap(isLoggedIn => {
       if (isLoggedIn) {
+        if (!isLoggedIn.emailVerified) {
+          router.navigate(['/verified']);
+          return of(false);
+        }
         const loginTime = localStorage.getItem('loginTime');
         const currentTime = Date.now();
         const oneDayInMilliseconds = 7 * 24 * 60 * 60 * 1000;

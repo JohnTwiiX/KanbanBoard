@@ -20,6 +20,8 @@ export class RegisterComponent {
     confirmPassword: new FormControl('', { validators: [Validators.required], updateOn: 'change' })
   }, { validators: this.passwordMatchValidator });
 
+  isError = false;
+
   constructor(private authService: AuthService) { }
 
   get email() {
@@ -36,9 +38,10 @@ export class RegisterComponent {
 
   register() {
     if (this.formControl.valid) {
-      this.authService.registerWithEmail(this.formControl.value.email as string, this.formControl.value.password as string);
+      this.authService.registerWithEmail(this.formControl.value.email as string, this.formControl.value.password as string).catch(() => {
+        this.isError = true;
+      });
     } else {
-      // Fehlerbehandlung oder Anzeige einer Nachricht
       console.log('Form is not valid');
     }
   }

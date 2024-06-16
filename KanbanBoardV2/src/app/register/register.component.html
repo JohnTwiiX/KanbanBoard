@@ -41,6 +41,8 @@
         <mat-error>
             @if (confirmPassword?.value && password?.value && formControl.hasError('passwordsNotMatching')) {
             Passwords do not match
+            } @else if (isError) {
+            Account already exist
             }
         </mat-error>
 
