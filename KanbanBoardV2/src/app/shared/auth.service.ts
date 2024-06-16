@@ -25,6 +25,8 @@ export class AuthService {
   private boardCollection: CollectionReference<any>;
   private anonymousBoardCollection: CollectionReference<any>;
 
+  private timeIsOver = false;
+
   constructor(private auth: Auth, private firestore: Firestore, private router: Router) {
     this.user$ = authState(this.auth);
     this.anonymousBacklogCollection = collection(this.firestore, 'anonymousBacklog');
@@ -61,9 +63,18 @@ export class AuthService {
   }
 
   async loginAnonymously(): Promise<void> {
-    await signInAnonymously(this.auth);
+    const user = await signInAnonymously(this.auth);
+    this.setAnonymousLoginFlag(user.user.uid)
     this.setTimeInStorage();
     this.router.navigate(['/board']);
+  }
+
+  isAlreadyAnonymouslyLoggedIn(): boolean {
+    return localStorage.getItem('anonymousUserId') !== null;
+  }
+
+  setAnonymousLoginFlag(userId: string): void {
+    localStorage.setItem('anonymousUserId', userId);
   }
 
   async logout(): Promise<void> {
@@ -92,8 +103,8 @@ export class AuthService {
     localStorage.setItem('loginTime', loginTimestamp.toString());
   }
 
-  getUser(): Observable<any> {
-    return authState(this.auth);
+  getUser() {
+    return this.auth.currentUser
   }
 
   isAnonymous(): Observable<boolean> {
@@ -111,5 +122,13 @@ export class AuthService {
       if (col === 'tasks') return this.boardCollection;
       return this.backlogCollection;
     }
+  }
+
+  setTimeOver() {
+    this.timeIsOver = true;
+  }
+
+  isTimeOver() {
+    return this.timeIsOver;
   }
 }

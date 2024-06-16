@@ -38,7 +38,9 @@
     </form>
     <div class="btn-container">
         <button mat-raised-button (click)="loginWithGoogle()">Login with Google</button>
+        @if (!authService.isAlreadyAnonymouslyLoggedIn()) {
         <button mat-raised-button (click)="loginAnonymously()">Login Anonymously</button>
+        }
     </div>
 
 
