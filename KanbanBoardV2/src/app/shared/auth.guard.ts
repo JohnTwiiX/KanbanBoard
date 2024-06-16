@@ -15,7 +15,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       if (isLoggedIn) {
         const loginTime = localStorage.getItem('loginTime');
         const currentTime = Date.now();
-        const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+        const oneDayInMilliseconds = 7 * 24 * 60 * 60 * 1000;
         if (loginTime) {
           if (currentTime - parseInt(loginTime, 10) >= oneDayInMilliseconds) {
             authService.logout();
