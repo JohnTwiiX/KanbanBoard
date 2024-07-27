@@ -15,4 +15,17 @@
         </div>
     </div>
     }
+    @if (isDialogOpen) {
+    <div class="dialog-overlay" (click)="closeDialog()">
+        <div class="dialog" (click)="$event.stopPropagation()">
+            <h3>Reopen "{{selectedTask?.title}}"?</h3>
+
+            <div>
+                <button mat-raised-button (click)="reopenTask()">Yes</button>
+                <button mat-raised-button (click)="closeDialog()">No</button>
+            </div>
+        </div>
+
+    </div>
+    }
 </div>

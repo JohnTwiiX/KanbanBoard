@@ -64,15 +64,6 @@
             </div>
         </div>
         @for(task of backlogTasks; track task){
-
-        <!-- <div class="backlog-task-container">
-
-            <button [matMenuTriggerFor]="menu" class="menu-button" mat-icon-button
-                aria-label="Example icon button with a vertical three dot icon">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-        </div> -->
-
         <div>
             <div [matMenuTriggerFor]="menu" class="backlog-item"
                 [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
@@ -87,7 +78,7 @@
                     <span>{{task.deadline}}</span>
                 </div>
                 <div>
-                    <img src="../../assets/img/{{task.staff.image}}" alt="{{task.staff.name}}">
+                    <img src="{{imageUrls.get('images/'+task.staff.image)}}" alt="{{task.staff.name}}">
                 </div>
                 <mat-menu #menu="matMenu" xPosition="before">
                     <button mat-menu-item (click)="switchToBoard(task)">Board</button>
@@ -102,3 +93,10 @@
 
     </div>
 </div>
+<!-- <div class="backlog-task-container">
+
+            <button [matMenuTriggerFor]="menu" class="menu-button" mat-icon-button
+                aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div> -->

@@ -4,22 +4,28 @@
     padding-right: 16px;
     filter: drop-shadow(2px 4px 6px black);
     position: relative;
+
     .border-box {
         height: 100%;
         padding-bottom: 16px;
         box-sizing: border-box;
     }
+
     .header-img {
         background-size: cover;
+        background-color: #c5afaf;
     }
+
     mat-card-content {
         overflow: auto;
         height: 30%;
     }
+
     .footer {
         // display: flex;
         // justify-content: space-around;
     }
+
     .trash-done {
         position: absolute;
         color: black;
@@ -28,6 +34,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
         mat-icon {
             font-size: 40px;
             height: 40px;
@@ -36,6 +43,7 @@
         }
     }
 }
+
 .done {
     filter: brightness(0.5);
 }

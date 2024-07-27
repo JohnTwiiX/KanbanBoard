@@ -1,49 +1,104 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Firestore, collection, collectionData, doc, updateDoc, addDoc, deleteDoc, setDoc } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { Staff } from '../types/Staff';
 import { Task } from '../types/Task';
 import { AuthService } from './auth.service';
+import { FirebaseService } from './firebase.service';
+import { User } from '@angular/fire/auth';
+import { doc, Firestore, getDoc } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
+import { Priorities, Settings } from '../types/Settings';
+import { UserObj } from '../types/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
-  private columns: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(['TO DO', 'SCHEDULED', 'IN PROGRESS', 'DONE']);
-  private categories: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(["App-Development", "Web-Development", "Bug-Web", "Bug-App", "Marketing", "Product", "Sale", "Management"]);
-  private priorities: BehaviorSubject<object> = new BehaviorSubject<object>({
-    'low': 'rgb(235, 211, 52)',
-    'medium': 'rgb(235, 211, 52)',
-    'important': 'rgb(55, 52, 235)',
-    'high': 'rgb(235, 52, 52)'
-  });
-  private staffs: BehaviorSubject<Staff[]> = new BehaviorSubject<Staff[]>([
-    {
-      "name": "John",
-      "img": "john.jpg"
-    },
-    {
-      "name": "Sandra",
-      "img": "logo_Sandra.png"
-    }
-  ]);
+  private columns: BehaviorSubject<string[] | null> = new BehaviorSubject<string[] | null>(null)
+  private categories: BehaviorSubject<string[] | null> = new BehaviorSubject<string[] | null>(null)
+  private priorities: BehaviorSubject<Priorities | null> = new BehaviorSubject<Priorities | null>(null);
+  private projects: BehaviorSubject<string[] | null> = new BehaviorSubject<string[] | null>(null);
+  private staffs: BehaviorSubject<UserObj[] | null> = new BehaviorSubject<UserObj[] | null>(null);
+  private id!: string;
+  constructor(private firebaseService: FirebaseService, private authService: AuthService) {
+    this.init();
+  }
 
-  constructor(private firestore: Firestore, private authService: AuthService) { }
+  init() {
+    this.initTasks()
+    this.initSettings()
+  }
 
-  getColumns(): Observable<string[]> {
+  initSettings() {
+    this.firebaseService.initCollection('settings');
+    this.firebaseService.getSettingsCollection()?.subscribe({
+      next: (value: any) => {
+        if (value.length === 0 && this.authService.getUser()) {
+          this.setDefaultSettings();
+        } else {
+          console.log(value);
+          this.columns.next(value[0].columns);
+          this.categories.next(value[0].categories);
+          this.priorities.next(value[0].priorities);
+          this.projects.next(value[0].projects);
+          this.id = value[0].id;
+        }
+      },
+      error: e => console.error(e)
+    })
+    this.firebaseService.getUsers()?.subscribe({
+      next: (value: any) => {
+        const result = value.map((user: any) => ({
+          display_name: user.display_name,
+          uid: user.uid,
+          image: user.image
+        }))
+        this.staffs.next(result);
+
+      }
+    })
+
+
+  }
+
+  initTasks() {
+    const user = this.authService.getUser()?.isAnonymous ? 'anonym' : 'user';
+    this.firebaseService.initCollection(user);
+  }
+
+  setDefaultSettings() {
+    const settings = {
+      columns: ['TO DO', 'SCHEDULED', 'IN PROGRESS', 'DONE'],
+      categories: ["Development", "Web", "Marketing", "Product", "Sale", "Management"],
+      priorities: {
+        'low': 'rgb(235, 211, 52)',
+        'medium': 'rgb(235, 211, 52)',
+        'important': 'rgb(55, 52, 235)',
+        'high': 'rgb(235, 52, 52)'
+      },
+      projects: [],
+    };
+    this.firebaseService.setDefaultSettings(settings)
+  }
+
+  getColumns(): Observable<string[] | null> {
     return this.columns.asObservable();
   }
 
-  getCategories(): Observable<string[]> {
+  getCategories(): Observable<string[] | null> {
     return this.categories.asObservable();
   }
 
-  getPrioritys(): Observable<object> {
+  getProjects(): Observable<string[] | null> {
+    return this.projects.asObservable();
+  }
+
+  getPrioritys(): Observable<Priorities | null> {
     return this.priorities.asObservable();
   }
 
-  getStaffs(): Observable<Staff[]> {
+  getStaffs(): Observable<UserObj[] | null> {
     return this.staffs.asObservable();
   }
 
@@ -51,49 +106,12 @@ export class SettingsService {
     this.columns.next(newColumns);
   }
 
-  updateTaskColumn(taskId: string, newColumn: string): void {
-    try {
-      const tasksRef = this.authService.getCollection('tasks');
-      const documentRef = doc(tasksRef, taskId);
-      updateDoc(documentRef, { status: newColumn });
-    } catch (error) {
-      console.error('Error updating task column:', error);
-    }
+  getUser() {
+    return this.authService.getUser();
   }
 
-  updateTask(taskId: string, task: Task): void {
-    try {
-      const tasksRef = this.authService.getCollection('tasks');
-      const documentRef = doc(tasksRef, taskId);
-      setDoc(documentRef, task);
-    } catch (error) {
-      console.error('Error updating task: ', error);
-    }
+  getSettingsId() {
+    return this.id;
   }
-
-  addToCollection(col: string, task: Task) {
-    try {
-      const colConnection = this.authService.getCollection(col);
-      addDoc(colConnection, task);
-    } catch (error) {
-      console.error('Add task ERROR: ', error);
-    }
-  }
-
-  deleteFromCollection(col: string, id: string) {
-    try {
-      const colConnection = this.authService.getCollection(col);
-      const documentRef = doc(colConnection, id);
-      deleteDoc(documentRef);
-    } catch (error) {
-      console.error('Delete task ERROR: ', error);
-    }
-  }
-
-  getFromCollection(col: string) {
-    const colConnection = this.authService.getCollection(col);
-    return collectionData(colConnection, { idField: 'id' }) as Observable<Task[]>;
-  }
-
 
 }

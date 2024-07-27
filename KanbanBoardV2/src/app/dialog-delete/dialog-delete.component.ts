@@ -8,6 +8,7 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { SettingsService } from '../shared/settings.service';
+import { FirebaseService } from '../shared/firebase.service';
 
 interface DialogData {
   title: string,
@@ -23,10 +24,10 @@ interface DialogData {
   styleUrl: './dialog-delete.component.scss'
 })
 export class DialogDeleteComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private settingsService: SettingsService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private firebaseService: FirebaseService) { }
 
   deleteTask() {
-    this.settingsService.deleteFromCollection(this.data.col, this.data.id)
+    this.firebaseService.deleteFromCollection(this.data.col, this.data.id)
   }
 
 }

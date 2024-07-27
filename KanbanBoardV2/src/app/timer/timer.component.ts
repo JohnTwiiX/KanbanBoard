@@ -10,10 +10,12 @@ import { Router } from '@angular/router';
   styleUrl: './timer.component.scss'
 })
 export class TimerComponent {
-  remainingTime: number = 300; // 5 Minuten in Sekunden
+  remainingTime!: number; // 5 Minuten in Sekunden
   intervalId: any;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    this.setTime();
+  }
 
   ngOnInit(): void {
     this.startTimer();
@@ -47,6 +49,28 @@ export class TimerComponent {
 
   pad(num: number): string {
     return num < 10 ? '0' + num : num.toString();
+  }
+
+  setTime() {
+    const time = localStorage.getItem('loginTime');
+    if (time) {
+      const timeInt = 300 + Math.floor(JSON.parse(time) / 1000);
+      const now = Math.floor(Date.now() / 1000);
+      console.log(timeInt - 300);
+      console.log(timeInt);
+      console.log(now);
+      console.log(timeInt - now);
+      console.log(timeInt - now < 300);
+
+      if (timeInt - now <= 300) {
+        this.remainingTime = timeInt - now;
+      } else {
+        this.authService.logout();
+      }
+    } else {
+      this.authService.logout();
+    }
+
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { RouterLink } from '@angular/router';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormGroup, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,8 +15,10 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class RegisterComponent {
   formControl = new FormGroup({
+    first_name: new FormControl('', { validators: [Validators.required, this.onlyCharsValidator()], updateOn: 'change' }),
+    last_name: new FormControl('', { validators: [Validators.required, this.onlyCharsValidator()], updateOn: 'change' }),
     email: new FormControl('', { validators: [Validators.required, Validators.email], updateOn: 'change' }),
-    password: new FormControl('', { validators: [Validators.required], updateOn: 'change' }),
+    password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)], updateOn: 'change' }),
     confirmPassword: new FormControl('', { validators: [Validators.required], updateOn: 'change' })
   }, { validators: this.passwordMatchValidator });
 
@@ -36,9 +38,18 @@ export class RegisterComponent {
     return this.formControl.get('confirmPassword');
   }
 
+  get first_name() {
+    return this.formControl.get('first_name')
+  }
+
+  get last_name() {
+    return this.formControl.get('last_name')
+  }
+
   register() {
     if (this.formControl.valid) {
-      this.authService.registerWithEmail(this.formControl.value.email as string, this.formControl.value.password as string).catch(() => {
+      const displayname = `${this.formControl.value.first_name?.trim()} ${this.formControl.value.last_name?.trim()}`
+      this.authService.registerWithEmail(this.formControl.value.email as string, this.formControl.value.password as string, displayname).catch(() => {
         this.isError = true;
       });
     } else {
@@ -55,5 +66,12 @@ export class RegisterComponent {
     }
 
     return password.value === confirmPassword.value ? null : { passwordsNotMatching: true };
+  }
+
+  onlyCharsValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valid = /^[a-zA-Z]+$/.test(control.value);
+      return valid ? null : { onlyChars: true };
+    };
   }
 }

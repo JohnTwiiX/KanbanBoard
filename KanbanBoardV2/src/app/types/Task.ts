@@ -8,6 +8,9 @@ export interface Task {
         image: string
     },
     status: string,
-    deadline: string,
+    createdAt: string
+    deadline?: string,
     id?: string
+    closedAt?: string
+    project?: string
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { SettingsService } from '../shared/settings.service';
 import { NgClass } from '@angular/common';
@@ -12,6 +12,8 @@ import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component'
 import { MatMenuModule } from '@angular/material/menu';
 import { Task } from '../types/Task';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
+import { FirebaseService } from '../shared/firebase.service';
+import { UserItemsService } from '../shared/user-items.service';
 
 @Component({
   selector: 'app-ticket',
@@ -20,20 +22,26 @@ import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
   templateUrl: './ticket.component.html',
   styleUrls: ['./ticket.component.scss']
 })
-export class TicketComponent {
+export class TicketComponent implements OnInit {
   @Input() task: any;
   priority: { [key: string]: string } = {};
+  imageUrl: any = '../../assets/img/profile-dummy.png'
 
-  constructor(private settingsService: SettingsService, public dialog: MatDialog) {
+  constructor(private settingsService: SettingsService, public dialog: MatDialog, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
     this.settingsService.getPrioritys()
       .subscribe((prioritys: any) => {
         this.priority = prioritys;
       });
   }
 
+  async ngOnInit() {
+    this.imageUrl = await this.userItemsService.getImageUrl(`images/${this.task.staff.image}`)
+  }
+
   getColorPriority(priority: string): string {
     return this.priority[priority] || 'defaultColor';
   }
+
   openDialog() {
     const dialogRef = this.dialog.open(DialogDeleteComponent, {
       data: { title: this.task.title, id: this.task.id, col: 'tasks' }
@@ -44,9 +52,9 @@ export class TicketComponent {
   switchToBacklog(task: Task) {
     try {
       if (task.id) {
-        this.settingsService.deleteFromCollection('tasks', task.id);
+        this.firebaseService.deleteFromCollection('tasks', task.id);
         task.status = 'BACKLOG';
-        this.settingsService.addToCollection('backlog', task);
+        this.firebaseService.addToCollection('backlog', task);
       }
     } catch (error) {
       console.error('Error switching task to board:', error);
