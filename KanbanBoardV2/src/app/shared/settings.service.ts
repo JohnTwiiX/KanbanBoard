@@ -67,7 +67,7 @@ export class SettingsService {
     this.firebaseService.initCollection(user);
   }
 
-  setDefaultSettings() {
+  private setDefaultSettings() {
     const settings = {
       columns: ['TO DO', 'SCHEDULED', 'IN PROGRESS', 'DONE'],
       categories: ["Development", "Web", "Marketing", "Product", "Sale", "Management"],

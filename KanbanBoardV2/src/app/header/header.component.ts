@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../shared/auth.service';
 import { TimerComponent } from '../timer/timer.component';
+import { UserItemsService } from '../shared/user-items.service';
+import { UserItems } from '../types/UserItems';
 
 @Component({
   selector: 'app-header',
@@ -15,10 +17,22 @@ import { TimerComponent } from '../timer/timer.component';
 })
 export class HeaderComponent {
   value = '';
-  constructor(private authService: AuthService) { }
+
+  userItems!: UserItems | null
+  constructor(private authService: AuthService, private userItemsService: UserItemsService, private router: Router) {
+    this.userItemsService.userItems$.subscribe({
+      next: (user: UserItems | null) => {
+        this.userItems = user
+      }
+    })
+  }
 
   logout() {
-    this.authService.logout();
+    // if (this.userItems?.role === 'admin') {
+    this.router.navigate(['/settings']);
+    // } else {
+    //   this.authService.logout();
+    // }
   }
 
   isAnonym() {

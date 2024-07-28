@@ -1,0 +1,30 @@
+<div class="settings-container">
+    <app-input-chips style="display: contents;" [signal]="categories" title="Categories"
+        (isChanged)="changeSettingsValue($event)" />
+    <app-input-chips style="display: contents;" [signal]="projects" title="Projects"
+        (isChanged)="changeSettingsValue($event)" />
+    <div class="priority-container">
+        @if (priorities) {
+        @for (key of objectKeys; track key) {
+        <div class="priority-item">
+            <span class="priority-key">{{ key }}</span>
+            <input type="color" [value]="priorities[key]" (change)="onColorChange(key,$event)" />
+        </div>
+
+        }
+        }
+    </div>
+    <button mat-raised-button [disabled]="!isSettingsChanged" (click)="openDialog()">save</button>
+</div>
+@if (isDialogOpen) {
+<div class="dialog-overlay" (click)="closeDialog()">
+    <div class="dialog" (click)="$event.stopPropagation()">
+        <h2>Save the settings?</h2>
+        <div style="margin-top: 24px;">
+            <button mat-raised-button (click)="saveSettings()">Yes</button>
+            <button mat-raised-button (click)="closeDialog()">No</button>
+        </div>
+    </div>
+
+</div>
+}

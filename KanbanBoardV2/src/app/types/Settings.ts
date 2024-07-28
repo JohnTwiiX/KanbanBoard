@@ -8,6 +8,5 @@ export interface Settings {
 export interface Priorities {
     'low': string
     'medium': string
-    'important': string
     'high': string
 }

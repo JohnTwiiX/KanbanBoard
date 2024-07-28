@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component';
 import { authGuard } from './shared/auth.guard';
 import { IsVerifiedComponent } from './is-verified/is-verified.component';
 import { AnonymousViewComponent } from './anonymous-view/anonymous-view.component';
+import { SettingsComponent } from './settings/settings.component';
 
 export const routes: Routes = [
     { path: 'backlog', component: BacklogComponent, canActivate: [authGuard] },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     { path: 'help', component: HelpScreenComponent, canActivate: [authGuard] },
     { path: 'board', component: BoardComponent, canActivate: [authGuard] },
     { path: 'verified', component: IsVerifiedComponent, canActivate: [authGuard] },
+    { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
     { path: 'anonym', component: AnonymousViewComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
