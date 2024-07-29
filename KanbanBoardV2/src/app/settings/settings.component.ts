@@ -9,13 +9,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { InputChipsComponent } from '../input-chips/input-chips.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FirebaseService } from '../shared/firebase.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/auth.service';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 export interface Fruit {
   name: string;
 }
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [MatFormFieldModule, MatChipsModule, MatIconModule, InputChipsComponent, MatButtonModule],
+  imports: [MatFormFieldModule, MatChipsModule, MatIconModule, InputChipsComponent, MatButtonModule, FormsModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
@@ -27,7 +31,9 @@ export class SettingsComponent {
   readonly projects = signal<string[]>([]);
   isDialogOpen: boolean = false;
   isSettingsChanged: boolean = false;
-  constructor(private settingsService: SettingsService, private firebaseService: FirebaseService) {
+  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+
+  constructor(private settingsService: SettingsService, private firebaseService: FirebaseService, private router: Router, private authService: AuthService) {
     this.settingsService.getCategories().subscribe({
       next: value => {
         if (value)
@@ -85,5 +91,21 @@ export class SettingsComponent {
   closeDialog() {
     this.isSettingsChanged = false;
     this.isDialogOpen = false;
+  }
+
+  switchTo(page: string) {
+    this.router.navigate(['/reset-password']);
+  }
+
+  updateEmail() {
+    if (this.emailFormControl.value)
+      this.authService.updateEmail(this.emailFormControl.value)
+        .then(() => {
+          alert('Email updated successfully');
+        })
+        .catch(error => {
+          console.error('Error updating email:', error);
+          alert('Error updating email');
+        });
   }
 }

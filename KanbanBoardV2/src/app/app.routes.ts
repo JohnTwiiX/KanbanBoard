@@ -9,6 +9,7 @@ import { authGuard } from './shared/auth.guard';
 import { IsVerifiedComponent } from './is-verified/is-verified.component';
 import { AnonymousViewComponent } from './anonymous-view/anonymous-view.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
     { path: 'backlog', component: BacklogComponent, canActivate: [authGuard] },
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'verified', component: IsVerifiedComponent, canActivate: [authGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
     { path: 'anonym', component: AnonymousViewComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },

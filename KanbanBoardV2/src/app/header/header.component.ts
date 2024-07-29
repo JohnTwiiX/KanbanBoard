@@ -7,6 +7,7 @@ import { AuthService } from '../shared/auth.service';
 import { TimerComponent } from '../timer/timer.component';
 import { UserItemsService } from '../shared/user-items.service';
 import { UserItems } from '../types/UserItems';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { UserItems } from '../types/UserItems';
 })
 export class HeaderComponent {
   value = '';
+  isLoggedIn!: User | null;
 
   userItems!: UserItems | null
   constructor(private authService: AuthService, private userItemsService: UserItemsService, private router: Router) {
@@ -24,15 +26,21 @@ export class HeaderComponent {
       next: (user: UserItems | null) => {
         this.userItems = user
       }
+    });
+
+    this.authService.isLoggedIn().subscribe({
+      next: isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+      }
     })
   }
 
-  logout() {
-    // if (this.userItems?.role === 'admin') {
+  switchTo() {
     this.router.navigate(['/settings']);
-    // } else {
-    //   this.authService.logout();
-    // }
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   isAnonym() {

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Optional } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SettingsService } from '../shared/settings.service';
@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { Priority } from '../types/Priority';
-import { Staff } from '../types/Staff';
 import { Router } from '@angular/router';
 import { Task } from '../types/Task';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -94,7 +93,6 @@ export class AddTaskComponent implements OnInit {
         this.userItems = user
       }
     })
-
   }
 
   ngOnInit(): void {
@@ -127,7 +125,7 @@ export class AddTaskComponent implements OnInit {
         }
       }
     }
-    if (!this.task) {
+    if (!this.task && this.userItems) {
       this.selectedStaffIndex = this.findStaffIndexById(`images/${this.userItems?.image}`)
     }
   }

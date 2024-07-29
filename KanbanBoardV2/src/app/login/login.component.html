@@ -35,6 +35,7 @@
         </mat-error>
         <button mat-raised-button type="submit" [disabled]="formControl.invalid">Login</button>
         <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+        <p>Forget your password? <a routerLink="/reset-password">Reset here</a></p>
     </form>
     <div class="btn-container">
         <button mat-raised-button (click)="loginWithGoogle()">Login with Google</button>

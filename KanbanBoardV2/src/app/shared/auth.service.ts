@@ -9,7 +9,9 @@ import {
   signOut,
   User,
   sendEmailVerification,
-  updateProfile
+  updateProfile,
+  sendPasswordResetEmail,
+  updateEmail
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -89,10 +91,35 @@ export class AuthService {
   }
 
   async sendVerification() {
-    const user = this.auth.currentUser;
+    const user = this.getUser();
     if (user) {
       await sendEmailVerification(user);
       console.log('Verification email sent.');
+    }
+  }
+
+  async resetPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      console.log('Password reset email sent');
+    } catch (error) {
+      console.error('Error sending password reset email', error);
+    }
+  }
+
+  // Method to update the user's email
+  async updateEmail(newEmail: string): Promise<void> {
+    const user = this.getUser();
+
+    if (!user) {
+      return Promise.reject('No user logged in');
+    }
+
+    try {
+      await updateEmail(user, newEmail);
+      console.log('Email updated successfully');
+    } catch (error) {
+      console.error('Error updating email', error);
     }
   }
 

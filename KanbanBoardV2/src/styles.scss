@@ -4,18 +4,24 @@ html,
 body {
     height: 100%;
 }
+
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }
+
 body::-webkit-scrollbar {
     width: 0.5em;
 }
 
 body::-webkit-scrollbar-thumb {
     background-color: transparent;
+}
+
+.w-50p {
+    width: 50%;
 }
 
 @media (max-width: 1000px) or (max-height: 1000px) {
@@ -26,21 +32,33 @@ body::-webkit-scrollbar-thumb {
 
         .drop-box {
             height: 85% !important;
+
             .ticket {
                 margin: 0 !important;
             }
         }
     }
+
     .ticket {
         scale: 0.8;
     }
+
     .card {
         mat-card-title {
             font-size: medium;
         }
+
         mat-card-subtitle {
             font-size: small;
         }
+    }
+
+    .priority-container {
+        flex-direction: column;
+    }
+
+    .change-container {
+        flex-direction: column;
     }
 }
 
@@ -48,15 +66,24 @@ body::-webkit-scrollbar-thumb {
     .nav {
         display: none !important;
     }
+
     .nav-menu {
         display: block !important;
     }
+
     .backlog-item {
         display: flex !important;
         flex-direction: column;
         height: 100px !important;
+
         .border-right {
             border-right: unset !important;
         }
+    }
+}
+
+@media (max-width:400px) {
+    .w-50p {
+        width: 80%;
     }
 }
