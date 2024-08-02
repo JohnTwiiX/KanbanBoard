@@ -25,7 +25,7 @@ jobs:
         run: npm install
         working-directory: ./KanbanBoardV2
 
-      name: Run Tests
+      - name: Run Tests
         run: npm test -- --watch=false --no-progress --browsers=ChromeHeadlessCI
         working-directory: ./KanbanBoardV2
         env:
