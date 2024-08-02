@@ -12,6 +12,7 @@
     height: 90%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.2);
+
     .backlog-list-header {
         display: grid;
         grid-template-columns: 20% 55% 15% 10%;
@@ -20,6 +21,7 @@
         font-size: 18px;
         padding: 8px;
     }
+
     .backlog-item {
         display: grid;
         grid-template-columns: 20% 55% 15% 10%;
@@ -28,6 +30,7 @@
         margin: 8px;
         background-color: snow;
         border-radius: 10px;
+
         div {
             height: 100%;
             align-items: center;
@@ -35,6 +38,7 @@
             display: flex;
             padding: 0 4px 0 4px;
             overflow: hidden;
+
             img {
                 height: 40px;
                 width: 40px;
@@ -43,26 +47,30 @@
                 background-color: rgba(0, 0, 0, 0.2);
             }
         }
+
         .border-right {
             border-right: 1px solid;
         }
+
         .ta-start {
             justify-content: start;
+
+            @media (max-width:600px) {
+                display: none;
+            }
         }
     }
 }
-// .task-container { //for task component
-//     display: flex;
-//     justify-content: center;
-//     flex-wrap: wrap;
-//     width: 60%;
-//     background-color: rgba(0, 0, 0, 0.5);
-// }
+
+.short {
+    display: none;
+}
 
 .backlog-task-container {
     position: relative;
     width: 20%;
     margin: 8px;
+
     .menu-button {
         position: absolute;
         right: 4px;

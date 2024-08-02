@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../shared/settings.service';
 import { Task } from '../types/Task';
 import { MatTableModule } from '@angular/material/table';
@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
+import { FirebaseService } from '../shared/firebase.service';
+import { UserItemsService } from '../shared/user-items.service';
 
 @Component({
   selector: 'app-backlog',
@@ -18,17 +20,42 @@ import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
   styleUrl: './backlog.component.scss'
 })
 export class BacklogComponent {
-  backlogTasks!: Task[]
+  backlogTasks!: Task[];
   displayedColumns = ['title', 'description', 'category', 'deadline'];
   priority: { [key: string]: string } = {};
-  constructor(private settingsService: SettingsService, public dialog: MatDialog) {
-    this.settingsService.getFromCollection('backlog').subscribe((tasks: Task[]) => {
-      this.backlogTasks = tasks;
+  imageUrls: Map<string, string> = new Map();
+  constructor(private settingsService: SettingsService, public dialog: MatDialog, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
+    this.firebaseService.getFromCollection('backlog')?.subscribe((tasks: Task[] | null) => {
+      if (tasks) {
+        this.backlogTasks = tasks;
+        console.log('---------------------------');
+
+        this.loadImageUrls();
+      }
+
     });
     this.settingsService.getPrioritys()
       .subscribe((prioritys: any) => {
         this.priority = prioritys;
       });
+  }
+
+  async loadImageUrls() {
+    console.log('drin');
+
+    for (const task of this.backlogTasks) {
+      const filePath = `images/${task.staff.image}`;
+      console.log(this.imageUrls.get(filePath));
+
+      if (!this.imageUrls.has(filePath)) {
+        try {
+          const url = await this.userItemsService.getImageUrl(filePath);
+          this.imageUrls.set(filePath, url);
+        } catch (error) {
+          console.error('Fehler beim Abrufen der Bild-URL:', error);
+        }
+      }
+    }
   }
 
   getColorPriority(priority: string): string {
@@ -38,9 +65,9 @@ export class BacklogComponent {
   switchToBoard(task: Task) {
     try {
       if (task.id) {
-        this.settingsService.deleteFromCollection('backlog', task.id);
+        this.firebaseService.deleteFromCollection('backlog', task.id);
         task.status = 'TO DO';
-        this.settingsService.addToCollection('tasks', task);
+        this.firebaseService.addToCollection('tasks', task);
       }
     } catch (error) {
       console.error('Error switching task to board:', error);
@@ -69,4 +96,10 @@ export class BacklogComponent {
     dialogRef.afterClosed
   }
 
+  async getImageUrl(img: string) {
+    const result = await this.userItemsService.getImageUrl(`images/${img}`)
+    console.log(result);
+
+    return result
+  }
 }

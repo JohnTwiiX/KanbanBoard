@@ -5,36 +5,44 @@ header {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+
     .nav-menu {
         display: none;
+
         .nav-menu-button {
             color: white;
         }
     }
+
     .nav {
         width: 30%;
         display: flex;
         justify-content: space-between;
+
         .active-link {
             color: black;
             font-weight: bold;
             text-decoration: underline 3px;
         }
+
         a {
             margin: 0 8px 0 8px;
             font-size: 18px;
             color: white;
             cursor: pointer;
             text-decoration: none;
+
             &:hover {
                 color: black;
             }
         }
     }
+
     img {
         height: 36px;
         width: 36px;
     }
+
     .searchbar {
         display: flex;
         align-items: center;
@@ -42,12 +50,14 @@ header {
         border-radius: 4px;
         padding: 8px;
         cursor: text;
+
         img {
             height: 16px;
             width: 16px;
             margin-right: 8px;
             cursor: pointer;
         }
+
         input {
             font-size: larger;
             padding: 4px;
@@ -55,5 +65,10 @@ header {
             border: none;
             width: 100%;
         }
+    }
+
+    .icon-without-user {
+        position: absolute;
+        left: 10%;
     }
 }

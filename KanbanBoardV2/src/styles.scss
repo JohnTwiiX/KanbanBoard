@@ -4,18 +4,37 @@ html,
 body {
     height: 100%;
 }
+
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
 }
+
 body::-webkit-scrollbar {
     width: 0.5em;
 }
 
 body::-webkit-scrollbar-thumb {
     background-color: transparent;
+}
+
+.w-50p {
+    width: 50%;
+}
+
+.textfield-container {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    /* Erlaubt Zeilenumbrüche und Beibehaltung von Leerzeichen */
+    word-wrap: break-word;
+    /* Umbrüche bei langen Wörtern */
+    overflow: visible;
+    /* Stellt sicher, dass kein Scrollen erforderlich ist */
+
 }
 
 @media (max-width: 1000px) or (max-height: 1000px) {
@@ -26,37 +45,70 @@ body::-webkit-scrollbar-thumb {
 
         .drop-box {
             height: 85% !important;
+
             .ticket {
                 margin: 0 !important;
             }
         }
     }
+
     .ticket {
         scale: 0.8;
     }
+
     .card {
         mat-card-title {
             font-size: medium;
         }
+
         mat-card-subtitle {
             font-size: small;
         }
     }
+
+    .priority-container {
+        flex-direction: column;
+    }
+
+    .change-container {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 600px) {
+    .backlog-list-header {
+        display: none !important;
+    }
+
+    .short {
+        display: block !important;
+    }
+
+    .long {
+        display: none;
+    }
+
     .nav {
         display: none !important;
     }
+
     .nav-menu {
         display: block !important;
     }
+
     .backlog-item {
         display: flex !important;
         flex-direction: column;
-        height: 100px !important;
+        height: 120px !important;
+
         .border-right {
             border-right: unset !important;
         }
+    }
+}
+
+@media (max-width:450px) {
+    .w-50p {
+        width: 80%;
     }
 }

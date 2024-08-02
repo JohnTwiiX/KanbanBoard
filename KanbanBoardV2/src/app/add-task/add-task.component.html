@@ -1,4 +1,5 @@
 <div class="task-container">
+    @if (staffs) {
     <form class="task-form">
         @if(task){
         <h2>EDIT TASK</h2>
@@ -14,14 +15,16 @@
 
         <mat-form-field class="task-textarea">
             <mat-label>Description</mat-label>
-            <textarea matInput name="description" [(ngModel)]="description"></textarea>
+            <textarea style="min-height: 200px;" matInput name="description" [(ngModel)]="description"></textarea>
         </mat-form-field>
 
         <div class="cp-container">
-            <mat-form-field>
+            <mat-form-field class="w-250">
                 <mat-label>Category</mat-label>
                 <mat-select [formControl]="categoriesControl" required>
-                    <mat-option>- please select -</mat-option>
+                    @if (userItems?.role ==='admin') {
+                    <mat-option (click)="openAddDialog('categories')">- add new -</mat-option>
+                    }
                     @for (category of categories; track category) {
                     <mat-option [value]="category">{{category}}</mat-option>
                     }
@@ -30,10 +33,10 @@
                 <mat-error>Please choose a category</mat-error>
                 }
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field class="w-250">
                 <mat-label>Priority</mat-label>
                 <mat-select [formControl]="prioritiesControl" required>
-                    <mat-option>- please select -</mat-option>
+                    <!-- <mat-option>- add new -</mat-option> -->
                     @for (priority of priorities; track priority) {
                     <mat-option [value]="priority.key">{{priority.key}}</mat-option>
                     }
@@ -42,27 +45,39 @@
                 <mat-error>Please choose a priority</mat-error>
                 }
             </mat-form-field>
+            <mat-form-field class="w-250">
+                <mat-label>Project</mat-label>
+                <mat-select [formControl]="projectControl">
+                    @if (userItems?.role ==='admin') {
+                    <mat-option (click)="openAddDialog('projects')">- add new -</mat-option>
+                    }
+                    <mat-option>- empty -</mat-option>
+                    @for (project of projects; track project) {
+                    <mat-option [value]="project">{{project}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
         </div>
 
         <div class="ds-container">
             <div>
-                <mat-form-field class="margin-top">
-                    <mat-label>Due Date</mat-label>
+                <mat-form-field class="margin-top w-250">
+                    <mat-label>Deadline</mat-label>
                     <input (dateInput)="selectDate($event)" matInput [matDatepicker]="dp3"
-                        [value]="dueDateControl.value" disabled>
+                        [value]="dueDateControl.value">
                     <!-- <mat-hint>DD.MM.YYYY</mat-hint> -->
                     <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
                     <mat-datepicker #dp3></mat-datepicker>
                 </mat-form-field>
             </div>
-            <div class="img-container">
-                <img src="../../assets/img/{{selectedStaff.img}}" matTooltip="{{selectedStaff.name}}"
-                    matTooltipPosition="above" aria-label="Image that displays a tooltip when focused or hovered over"
-                    alt="{{selectedStaff.name}}" />
+            <div class="img-container w-250">
                 <button mat-icon-button color="primary" aria-label="Icon button with a add icon"
                     (click)="changeSelectedStaff()">
                     <mat-icon>add</mat-icon>
                 </button>
+                <img src="{{selectedStaffImage}}" matTooltip="{{selectedStaff.display_name}}" matTooltipPosition="above"
+                    aria-label="Image that displays a tooltip when focused or hovered over"
+                    alt="{{selectedStaff.display_name}}" />
             </div>
         </div>
 
@@ -78,4 +93,26 @@
         </div>
 
     </form>
+    }
+
+    @if (isDialogOpen) {
+    <div class="dialog-overlay" (click)="closeAddDialog()">
+        <div class="dialog" (click)="$event.stopPropagation()">
+            <h3>Add new {{selectedOption}}</h3>
+            <mat-form-field class="example-full-width">
+                <mat-label>New item</mat-label>
+                <input matInput type="text" name="addItem" required [formControl]="newItemSelected">
+                @if (newItemSelected.invalid) {
+                <mat-error>only letters</mat-error>
+                }
+            </mat-form-field>
+            <div>
+                <button [disabled]="dialogControl()" mat-raised-button (click)="saveNewItem()">Save</button>
+                <button mat-raised-button (click)="closeAddDialog()">Close</button>
+            </div>
+        </div>
+
+    </div>
+    }
+
 </div>

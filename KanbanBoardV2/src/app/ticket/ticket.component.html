@@ -1,19 +1,21 @@
-<mat-card class="card" [ngClass]="{'done': task.status === 'DONE'}">
+<mat-card class="card" [ngClass]="{'done': task.status === 'DONE'}" (click)="openTaskDialog()">
 
 
     <div class="border-box" [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
 
 
         <mat-card-header>
-            <img mat-card-avatar class="header-img" src="../../assets/img/{{task.staff.image}}"
-                alt="{{task.staff.name}}">
-            <mat-card-title>{{task.title}}</mat-card-title>
-            <mat-card-subtitle>{{task.category}}</mat-card-subtitle>
+            <img mat-card-avatar class="header-img" src="{{imageUrl}}" alt="{{task.staff.name}}">
+            <div>
+                <mat-card-title class="header-title">{{task.title}}</mat-card-title>
+                <mat-card-subtitle class="header-title">{{task.category}}</mat-card-subtitle>
+            </div>
+
         </mat-card-header>
         <mat-card-content>
-            <p>
+            <div class="textfield-container">
                 {{task.description}}
-            </p>
+            </div>
         </mat-card-content>
     </div>
     <!-- <mat-card-footer class="footer">
@@ -27,7 +29,7 @@
         <mat-icon>delete</mat-icon>
     </button>
     }@else {
-    <button [matMenuTriggerFor]="menu" class="trash-done" mat-icon-button
+    <button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu" class="trash-done" mat-icon-button
         aria-label="Example icon button with a vertical three dot icon">
         <mat-icon>more_vert</mat-icon>
     </button>}

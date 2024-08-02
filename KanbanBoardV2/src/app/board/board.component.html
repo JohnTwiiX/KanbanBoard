@@ -1,3 +1,14 @@
+<div class="searchbar-container">
+    <mat-form-field style="width: 350px;" class="example-full-width">
+        <!-- <mat-label>Searchbar</mat-label> -->
+        <div style="display: flex;">
+            <mat-icon style="margin-right: 16px;">search</mat-icon>
+            <input matInput [(ngModel)]="searchTerm" (input)="filterTasks()" placeholder="Search tasks...">
+        </div>
+    </mat-form-field>
+
+    <!-- <input type="text" /> -->
+</div>
 <div class="columns" cdkDropListGroup>
     @for (column of columns; track column ) {
     <div class="column">
@@ -5,7 +16,7 @@
             <h3>{{ column }}</h3>
         </div>
         <div class="drop-box" cdkDropList [cdkDropListData]="column" (cdkDropListDropped)="drop($event)">
-            @for (task of tasks; track task) {
+            @for (task of filteredTasks; track task) {
             @if(task.status === column){
             <div class="ticket" cdkDrag [cdkDragData]="task">
                 <app-ticket [task]="task" />
@@ -13,6 +24,19 @@
             }
             }
         </div>
+    </div>
+    }
+    @if (isDialogOpen) {
+    <div class="dialog-overlay" (click)="closeDialog()">
+        <div class="dialog" (click)="$event.stopPropagation()">
+            <h3>Reopen "{{selectedTask?.title}}"?</h3>
+
+            <div>
+                <button mat-raised-button (click)="reopenTask()">Yes</button>
+                <button mat-raised-button (click)="closeDialog()">No</button>
+            </div>
+        </div>
+
     </div>
     }
 </div>

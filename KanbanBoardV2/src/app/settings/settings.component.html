@@ -1,0 +1,65 @@
+<div class="settings-container">
+    <h2>Settings</h2>
+    <div class="w-50p">
+        <h3>Change Categories</h3>
+        <app-input-chips style="display: contents;" [signal]="categories" title="Categories"
+            (isChanged)="changeSettingsValue($event)" />
+    </div>
+    <div class="w-50p">
+        <h3>Change Projects</h3>
+        <app-input-chips style="display: contents;" [signal]="projects" title="Projects"
+            (isChanged)="changeSettingsValue($event)" />
+    </div>
+    <div class="w-50p">
+        <h3>Change Priorities</h3>
+        <div class="priority-container">
+            @if (priorities) {
+            @for (key of objectKeys; track key) {
+            <div class="priority-item">
+                <span class="priority-key">{{ key }}</span>
+                <input type="color" [value]="priorities[key]" (change)="onColorChange(key,$event)" />
+            </div>
+
+            }
+            }
+        </div>
+    </div>
+    <div class="change-container w-50p">
+        <div>
+            <h3>Change Password</h3>
+            <button mat-raised-button (click)="switchTo('reset-password')">Change Password</button>
+        </div>
+        <div class="change-email-container">
+            <h3>Change Email</h3>
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input matInput [formControl]="emailFormControl" type="email" placeholder="Enter your new email" />
+                @if (emailFormControl.hasError('required')) {
+                <mat-error>
+                    Email is <strong>required</strong>
+                </mat-error>
+                }
+                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+                <mat-error>
+                    Please enter a <strong>valid email</strong>
+                </mat-error>
+                }
+
+            </mat-form-field>
+            <button [disabled]="!emailFormControl.valid" mat-raised-button (click)="updateEmail()">Update Email</button>
+        </div>
+    </div>
+    <button mat-raised-button style="margin: 16px;" [disabled]="!isSettingsChanged" (click)="openDialog()">save</button>
+</div>
+@if (isDialogOpen) {
+<div class="dialog-overlay" (click)="closeDialog()">
+    <div class="dialog" (click)="$event.stopPropagation()">
+        <h2>Save the settings?</h2>
+        <div style="margin-top: 24px;">
+            <button mat-raised-button (click)="saveSettings()">Yes</button>
+            <button mat-raised-button (click)="closeDialog()">No</button>
+        </div>
+    </div>
+
+</div>
+}

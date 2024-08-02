@@ -1,0 +1,49 @@
+<div class="login-container">
+    <h2>Login</h2>
+    <form [formGroup]="formControl" (ngSubmit)="loginWithEmail()">
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ex. pat@example.com" formControlName="email">
+            @if(email&&email.hasError('required')){
+            <mat-error>
+                Email is <strong>required</strong>
+            </mat-error>
+            }@else if (email&&email.hasError('email') && !email.hasError('required')) {
+            <mat-error>
+                Please enter a valid email address
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password">
+            @if(password && password.hasError('required')){
+            <mat-error>
+                Password is <strong>required</strong>
+            </mat-error>
+            }@else if(password && password.hasError('minlength') && !password.hasError('required')){
+            <mat-error>
+                Password must be at least 6 characters long
+            </mat-error>
+            }
+        </mat-form-field>
+        <mat-error>
+            @if(isError){
+            Password or Email is incorrect
+            }
+        </mat-error>
+        <button mat-raised-button type="submit" [disabled]="formControl.invalid">Login</button>
+        <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+        <p>Forget your password? <a routerLink="/reset-password">Reset here</a></p>
+    </form>
+    <div class="btn-container">
+        <button mat-raised-button (click)="loginWithGoogle()">Login with Google</button>
+        @if (!authService.isAlreadyAnonymouslyLoggedIn()) {
+        <button mat-raised-button (click)="loginAnonymously()">Login Anonymously</button>
+        }
+    </div>
+
+
+
+</div>
