@@ -32,7 +32,7 @@ jobs:
         run: npm test -- --watch=false --no-progress --browsers=ChromiumHeadless
         working-directory: ./KanbanBoardV2
         env:
-        CI: true
+          CI: true
 
       - name: Build Angular Project
         run: npm run build --prod
