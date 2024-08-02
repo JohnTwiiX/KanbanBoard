@@ -1,7 +1,10 @@
-name: Deploy to Firebase Hosting on merge
+name: Deploy to Firebase Hosting
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -26,10 +29,26 @@ jobs:
         run: npm run build --prod
         working-directory: ./KanbanBoardV2
 
-      - name: Deploy to Firebase Hosting
+      - name: Deploy to Firebase Hosting (Pull Request)
+        if: github.event_name == 'pull_request'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KANBANBOARD_JOHN }}'
+          channelId: pr-${{ github.event.pull_request.number }}
+          projectId: kanbanboard-john
+          expires: 7d
+          entryPoint: .
+          firebaseToolsVersion: latest
+
+      - name: Deploy to Firebase Hosting (Main Branch)
+        if: github.ref == 'refs/heads/main'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KANBANBOARD_JOHN }}'
           channelId: live
           projectId: kanbanboard-john
+          expires: 7d
+          entryPoint: .
+          firebaseToolsVersion: latest
