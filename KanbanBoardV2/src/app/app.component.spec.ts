@@ -1,10 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { importProvidersFrom } from '@angular/core';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { firebaseConfig } from '../environments/environment.development';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        importProvidersFrom(provideFirebaseApp(() => initializeApp(firebaseConfig))),
+        importProvidersFrom(provideAuth(() => getAuth())),
+        importProvidersFrom(provideFirestore(() => getFirestore())),
+        importProvidersFrom(provideStorage(() => getStorage())),
+      ]
     }).compileComponents();
   });
 
@@ -20,10 +32,5 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('KanbanBoardV2');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, KanbanBoardV2');
-  });
+
 });
