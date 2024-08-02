@@ -34,11 +34,11 @@ export class TicketViewComponent implements OnInit {
   }
 
   get getColor() {
-    if (this.priorities) {
-      const key = this.task.priority as 'high' | 'medium' | 'low'
-      return this.priorities[key]
+    if (this.priorities && this.task) {
+      const key = this.task.priority as 'high' | 'medium' | 'low';
+      return this.priorities[key];
     } else {
-      return null
+      return null;
     }
   }
 

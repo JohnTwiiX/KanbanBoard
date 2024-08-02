@@ -1,9 +1,7 @@
 import { SettingsService } from '../shared/settings.service';
 import { Priorities } from '../types/Settings';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { ChangeDetectionStrategy, Component, inject, Signal, signal } from '@angular/core';
-import { MatChipEditedEvent, MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { Component, signal } from '@angular/core';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { InputChipsComponent } from '../input-chips/input-chips.component';

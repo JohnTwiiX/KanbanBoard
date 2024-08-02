@@ -5,10 +5,11 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import { Auth, getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { firebaseConfig } from '../environments/environment.development';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { AuthService } from './shared/auth.service';
 
 
 export const appConfig: ApplicationConfig = {

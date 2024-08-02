@@ -25,6 +25,15 @@ jobs:
         run: npm install
         working-directory: ./KanbanBoardV2
 
+      - name: Set up Chromium
+        run: sudo apt-get install -y chromium-browser
+
+      - name: Run Tests
+        run: npm test -- --watch=false --no-progress --browsers=ChromiumHeadless
+        working-directory: ./KanbanBoardV2
+        env:
+          CI: true
+
       - name: Build Angular Project
         run: npm run build --prod
         working-directory: ./KanbanBoardV2
@@ -49,6 +58,5 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KANBANBOARD_JOHN }}'
           channelId: live
           projectId: kanbanboard-john
-          expires: 7d
           entryPoint: .
           firebaseToolsVersion: latest
