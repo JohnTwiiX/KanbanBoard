@@ -49,7 +49,7 @@
             <button [disabled]="!emailFormControl.valid" mat-raised-button (click)="updateEmail()">Update Email</button>
         </div>
     </div>
-    <button mat-raised-button [disabled]="!isSettingsChanged" (click)="openDialog()">save</button>
+    <button mat-raised-button style="margin: 16px;" [disabled]="!isSettingsChanged" (click)="openDialog()">save</button>
 </div>
 @if (isDialogOpen) {
 <div class="dialog-overlay" (click)="closeDialog()">

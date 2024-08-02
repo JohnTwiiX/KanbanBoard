@@ -15,7 +15,7 @@
 
         <mat-form-field class="task-textarea">
             <mat-label>Description</mat-label>
-            <textarea matInput name="description" [(ngModel)]="description"></textarea>
+            <textarea style="min-height: 200px;" matInput name="description" [(ngModel)]="description"></textarea>
         </mat-form-field>
 
         <div class="cp-container">
@@ -51,6 +51,7 @@
                     @if (userItems?.role ==='admin') {
                     <mat-option (click)="openAddDialog('projects')">- add new -</mat-option>
                     }
+                    <mat-option>- empty -</mat-option>
                     @for (project of projects; track project) {
                     <mat-option [value]="project">{{project}}</mat-option>
                     }

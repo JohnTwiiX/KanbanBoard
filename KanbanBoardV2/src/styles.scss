@@ -24,6 +24,19 @@ body::-webkit-scrollbar-thumb {
     width: 50%;
 }
 
+.textfield-container {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    /* Erlaubt Zeilenumbrüche und Beibehaltung von Leerzeichen */
+    word-wrap: break-word;
+    /* Umbrüche bei langen Wörtern */
+    overflow: visible;
+    /* Stellt sicher, dass kein Scrollen erforderlich ist */
+
+}
+
 @media (max-width: 1000px) or (max-height: 1000px) {
     .columns {
         justify-content: unset !important;
@@ -63,6 +76,18 @@ body::-webkit-scrollbar-thumb {
 }
 
 @media (max-width: 600px) {
+    .backlog-list-header {
+        display: none !important;
+    }
+
+    .short {
+        display: block !important;
+    }
+
+    .long {
+        display: none;
+    }
+
     .nav {
         display: none !important;
     }
@@ -74,7 +99,7 @@ body::-webkit-scrollbar-thumb {
     .backlog-item {
         display: flex !important;
         flex-direction: column;
-        height: 100px !important;
+        height: 120px !important;
 
         .border-right {
             border-right: unset !important;
@@ -82,7 +107,7 @@ body::-webkit-scrollbar-thumb {
     }
 }
 
-@media (max-width:400px) {
+@media (max-width:450px) {
     .w-50p {
         width: 80%;
     }

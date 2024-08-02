@@ -14,11 +14,13 @@ import { Task } from '../types/Task';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
 import { FirebaseService } from '../shared/firebase.service';
 import { UserItemsService } from '../shared/user-items.service';
+import { TicketViewComponent } from '../ticket-view/ticket-view.component';
+import { DialogViewComponent } from '../dialog-view/dialog-view.component';
 
 @Component({
   selector: 'app-ticket',
   standalone: true,
-  imports: [MatCardModule, NgClass, MatIconModule, MatButtonModule, MatMenuModule],
+  imports: [MatCardModule, NgClass, MatIconModule, MatButtonModule, MatMenuModule, TicketViewComponent],
   templateUrl: './ticket.component.html',
   styleUrls: ['./ticket.component.scss']
 })
@@ -26,6 +28,8 @@ export class TicketComponent implements OnInit {
   @Input() task: any;
   priority: { [key: string]: string } = {};
   imageUrl: any = '../../assets/img/profile-dummy.png'
+
+  isTaskDialogOpen: boolean = false;
 
   constructor(private settingsService: SettingsService, public dialog: MatDialog, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
     this.settingsService.getPrioritys()
@@ -48,6 +52,14 @@ export class TicketComponent implements OnInit {
     });
     dialogRef.afterClosed
   }
+
+  openTaskDialog() {
+    const dialogRef = this.dialog.open(DialogViewComponent, {
+      data: { task: this.task, func: this.editTask.bind(this) }
+    });
+    dialogRef.afterClosed
+  }
+
 
   switchToBacklog(task: Task) {
     try {
@@ -82,8 +94,6 @@ export class TicketComponent implements OnInit {
     });
     dialogRef.afterClosed
   }
-
-
 
   deleteTicket() {
     this.openDialog()

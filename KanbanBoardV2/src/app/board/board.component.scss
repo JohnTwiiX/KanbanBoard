@@ -1,8 +1,7 @@
 .columns {
     display: flex;
     justify-content: space-around;
-    margin-top: 26px;
-    height: 84%;
+    height: calc(100% - 220px);
 
     .column {
         height: 100%;
@@ -15,7 +14,7 @@
         }
 
         .drop-box {
-            height: 94%;
+            height: 93%;
             width: 100%;
             overflow: auto;
 
@@ -68,4 +67,10 @@
         display: flex;
         justify-content: space-around;
     }
+}
+
+.searchbar-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
 }

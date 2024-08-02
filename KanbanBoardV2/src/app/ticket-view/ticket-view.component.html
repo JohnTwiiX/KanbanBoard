@@ -1,0 +1,29 @@
+<div class="task-view-container">
+    <button class="edit-btn" mat-button (click)="editTask()">Edit</button>
+    <h2 style="text-align: center;">{{task.title}}</h2>
+    <div class="description">
+        <span class="description-title">Description:</span>
+        <!-- <span>{{task.description}}</span> -->
+        <div class="textfield-container">{{task.description}}</div>
+    </div>
+    <div class="prop-container">
+        <div>
+            <span>Category:</span>
+            <mat-chip>{{task.category}}</mat-chip>
+        </div>
+        <div>
+            <span>Project:</span>
+            @if (task.project) {
+            <mat-chip>{{task.project}}</mat-chip>
+            }@else {
+            <mat-chip>-</mat-chip>
+            }
+        </div>
+        <div>
+            <span>Priority:</span>
+            @if (priorities) {
+            <div class="priority-box" [ngStyle]="{ 'background-color': getColor}"></div>
+            }
+        </div>
+    </div>
+</div>

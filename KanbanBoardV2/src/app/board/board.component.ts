@@ -11,11 +11,14 @@ import { Task } from '../types/Task';
 import { FirebaseService } from '../shared/firebase.service';
 import { AuthService } from '../shared/auth.service';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -24,6 +27,9 @@ export class BoardComponent {
   tasks!: any[] | null;
   isDialogOpen: boolean = false;
   selectedTask: Task | null = null;
+
+  searchTerm: string = '';
+  filteredTasks: Task[] = [];
 
   constructor(private settingsService: SettingsService, private firebaseService: FirebaseService) {
 
@@ -37,10 +43,45 @@ export class BoardComponent {
       }
     });
     this.firebaseService.getFromCollection('tasks')?.subscribe((tasks: Task[] | null) => {
-      if (tasks)
+      if (tasks) {
         this.checkTasks(tasks);
-      this.tasks = tasks;
+        this.tasks = tasks;
+        if (this.searchTerm) {
+          this.filterTasks();
+        } else {
+          this.filteredTasks = tasks;
+        };
+        this.filteredTasks = this.sortTasksByCreatedAt(this.filteredTasks);
+      } else {
+        this.tasks = tasks;
+      }
     });
+  }
+
+  sortTasksByCreatedAt(tasks: Task[]): Task[] {
+    return tasks.sort((a, b) => this.parseDate(b.createdAt).getTime() - this.parseDate(a.createdAt).getTime());
+  }
+
+  parseDate(dateString: string): Date {
+    if (dateString) {
+      const [day, month, year] = dateString.split('.').map(Number);
+      return new Date(year, month - 1, day); // month - 1, weil Monate von 0 bis 11 gehen
+    } else {
+      return new Date();
+    }
+
+  }
+
+  filterTasks() {
+    if (this.tasks) {
+      this.filteredTasks = this.tasks.filter(task =>
+        task.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        task?.project?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        task.category.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        task.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      console.log(this.filteredTasks);
+    };
   }
 
   drop(event: CdkDragDrop<any>) {
