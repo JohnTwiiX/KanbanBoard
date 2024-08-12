@@ -16,7 +16,7 @@
 
     .border-box {
         height: 100%;
-        padding-bottom: 16px;
+        // padding-bottom: 16px;
         box-sizing: border-box;
     }
 
@@ -27,12 +27,22 @@
 
     mat-card-content {
         overflow: auto;
-        height: 50%;
+        height: 30%;
+        padding-bottom: 0;
+        margin-bottom: 16px;
+        text-overflow: ellipsis;
     }
 
     .footer {
         // display: flex;
         // justify-content: space-around;
+    }
+
+    .subtasks-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 8px;
     }
 
     .trash-done {

@@ -1,42 +1,50 @@
-<div class="searchbar-container">
-    <mat-form-field style="width: 350px;" class="example-full-width">
-        <!-- <mat-label>Searchbar</mat-label> -->
-        <div style="display: flex;">
-            <mat-icon style="margin-right: 16px;">search</mat-icon>
-            <input matInput [(ngModel)]="searchTerm" (input)="filterTasks()" placeholder="Search tasks...">
-        </div>
-    </mat-form-field>
-
-    <!-- <input type="text" /> -->
-</div>
-<div class="columns" cdkDropListGroup>
-    @for (column of columns; track column ) {
-    <div class="column">
-        <div class="column-title">
-            <h3>{{ column }}</h3>
-        </div>
-        <div class="drop-box" cdkDropList [cdkDropListData]="column" (cdkDropListDropped)="drop($event)">
-            @for (task of filteredTasks; track task) {
-            @if(task.status === column){
-            <div class="ticket" cdkDrag [cdkDragData]="task">
-                <app-ticket [task]="task" />
+<div class="board-container">
+    <div class="searchbar-container">
+        <mat-form-field style="width: 350px;" class="example-full-width">
+            <!-- <mat-label>Searchbar</mat-label> -->
+            <div style="display: flex;">
+                <mat-icon style="margin-right: 16px;">search</mat-icon>
+                <input matInput [(ngModel)]="searchTerm" (input)="filterTasks()" placeholder="Search tasks...">
             </div>
-            }
-            }
-        </div>
-    </div>
-    }
-    @if (isDialogOpen) {
-    <div class="dialog-overlay" (click)="closeDialog()">
-        <div class="dialog" (click)="$event.stopPropagation()">
-            <h3>Reopen "{{selectedTask?.title}}"?</h3>
+        </mat-form-field>
 
-            <div>
-                <button mat-raised-button (click)="reopenTask()">Yes</button>
-                <button mat-raised-button (click)="closeDialog()">No</button>
+        <!-- <input type="text" /> -->
+    </div>
+    <div class="columns" cdkDropListGroup>
+        @for (column of columns; track column ) {
+        <div class="column" [ngClass]="{'no-task-in-column':!isTaskInColumn(column)}">
+            <div class="column-title">
+                <h3>{{ column }}</h3>
+            </div>
+            <div class="drop-box" cdkDropList [cdkDropListData]="column" (cdkDropListDropped)="drop($event)"
+                (cdkDropListEntered)="onDragEntered($event, column)">
+                @for (task of filteredTasks; track task) {
+                @if(task.status === column){
+                <div class="ticket" cdkDrag [cdkDragData]="task">
+                    <app-ticket [task]="task" />
+                </div>
+                }
+                }
+                @if(!isTaskInColumn(column) ) {
+                <div class="no-task no-task-i-column" [ngClass]="{'d-none':isTaskBeingDragged === column}">
+                    <span>No Tasks {{column}}</span>
+                </div>
+                }
             </div>
         </div>
+        }
+        @if (isDialogOpen) {
+        <div class="dialog-overlay" (click)="closeDialog()">
+            <div class="dialog" (click)="$event.stopPropagation()">
+                <h3>Reopen "{{selectedTask?.title}}"?</h3>
 
+                <div>
+                    <button mat-raised-button (click)="reopenTask()">Yes</button>
+                    <button mat-raised-button (click)="closeDialog()">No</button>
+                </div>
+            </div>
+
+        </div>
+        }
     </div>
-    }
 </div>

@@ -5,6 +5,7 @@ import { Task } from '../types/Task';
 import { Observable } from 'rxjs';
 import { Settings } from '../types/Settings';
 import { UserObj } from '../types/User';
+import { SubTasks } from '../types/SubTasks';
 
 
 @Injectable({
@@ -45,6 +46,32 @@ export class FirebaseService {
       }
     } catch (error) {
       console.error('Error updating task column:', error);
+    }
+  }
+
+  updateSubTask(taskId: string, subTask: SubTasks): void {
+    try {
+      const tasksRef = this.getCollection('tasks');
+      if (tasksRef) {
+        const documentRef = doc(tasksRef, taskId);
+
+        // Fetch the document to get the current subtasks
+        getDoc(documentRef).then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const taskData = docSnapshot.data();
+            const updatedSubTasks = taskData.subTasks.map((task: any) => {
+              if (task.title === subTask.title) {
+                return { ...task, checked: subTask.checked };
+              }
+              return task;
+            });
+            // Update the document with the modified subTasks array
+            updateDoc(documentRef, { subTasks: updatedSubTasks });
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error updating subtask:', error);
     }
   }
 

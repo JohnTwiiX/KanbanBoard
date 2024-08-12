@@ -17,12 +17,20 @@
                 {{task.description}}
             </div>
         </mat-card-content>
+        <mat-card-footer class="footer">
+            @if (task.deadline) {
+            <span>Deadline: {{task.deadline}}</span>
+            }
+            @if (task.subTasks) {
+            <div class="subtasks-progress">
+                <mat-progress-bar style="width: 40%;" mode="determinate" value="{{getProgress}}"></mat-progress-bar>
+                <span>{{getCheckedSubTasks}}/{{task.subTasks.length}} Subtasks</span>
+            </div>
+
+            }
+        </mat-card-footer>
     </div>
-    <!-- <mat-card-footer class="footer">
-        <span>Deadline: {{task.deadline}}</span>
-        <span>Started: {{task.deadline}}</span> 
-        <span>Finished: {{task.deadline}}</span>
-    </mat-card-footer> -->
+
     @if(task.status === 'DONE'){
     <button (click)="deleteTicket()" class="trash-done" mat-icon-button
         aria-label="Example icon button with a vertical three dot icon">

@@ -1,3 +1,5 @@
+import { SubTasks } from "./SubTasks"
+
 export interface Task {
     title: string,
     description: string,
@@ -13,4 +15,5 @@ export interface Task {
     id?: string
     closedAt?: string
     project?: string
+    subTasks?: SubTasks[]
 }

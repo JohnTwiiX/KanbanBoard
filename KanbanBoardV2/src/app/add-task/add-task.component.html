@@ -70,6 +70,63 @@
                     <mat-datepicker #dp3></mat-datepicker>
                 </mat-form-field>
             </div>
+
+            <div>
+                <mat-form-field class="margin-top w-250">
+                    <mat-label>Add new subtask</mat-label>
+                    <input matInput type="text" [(ngModel)]="value" name="subTask">
+                    @if (value) {
+                    <div matSuffix class="subtasks-btn">
+                        <button mat-icon-button aria-label="Clear" (click)="value=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider>
+                        <button style="margin-bottom: 4px;" mat-icon-button aria-label="Clear"
+                            (click)="addToSubTasks()">
+                            <mat-icon>check</mat-icon>
+                        </button>
+                    </div>
+                    }@else {
+                    <button matSuffix mat-icon-button aria-label="Add">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    }
+                </mat-form-field>
+                <div class="w-250">
+                    @for (task of subTasks; track $index) {
+                    <div class="subtask-container ">
+                        @if (!subTaskEdit) {
+                        <span>• {{task.title}}</span>
+                        <div class="subtasks-btn">
+                            <button mat-icon-button aria-label="edit" (click)="editSubTask(); subTaskChange=task.title">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider>
+                            <button mat-icon-button aria-label="trash" (click)="deleteSubTask($index)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                        }@else {
+                        <mat-form-field>
+                            <input autofocus matInput type="text" [(ngModel)]="subTaskChange" name="subTaskChange">
+                            <div matSuffix class="subtasks-btn">
+                                <button mat-icon-button aria-label="Clear" (click)="editSubTask()">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider>
+                                <button style="margin-bottom: 4px;" mat-icon-button aria-label="Clear"
+                                    (click)="changeSubTask($index)">
+                                    <mat-icon>check</mat-icon>
+                                </button>
+                            </div>
+                        </mat-form-field>
+                        }
+
+                    </div>
+                    }
+                </div>
+            </div>
+
             <div class="img-container w-250">
                 <button mat-icon-button color="primary" aria-label="Icon button with a add icon"
                     (click)="changeSelectedStaff()">
@@ -80,6 +137,7 @@
                     alt="{{selectedStaff.display_name}}" />
             </div>
         </div>
+
 
         <div class="task-button-container">
             @if(!task){

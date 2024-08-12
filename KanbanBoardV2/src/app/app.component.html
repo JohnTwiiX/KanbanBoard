@@ -1,3 +1,43 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->
+<div>
+    <header>
+        <div>
+            <div>
+                <app-header></app-header>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar-container">
+        @if (isLoggedIn) {
+        <div class="sidebar">
+            <!-- <span>Title</span> -->
+            <nav class="nav">
+                <div class="nav-tabs">
+                    <a routerLink="/board" routerLinkActive="active-link"
+                        [routerLinkActiveOptions]="{ exact: true }">Board</a>
+                    <a routerLink="/backlog" routerLinkActive="active-link">Backlog</a>
+                    <a routerLink="/addTask" routerLinkActive="active-link">Add Task</a>
+                    <a routerLink="/help" routerLinkActive="active-link">Help</a>
+                </div>
+
+                <div class="legal">
+                    <a routerLink="/policies">Policies</a>
+                    <a routerLink="/legal">Legal notice</a>
+                </div>
+            </nav>
+        </div>
+        }
+        <main class="main" [ngClass]="{'is-auth-page': !isLoggedIn}">
+            <div style="height: 100%;">
+                <router-outlet></router-outlet>
+                @if (isAuthPage()) {
+                <div class="legal-auth">
+                    <a routerLink="/policies">Policies</a>
+                    <a routerLink="/legal">Legal notice</a>
+                </div>
+                }
+            </div>
+        </main>
+    </div>
+
+</div>

@@ -14,11 +14,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule, CommonModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -30,6 +31,7 @@ export class BoardComponent {
 
   searchTerm: string = '';
   filteredTasks: Task[] = [];
+  isTaskBeingDragged = '';
 
   constructor(private settingsService: SettingsService, private firebaseService: FirebaseService) {
 
@@ -105,6 +107,17 @@ export class BoardComponent {
 
   }
 
+  // Handle the drag entered event
+  onDragEntered(event: any, column: string) {
+    const element = event.container.element.nativeElement.children[0] as HTMLElement
+    console.log('ich drag den', element);
+    if (element.classList.value.includes('no-task') && event.container.data === column) {
+      this.isTaskBeingDragged = column;
+    } else {
+      this.isTaskBeingDragged = '';
+    }
+  }
+
   checkTasks(tasks: Task[]) {
     const today = new Date();
     tasks.forEach((task) => {
@@ -159,4 +172,7 @@ export class BoardComponent {
 
   }
 
+  isTaskInColumn(column: string) {
+    return this.filteredTasks.some(task => task.status === column);
+  }
 }

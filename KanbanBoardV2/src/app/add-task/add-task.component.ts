@@ -18,12 +18,14 @@ import { FirebaseService } from '../shared/firebase.service';
 import { UserObj } from '../types/User';
 import { UserItemsService } from '../shared/user-items.service';
 import { UserItems } from '../types/UserItems';
+import { SubTasks } from '../types/SubTasks';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @Component({
   selector: 'app-add-task',
   standalone: true,
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule, MatTooltipModule, MatIconModule],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule, MatTooltipModule, MatIconModule, MatDividerModule],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }, provideNativeDateAdapter()],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
@@ -53,6 +55,10 @@ export class AddTaskComponent implements OnInit {
     validators: [Validators.required, this.letterOnlyValidator],
     nonNullable: true,
   });
+  value = '';
+  subTasks: SubTasks[] = [];
+  subTaskEdit = false;
+  subTaskChange = '';
 
   letterOnlyValidator(control: AbstractControl): ValidationErrors | null {
     const regex = /^[A-Za-z]+$/; // Regex for letters only
@@ -106,6 +112,8 @@ export class AddTaskComponent implements OnInit {
       this.selectedStaffIndex = this.findStaffIndexById(`images/${this.task.staff.image}`);
       if (this.task.project)
         this.projectControl.setValue(this.task.project);
+      if (this.task.subTasks)
+        this.subTasks = [...this.task.subTasks];
     }
   }
 
@@ -178,6 +186,12 @@ export class AddTaskComponent implements OnInit {
           deadline: this.formatDate(this.dueDateControl.value)
         }
       }
+      if (this.subTasks.length > 0) {
+        task = {
+          ...task,
+          subTasks: this.subTasks
+        }
+      }
       this.firebaseService.addToCollection('backlog', task);
       this.navigateTo('/backlog');
     }
@@ -211,8 +225,12 @@ export class AddTaskComponent implements OnInit {
           deadline: this.formatDate(this.dueDateControl.value)
         }
       }
-      console.log(task);
-
+      if (this.subTasks.length > 0) {
+        task = {
+          ...task,
+          subTasks: this.subTasks
+        }
+      }
       this.firebaseService.updateTask(this.task.id, task);
       this.dialogRef.close();
     }
@@ -277,6 +295,35 @@ export class AddTaskComponent implements OnInit {
         this.newItemSelected.value,
         'add');
       this.closeAddDialog();
+    }
+  }
+
+  addToSubTasks() {
+    this.subTasks.push({
+      title: this.value,
+      checked: false
+    });
+    this.value = '';
+  }
+
+  deleteSubTask(id: number) {
+    this.subTasks.splice(id, 1);
+  }
+
+  changeSubTask(id: number) {
+    this.subTasks.forEach((task, index) => {
+      if (index === id) {
+        task.title = this.subTaskChange;
+      };
+    });
+    this.subTaskEdit = false;
+  }
+
+  editSubTask() {
+    if (this.subTaskEdit) {
+      this.subTaskEdit = false;
+    } else {
+      this.subTaskEdit = true;
     }
   }
 }
