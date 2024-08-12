@@ -1,0 +1,74 @@
+.sidebar-container {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    height: calc(100vh - 80px);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 3px 0px 5px 1px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 3px 0px 5px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 3px 0px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.main {
+    width: calc(100vw - 200px);
+    height: calc(100vh - 80px);
+}
+
+.is-auth-page {
+    width: 100vw;
+
+}
+
+.nav {
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .nav-tabs {
+        margin-top: 60px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .legal {
+        margin-bottom: 100px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .active-link {
+        color: black;
+        font-weight: bold;
+        text-decoration: underline 3px;
+    }
+
+    a {
+        margin: 0 8px 0 8px;
+        font-size: 18px;
+        color: black;
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+            color: black;
+        }
+    }
+}
+
+.legal-auth {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    a {
+        text-decoration: unset;
+    }
+}

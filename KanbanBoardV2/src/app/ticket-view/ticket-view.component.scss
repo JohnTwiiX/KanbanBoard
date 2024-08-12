@@ -20,6 +20,15 @@
 
 .task-view-container {
     font-size: x-large;
+
+    @media (max-width:500px) {
+        font-size: unset;
+    }
+}
+
+.subtasks-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .prop-container {

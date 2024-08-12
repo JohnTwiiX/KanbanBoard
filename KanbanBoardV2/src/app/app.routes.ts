@@ -10,6 +10,8 @@ import { IsVerifiedComponent } from './is-verified/is-verified.component';
 import { AnonymousViewComponent } from './anonymous-view/anonymous-view.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PoliciesComponent } from './policies/policies.component';
+import { LegalComponent } from './legal/legal.component';
 
 export const routes: Routes = [
     { path: 'backlog', component: BacklogComponent, canActivate: [authGuard] },
@@ -22,6 +24,8 @@ export const routes: Routes = [
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'policies', component: PoliciesComponent },
+    { path: 'legal', component: LegalComponent },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];

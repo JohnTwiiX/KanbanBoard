@@ -1,6 +1,6 @@
 <header>
-    @if (isUser()) {
-    <mat-menu #menu="matMenu">
+    <!-- @if (isUser()) { -->
+    <!-- <mat-menu #menu="matMenu">
         <a mat-menu-item routerLink="/board" routerLinkActive="active-link"
             [routerLinkActiveOptions]="{ exact: true }">Board</a>
         <a mat-menu-item routerLink="/backlog" routerLinkActive="active-link">Backlog</a>
@@ -12,16 +12,16 @@
             aria-label="Example icon button with a vertical three dot icon">
             <mat-icon>more_vert</mat-icon>
         </button>
-    </div>
-    <div>
+    </div> -->
+    <div class="logo">
         <img src="../../assets/img/logo_Sandra.png" alt="Logo">
     </div>
-    <div class="nav">
+    <!-- <div class="nav">
         <a routerLink="/board" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Board</a>
         <a routerLink="/backlog" routerLinkActive="active-link">Backlog</a>
         <a routerLink="/addTask" routerLinkActive="active-link">Add Task</a>
         <a routerLink="/help" routerLinkActive="active-link">Help</a>
-    </div>
+    </div> -->
 
     <!-- <div>
         <div class="searchbar">
@@ -29,22 +29,24 @@
             <input id="search" onkeyup="value=>console.log(value);" type="text" placeholder="search">
         </div>
     </div> -->
-    @if (isAnonym()) {
-    <app-timer></app-timer>
-    } @else {
-    <div>
-        <!-- <img src="../../assets/img/trash-delete-bin.png"> -->
-        <img (click)="switchTo()" src="../../assets/img/settings-wht.png">
-    </div>
-    }
-    } @else{
+
+    <!-- } @else{
     <div class="icon-without-user">
         <img src="../../assets/img/logo_Sandra.png" alt="Logo">
     </div>
-    }
-    @if(isLoggedIn){
-    <mat-icon style="color: white;" aria-hidden="false" fontIcon="logout" (click)="logout()"></mat-icon>
-    }
+    } -->
+    <div class="icon-container">
+        @if(isLoggedIn){
+        @if (isAnonym()) {
+        <app-timer></app-timer>
+        } @else {
+        <!-- <img src="../../assets/img/trash-delete-bin.png"> -->
+        <img (click)="switchTo()" src="../../assets/img/settings-wht.png">
+        }
+        <mat-icon style="color: white;" aria-hidden="false" fontIcon="logout" (click)="logout()"></mat-icon>
+        }
+    </div>
+
 
 
 

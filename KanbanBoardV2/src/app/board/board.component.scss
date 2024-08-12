@@ -1,27 +1,74 @@
+.board-container {
+    height: calc(100% - 16px);
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px;
+}
+
 .columns {
     display: flex;
     justify-content: space-around;
-    height: calc(100% - 220px);
+    height: calc(100% - 78px - 16px);
+
+    @media (max-width:1100px) {
+        flex-direction: column;
+
+    }
 
     .column {
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.08);
+
         width: 100%;
         margin: 0 8px 0 8px;
+        min-width: 200px;
+
+        @media (max-width:1100px) {
+            margin: 0 8px 8px 8px !important;
+            min-width: unset !important;
+            width: unset !important;
+            height: unset;
+
+            .column-title {
+                padding-left: 8px;
+                text-align: start !important;
+            }
+        }
 
         .column-title {
             text-align: center;
         }
 
         .drop-box {
-            height: 93%;
+            height: calc(100% - 80px);
             width: 100%;
             overflow: auto;
+
+            @media (max-width:1100px) {
+                height: unset;
+                min-height: 19px;
+                width: 100%;
+                display: flex;
+            }
 
             .ticket {
                 margin: 16px;
             }
         }
+    }
+
+    .no-task {
+        display: flex;
+        justify-content: center;
+        width: calc(100% - 40px);
+        border: 3px dotted rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        padding: 16px;
+        color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .d-none {
+        display: none;
     }
 }
 
@@ -72,5 +119,4 @@
 .searchbar-container {
     display: flex;
     justify-content: center;
-    margin-top: 16px;
 }

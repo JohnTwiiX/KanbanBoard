@@ -16,16 +16,17 @@ import { FirebaseService } from '../shared/firebase.service';
 import { UserItemsService } from '../shared/user-items.service';
 import { TicketViewComponent } from '../ticket-view/ticket-view.component';
 import { DialogViewComponent } from '../dialog-view/dialog-view.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-ticket',
   standalone: true,
-  imports: [MatCardModule, NgClass, MatIconModule, MatButtonModule, MatMenuModule, TicketViewComponent],
+  imports: [MatCardModule, NgClass, MatIconModule, MatButtonModule, MatMenuModule, TicketViewComponent, MatProgressBarModule],
   templateUrl: './ticket.component.html',
   styleUrls: ['./ticket.component.scss']
 })
 export class TicketComponent implements OnInit {
-  @Input() task: any;
+  @Input() task!: Task;
   priority: { [key: string]: string } = {};
   imageUrl: any = '../../assets/img/profile-dummy.png'
 
@@ -36,6 +37,23 @@ export class TicketComponent implements OnInit {
       .subscribe((prioritys: any) => {
         this.priority = prioritys;
       });
+  }
+
+  get getProgress(): number {
+    if (!this.task.subTasks || this.task.subTasks.length === 0) {
+      return 0;
+    }
+
+    const totalSubTasks = this.task.subTasks.length;
+    const checkedSubTasks = this.getCheckedSubTasks;
+    return (checkedSubTasks / totalSubTasks) * 100;
+  }
+
+  get getCheckedSubTasks() {
+    if (!this.task.subTasks || this.task.subTasks.length === 0) {
+      return 0;
+    }
+    return this.task.subTasks.filter(subTask => subTask.checked).length;
   }
 
   async ngOnInit() {
