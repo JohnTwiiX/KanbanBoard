@@ -15,11 +15,10 @@ export interface Fruit {
   name: string;
 }
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [MatFormFieldModule, MatChipsModule, MatIconModule, InputChipsComponent, MatButtonModule, FormsModule, ReactiveFormsModule, MatInputModule],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss'
+    selector: 'app-settings',
+    imports: [MatFormFieldModule, MatChipsModule, MatIconModule, InputChipsComponent, MatButtonModule, FormsModule, ReactiveFormsModule, MatInputModule],
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss'
 })
 export class SettingsComponent {
   // categories!: string[] | null;

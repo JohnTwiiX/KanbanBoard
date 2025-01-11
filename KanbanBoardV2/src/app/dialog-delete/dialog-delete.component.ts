@@ -17,11 +17,10 @@ interface DialogData {
 }
 
 @Component({
-  selector: 'app-dialog-delete',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
-  templateUrl: './dialog-delete.component.html',
-  styleUrl: './dialog-delete.component.scss'
+    selector: 'app-dialog-delete',
+    imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
+    templateUrl: './dialog-delete.component.html',
+    styleUrl: './dialog-delete.component.scss'
 })
 export class DialogDeleteComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private firebaseService: FirebaseService) { }

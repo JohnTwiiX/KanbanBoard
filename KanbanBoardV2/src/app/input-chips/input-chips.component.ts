@@ -8,11 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-input-chips',
-  standalone: true,
-  imports: [MatFormFieldModule, MatChipsModule, MatIconModule],
-  templateUrl: './input-chips.component.html',
-  styleUrl: './input-chips.component.scss'
+    selector: 'app-input-chips',
+    imports: [MatFormFieldModule, MatChipsModule, MatIconModule],
+    templateUrl: './input-chips.component.html',
+    styleUrl: './input-chips.component.scss'
 })
 export class InputChipsComponent {
   @Input() signal!: WritableSignal<string[]>;

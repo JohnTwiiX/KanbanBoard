@@ -5,11 +5,10 @@ import { AuthService } from '../shared/auth.service';
 import { UserItemsService } from '../shared/user-items.service';
 
 @Component({
-  selector: 'app-is-verified',
-  standalone: true,
-  imports: [RouterLink, MatButtonModule],
-  templateUrl: './is-verified.component.html',
-  styleUrl: './is-verified.component.scss'
+    selector: 'app-is-verified',
+    imports: [RouterLink, MatButtonModule],
+    templateUrl: './is-verified.component.html',
+    styleUrl: './is-verified.component.scss'
 })
 export class IsVerifiedComponent implements OnInit, OnDestroy {
   private intervalId: any;

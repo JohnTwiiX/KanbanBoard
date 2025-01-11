@@ -16,11 +16,10 @@ interface DialogData {
 }
 
 @Component({
-  selector: 'app-dialog-edit',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, AddTaskComponent],
-  templateUrl: './dialog-edit.component.html',
-  styleUrl: './dialog-edit.component.scss'
+    selector: 'app-dialog-edit',
+    imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, AddTaskComponent],
+    templateUrl: './dialog-edit.component.html',
+    styleUrl: './dialog-edit.component.scss'
 })
 export class DialogEditComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private settingsService: SettingsService) { }

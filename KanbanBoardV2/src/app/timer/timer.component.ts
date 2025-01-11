@@ -3,11 +3,10 @@ import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-timer',
-  standalone: true,
-  imports: [],
-  templateUrl: './timer.component.html',
-  styleUrl: './timer.component.scss'
+    selector: 'app-timer',
+    imports: [],
+    templateUrl: './timer.component.html',
+    styleUrl: './timer.component.scss'
 })
 export class TimerComponent {
   remainingTime!: number; // 5 Minuten in Sekunden

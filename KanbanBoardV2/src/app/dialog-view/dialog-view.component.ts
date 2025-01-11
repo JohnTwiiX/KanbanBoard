@@ -5,11 +5,10 @@ import { Task } from '../types/Task';
 import { TicketViewComponent } from '../ticket-view/ticket-view.component';
 
 @Component({
-  selector: 'app-dialog-view',
-  standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, TicketViewComponent],
-  templateUrl: './dialog-view.component.html',
-  styleUrl: './dialog-view.component.scss'
+    selector: 'app-dialog-view',
+    imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, TicketViewComponent],
+    templateUrl: './dialog-view.component.html',
+    styleUrl: './dialog-view.component.scss'
 })
 export class DialogViewComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { task: Task; func: (task: Task) => void }) { }

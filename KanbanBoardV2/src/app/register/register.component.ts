@@ -7,11 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss', '../login/login.component.scss']
+    selector: 'app-register',
+    imports: [FormsModule, RouterLink, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule],
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss', '../login/login.component.scss']
 })
 export class RegisterComponent {
   formControl = new FormGroup({

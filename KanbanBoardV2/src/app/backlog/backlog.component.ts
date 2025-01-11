@@ -13,11 +13,10 @@ import { FirebaseService } from '../shared/firebase.service';
 import { UserItemsService } from '../shared/user-items.service';
 
 @Component({
-  selector: 'app-backlog',
-  standalone: true,
-  imports: [MatTableModule, TicketComponent, MatMenuModule, MatButtonModule, MatIconModule],
-  templateUrl: './backlog.component.html',
-  styleUrl: './backlog.component.scss'
+    selector: 'app-backlog',
+    imports: [MatTableModule, TicketComponent, MatMenuModule, MatButtonModule, MatIconModule],
+    templateUrl: './backlog.component.html',
+    styleUrl: './backlog.component.scss'
 })
 export class BacklogComponent {
   backlogTasks!: Task[];

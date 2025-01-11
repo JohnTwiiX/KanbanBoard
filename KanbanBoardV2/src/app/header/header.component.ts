@@ -10,11 +10,10 @@ import { UserItems } from '../types/UserItems';
 import { User } from 'firebase/auth';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive, MatMenuModule, MatButtonModule, MatIconModule, TimerComponent],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+    selector: 'app-header',
+    imports: [RouterLink, RouterLinkActive, MatMenuModule, MatButtonModule, MatIconModule, TimerComponent],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   value = '';

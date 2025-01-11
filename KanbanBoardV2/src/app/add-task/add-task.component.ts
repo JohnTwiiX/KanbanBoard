@@ -23,12 +23,11 @@ import { MatDividerModule } from '@angular/material/divider';
 
 
 @Component({
-  selector: 'app-add-task',
-  standalone: true,
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule, MatTooltipModule, MatIconModule, MatDividerModule],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }, provideNativeDateAdapter()],
-  templateUrl: './add-task.component.html',
-  styleUrl: './add-task.component.scss'
+    selector: 'app-add-task',
+    imports: [FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule, MatTooltipModule, MatIconModule, MatDividerModule],
+    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }, provideNativeDateAdapter()],
+    templateUrl: './add-task.component.html',
+    styleUrl: './add-task.component.scss'
 })
 export class AddTaskComponent implements OnInit {
   @Input() task: Task | undefined

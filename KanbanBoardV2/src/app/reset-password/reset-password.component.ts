@@ -7,11 +7,10 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-reset-password',
-  standalone: true,
-  imports: [FormsModule, MatButtonModule, MatInputModule],
-  templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.scss'
+    selector: 'app-reset-password',
+    imports: [FormsModule, MatButtonModule, MatInputModule],
+    templateUrl: './reset-password.component.html',
+    styleUrl: './reset-password.component.scss'
 })
 export class ResetPasswordComponent {
   email: string = '';

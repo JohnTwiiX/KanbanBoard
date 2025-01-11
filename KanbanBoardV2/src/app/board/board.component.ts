@@ -17,11 +17,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-board',
-  standalone: true,
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule, CommonModule],
-  templateUrl: './board.component.html',
-  styleUrl: './board.component.scss'
+    selector: 'app-board',
+    imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule, CommonModule],
+    templateUrl: './board.component.html',
+    styleUrl: './board.component.scss'
 })
 export class BoardComponent {
   columns!: string[];

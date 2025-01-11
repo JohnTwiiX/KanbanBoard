@@ -13,11 +13,10 @@ import { SubTasks } from '../types/SubTasks';
 import { FirebaseService } from '../shared/firebase.service';
 
 @Component({
-  selector: 'app-ticket-view',
-  standalone: true,
-  imports: [CommonModule, MatChipsModule, MatButtonModule, MatCheckboxModule, FormsModule],
-  templateUrl: './ticket-view.component.html',
-  styleUrl: './ticket-view.component.scss'
+    selector: 'app-ticket-view',
+    imports: [CommonModule, MatChipsModule, MatButtonModule, MatCheckboxModule, FormsModule],
+    templateUrl: './ticket-view.component.html',
+    styleUrl: './ticket-view.component.scss'
 })
 export class TicketViewComponent implements OnInit {
 

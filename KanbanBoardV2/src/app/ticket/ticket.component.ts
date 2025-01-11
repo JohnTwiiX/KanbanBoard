@@ -19,11 +19,10 @@ import { DialogViewComponent } from '../dialog-view/dialog-view.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-ticket',
-  standalone: true,
-  imports: [MatCardModule, NgClass, MatIconModule, MatButtonModule, MatMenuModule, TicketViewComponent, MatProgressBarModule],
-  templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.scss']
+    selector: 'app-ticket',
+    imports: [MatCardModule, NgClass, MatIconModule, MatButtonModule, MatMenuModule, TicketViewComponent, MatProgressBarModule],
+    templateUrl: './ticket.component.html',
+    styleUrls: ['./ticket.component.scss']
 })
 export class TicketComponent implements OnInit {
   @Input() task!: Task;
