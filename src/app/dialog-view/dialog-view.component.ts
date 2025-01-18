@@ -6,7 +6,7 @@ import { TicketViewComponent } from '../ticket-view/ticket-view.component';
 
 @Component({
   selector: 'app-dialog-view',
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent, TicketViewComponent],
+  imports: [MatButtonModule, MatDialogContent, TicketViewComponent],
   templateUrl: './dialog-view.component.html',
   styleUrl: './dialog-view.component.scss'
 })

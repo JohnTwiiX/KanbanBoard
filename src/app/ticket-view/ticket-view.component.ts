@@ -14,6 +14,7 @@ import { FirebaseService } from '../shared/firebase.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 import { MatIconModule } from '@angular/material/icon';
+import { DialogViewSubtasksComponent } from '../dialog-view-subtasks/dialog-view-subtasks.component';
 
 @Component({
   selector: 'app-ticket-view',
@@ -60,7 +61,9 @@ export class TicketViewComponent implements OnInit {
       if (task.id) {
         this.firebaseService.deleteFromCollection('tasks', task.id);
         task.status = 'BACKLOG';
+        delete task.id;
         this.firebaseService.addToCollection('backlog', task);
+        this.dialog.closeAll();
       }
     } catch (error) {
       console.error('Error switching task to board:', error);
@@ -76,6 +79,13 @@ export class TicketViewComponent implements OnInit {
       data: { title: task.title, id: task.id, col: 'tasks' }
     });
     dialogRef.afterClosed
+  }
+
+  openSubtaskDialog() {
+    const dialogSubtaskRef = this.dialog.open(DialogViewSubtasksComponent, {
+      data: { subtasks: this.task.subTasks, func: this.onSubTaskCheckedChange.bind(this) }
+    });
+    dialogSubtaskRef.afterClosed
   }
 
   onSubTaskCheckedChange(subTask: SubTasks, isChecked: boolean): void {

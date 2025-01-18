@@ -10,7 +10,7 @@
 
         <mat-form-field class="example-full-width">
             <mat-label>Title</mat-label>
-            <input matInput type="text" name="title" required [(ngModel)]="title">
+            <input matInput type="text" name="title" required [(ngModel)]="title" maxlength="50">
         </mat-form-field>
 
         <mat-form-field class="task-textarea">
@@ -132,9 +132,9 @@
                     (click)="changeSelectedStaff()">
                     <mat-icon>add</mat-icon>
                 </button>
-                <img src="assets/img/profile/{{selectedStaffImage}}" matTooltip="{{selectedStaff?.display_name}}"
+                <img src="assets/img/profile/{{selectedStaffImage}}" matTooltip="{{selectedStaff.display_name}}"
                     matTooltipPosition="above" aria-label="Image that displays a tooltip when focused or hovered over"
-                    alt="{{selectedStaff?.display_name}}" />
+                    alt="{{selectedStaff.display_name}}" />
             </div>
         </div>
 

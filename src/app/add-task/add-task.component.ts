@@ -116,29 +116,28 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-  async loadImageUrls() {
+  // async loadImageUrls() {
 
-    // for (const user of this.staffs) {
-    //   const filePath = `images/${user.image}`;
-    //   console.log(this.imageUrls.get(filePath));
-    //   console.log(this.imageUrls.values());
+  // for (const user of this.staffs) {
+  //   const filePath = `images/${user.image}`;
+  //   console.log(this.imageUrls.get(filePath));
+  //   console.log(this.imageUrls.values());
 
-    //   if (!this.imageUrls.has(filePath)) {
-    //     try {
-    //       const url = await this.userItemsService.getImageUrl(filePath);
-    //       this.imageUrls.set(filePath, url);
-    //     } catch (error) {
-    //       console.error('Fehler beim Abrufen der Bild-URL:', error);
-    //     }
-    //   }
-    // }
-    // if (!this.task && this.userItems) {
-    //   this.selectedStaffIndex = this.findStaffIndexById(`images/${this.userItems?.image}`)
-    // }
-  }
+  //   if (!this.imageUrls.has(filePath)) {
+  //     try {
+  //       const url = await this.userItemsService.getImageUrl(filePath);
+  //       this.imageUrls.set(filePath, url);
+  //     } catch (error) {
+  //       console.error('Fehler beim Abrufen der Bild-URL:', error);
+  //     }
+  //   }
+  // }
+  // if (!this.task && this.userItems) {
+  //   this.selectedStaffIndex = this.findStaffIndexById(`images/${this.userItems?.image}`)
+  // }
+  // }
 
   findStaffIndexById(path: string): number {
-    debugger
     const keysArray = Array.from(this.imageUrls);
     console.log(path);
     console.log(keysArray);

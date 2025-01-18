@@ -5,6 +5,7 @@ import {
   MatDialogClose,
   MatDialogTitle,
   MatDialogContent,
+  MatDialog,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { SettingsService } from '../shared/settings.service';
@@ -23,10 +24,11 @@ interface DialogData {
   styleUrl: './dialog-delete.component.scss'
 })
 export class DialogDeleteComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private firebaseService: FirebaseService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private firebaseService: FirebaseService, private dialog: MatDialog) { }
 
   deleteTask() {
-    this.firebaseService.deleteFromCollection(this.data.col, this.data.id)
+    this.firebaseService.deleteFromCollection(this.data.col, this.data.id);
+    this.dialog.closeAll();
   }
 
 }

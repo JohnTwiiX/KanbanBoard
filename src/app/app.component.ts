@@ -9,7 +9,7 @@ import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, HeaderComponent, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

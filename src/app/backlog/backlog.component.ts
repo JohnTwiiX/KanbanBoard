@@ -14,7 +14,7 @@ import { TicketComponent } from '../ticket/ticket.component';
 
 @Component({
   selector: 'app-backlog',
-  imports: [MatTableModule, TicketComponent, MatMenuModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatMenuModule, MatButtonModule, MatIconModule],
   templateUrl: './backlog.component.html',
   styleUrl: './backlog.component.scss'
 })
@@ -66,6 +66,7 @@ export class BacklogComponent {
       if (task.id) {
         this.firebaseService.deleteFromCollection('backlog', task.id);
         task.status = 'TO DO';
+        delete task.id;
         this.firebaseService.addToCollection('tasks', task);
       }
     } catch (error) {

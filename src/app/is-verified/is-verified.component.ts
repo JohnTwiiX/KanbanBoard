@@ -6,7 +6,7 @@ import { UserItemsService } from '../shared/user-items.service';
 
 @Component({
   selector: 'app-is-verified',
-  imports: [RouterLink, MatButtonModule],
+  imports: [MatButtonModule],
   templateUrl: './is-verified.component.html',
   styleUrl: './is-verified.component.scss'
 })
