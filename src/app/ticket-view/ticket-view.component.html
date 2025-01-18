@@ -11,7 +11,7 @@
         </mat-menu>
     </div>
     <!-- <button class="edit-btn" mat-raised-button (click)="editTask()">Edit</button> -->
-    <h2 style="text-align: center; font-size: larger;">{{task.title}}</h2>
+    <h2>{{task.title}}</h2>
     <div class="description">
         <span class="description-title">Description:</span>
         <!-- <span>{{task.description}}</span> -->
@@ -22,13 +22,16 @@
         <div>
             <h4 style="margin-bottom: 0;">Subtasks</h4>
             <div class="subtasks-container">
-                @for (subTask of task.subTasks; track $index) {
+                <!-- @for (subTask of task.subTasks; track $index) {
                 <div>
                     <mat-checkbox [(ngModel)]="subTask.checked"
                         (ngModelChange)="onSubTaskCheckedChange(subTask, $event)"></mat-checkbox>
                     <span>{{subTask.title}}</span>
                 </div>
-                }
+                } -->
+
+                <button mat-raised-button (click)="openSubtaskDialog()">View Subtasks</button>
+
             </div>
         </div>
         }

@@ -1,0 +1,9 @@
+<mat-dialog-content class="subtasks-container">
+    <h3>Subtasks:</h3>
+    @for (subTask of data.subtasks; track $index) {
+    <div>
+        <mat-checkbox [(ngModel)]="subTask.checked" (ngModelChange)="data.func(subTask, $event)"></mat-checkbox>
+        <span>{{subTask.title}}</span>
+    </div>
+    }
+</mat-dialog-content>
