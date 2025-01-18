@@ -1,0 +1,120 @@
+<!-- <table>
+    <tr>
+        <th> Title </th>
+        <th> Description </th>
+        <th> Category </th>
+        <th> Deadline </th>
+    </tr>
+    <tr>
+        @for( task of backlogTasks; track task){
+
+        <td> {{task.title}} </td>
+
+
+        <td> {{task.description}} </td>
+
+
+        <td> {{task.category}} </td>
+
+
+        <td> {{task.deadline}} </td>
+        }
+    </tr>
+
+</table> -->
+<!-- <div class="backlog-container">
+    <h2>Backlog</h2>
+
+    <div class="task-container">
+        @for(task of backlogTasks; track task){
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>Board</button>
+            <button mat-menu-item>Edit</button>
+            <button mat-menu-item>Delete</button>
+        </mat-menu>
+        <div class="backlog-task-container">
+
+            <app-ticket [task]="task" />
+            <button [matMenuTriggerFor]="menu" class="menu-button" mat-icon-button
+                aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div>
+
+        }
+
+    </div>
+</div> -->
+<div class="backlog-container">
+    <h2>Backlog</h2>
+
+    <div class="task-container">
+        <div class="backlog-list-header">
+            <div>
+                <span>Title</span>
+            </div>
+            <div>
+                <span>Description</span>
+            </div>
+            <div>
+                <span> Deadline</span>
+            </div>
+            <div>
+                <span>Assignee</span>
+            </div>
+        </div>
+        @for(task of backlogTasks; track task){
+        <div class="long">
+            <div [matMenuTriggerFor]="menu" class="backlog-item"
+                [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
+                <div class="border-right">
+                    <span>{{task.title}}</span>
+                </div>
+                <div class="ta-start border-right">
+                    <span>{{task.description}}</span>
+                </div>
+                <div class="border-right">
+                    <span>{{task.deadline}}</span>
+                </div>
+                <div>
+                    <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">
+                </div>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item (click)="switchToBoard(task)">Board</button>
+                    <button mat-menu-item (click)="editTask(task)">Edit</button>
+                    <button mat-menu-item (click)="deleteTask(task)">Delete</button>
+                </mat-menu>
+            </div>
+        </div>
+        <div class="short">
+            <div [matMenuTriggerFor]="menu" class="backlog-item"
+                [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
+                <div class="border-right">
+                    <span>{{task.title}}</span>
+                </div>
+                <div class="border-right">
+                    <span>{{task.deadline}}</span>
+                </div>
+                <div>
+                    <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">
+                </div>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <button mat-menu-item (click)="switchToBoard(task)">Board</button>
+                    <button mat-menu-item (click)="editTask(task)">Edit</button>
+                    <button mat-menu-item (click)="deleteTask(task)">Delete</button>
+                </mat-menu>
+            </div>
+        </div>
+
+
+        }
+
+    </div>
+</div>
+<!-- <div class="backlog-task-container">
+
+            <button [matMenuTriggerFor]="menu" class="menu-button" mat-icon-button
+                aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </div> -->
