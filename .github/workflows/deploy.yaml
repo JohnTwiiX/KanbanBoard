@@ -39,7 +39,7 @@ jobs:
         run: pnpm run prebuild
 
       - name: Build the project
-        run: pnpm run build --prod && cp -r dist/kanban-board/browser github-pages
+        run: pnpm run build --configuration=production && cp -r dist/kanban-board/browser github-pages
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
