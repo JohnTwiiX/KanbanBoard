@@ -5,7 +5,7 @@ import { importProvidersFrom } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-import { firebaseConfig } from '../environments/environment.development';
+import { firebaseConfig } from '../environments/environment.dev';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

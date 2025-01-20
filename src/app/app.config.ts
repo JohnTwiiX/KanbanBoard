@@ -7,7 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { initializeApp } from 'firebase/app'; // Verwende die native Firebase SDK Methode
 import { getAuth } from 'firebase/auth'; // Firebase Auth aus dem SDK
 import { getFirestore } from 'firebase/firestore'; // Firebase Firestore aus dem SDK
-import { firebaseConfig } from '../environments/environment.development'; // Deine Firebase Konfiguration
+import { firebaseConfig } from '../environments/environment.dev'; // Deine Firebase Konfiguration
 import { getStorage } from 'firebase/storage'; // Firebase Storage aus dem SDK
 import { AuthService } from './shared/auth.service';
 

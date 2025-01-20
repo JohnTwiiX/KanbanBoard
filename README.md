@@ -2,6 +2,37 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
 
+## Environment file
+
+1. Create the env file:
+
+    ```bash
+    cd ./src/environments
+    cp environment.ts environment.dev.ts
+    cd ../..
+    ```
+
+1. Go to the [Firebase Console](https://console.firebase.google.com/) and to your project or create a new project
+
+1. then go to the project settings
+
+1. create or use the app config, like:
+
+    ```js
+    const firebaseConfig = {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
+    };
+    ```
+
+1. copy this config and paste this in **src/environments/environment.dev.ts**
+
 ## Development server
 
 To start a local development server, run:
