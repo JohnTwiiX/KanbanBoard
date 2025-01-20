@@ -36,7 +36,7 @@ jobs:
           MESSAGING_SENDER_ID: ${{ secrets.MESSAGING_SENDER_ID }}
           APP_ID: ${{ secrets.APP_ID }}
           MEASUREMENT_ID: ${{ secrets.MEASUREMENT_ID }}
-        run: pnpm run prebuild
+        run: pnpm run setup && pnpm run prebuild
 
       - name: Build the project
         run: pnpm run build --configuration=production && cp -r dist/kanban-board/browser github-pages

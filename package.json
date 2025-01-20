@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "setup": "cd ./src/environments && cp environment.ts environment.dev.ts && cd ../..",
     "prebuild": "node set-env.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
