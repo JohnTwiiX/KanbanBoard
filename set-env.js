@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const envConfig = `
-  export const environment = {
+  export const firebaseConfig = {
   production: true,
   apiKey: "${process.env.API_KEY}",
   authDomain: "${process.env.AUTH_DOMAIN}",
