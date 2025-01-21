@@ -1,5 +1,7 @@
 export interface UserObj {
     display_name: string;
-    uid: string;
     image: string;
+    uid?: string;
+    role?: string;
+    permissions?: any;
 }

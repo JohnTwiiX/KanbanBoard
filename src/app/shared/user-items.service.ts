@@ -17,7 +17,7 @@ export class UserItemsService {
   private imageCache: Map<string, string> = new Map();
 
   constructor(private router: Router) {
-    this.loadCacheFromLocalStorage();
+    // this.loadCacheFromLocalStorage();
   }
 
   private loadCacheFromLocalStorage() {

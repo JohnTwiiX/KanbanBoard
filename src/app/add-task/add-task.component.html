@@ -1,5 +1,5 @@
 <div class="task-container">
-    @if (staffs) {
+
     <form class="task-form">
         @if(task){
         <h2>EDIT TASK</h2>
@@ -151,7 +151,6 @@
         </div>
 
     </form>
-    }
 
     @if (isDialogOpen) {
     <div class="dialog-overlay" (click)="closeAddDialog()">

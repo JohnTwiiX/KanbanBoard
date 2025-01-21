@@ -59,10 +59,8 @@ export class TicketViewComponent implements OnInit {
   switchToBacklog(task: Task) {
     try {
       if (task.id) {
-        this.firebaseService.deleteFromCollection('tasks', task.id);
-        task.status = 'BACKLOG';
-        delete task.id;
-        this.firebaseService.addToCollection('backlog', task);
+
+        this.firebaseService.updateTaskColumn(task.id, 'BACKLOG');
         this.dialog.closeAll();
       }
     } catch (error) {

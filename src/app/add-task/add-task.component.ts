@@ -87,7 +87,7 @@ export class AddTaskComponent implements OnInit {
       if (projects)
         this.projects = projects;
     });
-    this.settingsService.getStaffs().subscribe(staffs => {
+    this.firebaseService.users$.subscribe(staffs => {
       if (staffs) {
         this.staffs = staffs;
         // this.loadImageUrls();
@@ -146,6 +146,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   get selectedStaff(): UserObj {
+
     return this.staffs[this.selectedStaffIndex];
   }
 
@@ -192,7 +193,7 @@ export class AddTaskComponent implements OnInit {
           subTasks: this.subTasks
         }
       }
-      this.firebaseService.addToCollection('backlog', task);
+      this.firebaseService.addToCollection(task);
       this.navigateTo('/backlog');
     }
   }

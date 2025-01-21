@@ -44,7 +44,7 @@ export class BoardComponent {
         this.columns = columns;
       }
     });
-    this.firebaseService.getFromCollection('tasks')?.subscribe((tasks: Task[] | null) => {
+    this.firebaseService.tasks$.subscribe((tasks: Task[] | null) => {
       if (tasks) {
         this.checkTasks(tasks);
         this.tasks = tasks;
@@ -126,7 +126,7 @@ export class BoardComponent {
         const diffMonths = diffTime / (1000 * 60 * 60 * 24 * 30.44)
         if (diffMonths > 1) {
           console.log(`Task "${task.title}" ist älter als ein Monat.`);
-          this.firebaseService.deleteFromCollection('tasks', task.id);
+          this.firebaseService.deleteFromCollection(task.id);
           task.status = 'BACKLOG';
           this.firebaseService.moveToDeleted(task);
         }
