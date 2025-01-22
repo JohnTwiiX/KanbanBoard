@@ -4,6 +4,10 @@
     justify-content: center;
     align-items: center;
 
+    mat-chip {
+        background-color: #9a9a9a;
+    }
+
     .task-button-container {
         display: flex;
         flex-direction: row;
@@ -56,13 +60,15 @@
             margin-top: 0;
         }
 
+        mat-form-field {
+            margin: 0 16px;
+        }
+
         .cp-container {
             display: flex;
             justify-content: space-between;
 
-            mat-form-field {
-                margin: 0 16px;
-            }
+
 
             @media (max-width: 700px) {
                 flex-direction: column;
@@ -73,7 +79,7 @@
         .ds-container {
             display: flex;
             justify-content: space-between;
-            align-items: start;
+            align-items: center;
 
             .mat-divider {
                 border-right-color: black;

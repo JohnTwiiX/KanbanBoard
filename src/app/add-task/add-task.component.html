@@ -125,17 +125,18 @@
                     </div>
                     }
                 </div>
-            </div>
 
-            <div class="img-container w-250">
-                <button mat-icon-button color="primary" aria-label="Icon button with a add icon"
-                    (click)="changeSelectedStaff()">
-                    <mat-icon>add</mat-icon>
-                </button>
-                <img src="assets/img/profile/{{selectedStaffImage}}" matTooltip="{{selectedStaff.display_name}}"
-                    matTooltipPosition="above" aria-label="Image that displays a tooltip when focused or hovered over"
-                    alt="{{selectedStaff.display_name}}" />
             </div>
+            <mat-form-field class="margin-top w-250">
+                <mat-label>Select an editor</mat-label>
+                <mat-select [(value)]="selectedStaff">
+                    @for (staff of staffs; track staff) {
+                    <mat-option [value]="staff">{{staff.display_name}}</mat-option>
+                    }
+
+                </mat-select>
+            </mat-form-field>
+
         </div>
 
 

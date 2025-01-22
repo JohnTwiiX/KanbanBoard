@@ -62,17 +62,37 @@
 
 .prop-container {
     margin: 16px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
     div {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 16px;
+        gap: 16px;
+
+
 
         span:nth-child(2) {
             background-color: gray;
             padding: 8px;
             border-radius: 10px;
+        }
+
+        img {
+            height: 40px;
+            border-radius: 100%;
+            width: 40px;
+            object-fit: cover;
+        }
+
+        .assignee {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: unset !important;
         }
     }
 }

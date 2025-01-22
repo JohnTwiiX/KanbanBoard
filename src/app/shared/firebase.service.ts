@@ -9,7 +9,7 @@ import { SubTasks } from '../types/SubTasks';
 import { FirebaseStorage, getStorage } from 'firebase/storage'; // Entferne 'provideStorage'
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../environments/environment';
-import { getDatabase, Database, set, ref } from "firebase/database";
+import { getDatabase, Database, set, ref, get } from "firebase/database";
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +70,27 @@ export class FirebaseService {
       isAnonymous: user?.isAnonymous,
       displayName: user?.displayName,
     });
+  }
+
+  async getSetTicketNumber() {
+    try {
+      const ticketRef = ref(this.database, 'ticketNumber');
+      const snapshot = await get(ticketRef);
+      let number
+
+      if (snapshot.exists()) {
+        number = snapshot.val() + 1;
+      } else {
+        console.log('No data available');
+        number = 1;
+      }
+
+      set(ticketRef, number);
+      return number
+    } catch (error) {
+      console.error('Error fetching ticket number:', error);
+      throw error;
+    }
   }
 
   updateTaskColumn(taskId: string, newColumn: string): void {
@@ -307,6 +328,7 @@ export class FirebaseService {
             id: doc.id,
             display_name: data['display_name'],
             image: data['image'],
+            uid: data['uid'],
           };
         });
         observer.next(users);

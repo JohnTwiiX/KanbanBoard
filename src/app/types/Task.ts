@@ -1,17 +1,19 @@
 import { SubTasks } from "./SubTasks"
 
 export interface Task {
-    title: string,
-    description: string,
-    category: string,
-    priority: string,
+    title: string
+    description: string
+    category: string
+    priority: string
     staff: {
-        name: string,
+        name: string
         image: string
     },
-    status: string,
+    status: string
     createdAt: string
-    deadline?: string,
+    ticketNumber: string
+    creator: string
+    deadline?: string
     id?: string
     closedAt?: string
     project?: string

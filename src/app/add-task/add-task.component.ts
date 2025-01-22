@@ -20,11 +20,13 @@ import { UserItems } from '../types/UserItems';
 import { SubTasks } from '../types/SubTasks';
 import { MatDividerModule } from '@angular/material/divider';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { AuthService } from '../shared/auth.service';
 
 
 @Component({
   selector: 'app-add-task',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule, MatTooltipModule, MatIconModule, MatDividerModule],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatSelectModule, MatButtonModule, MatTooltipModule, MatIconModule, MatDividerModule, MatChipsModule, MatSelectModule],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }, provideNativeDateAdapter()],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
@@ -42,6 +44,7 @@ export class AddTaskComponent implements OnInit {
   staffs!: UserObj[];
   projects!: string[]
   selectedStaffIndex: number = 0; // Initial index
+  selectedStaff!: UserObj;
 
   dueDateControl = new FormControl(); // FormControl to hold the selected date
 
@@ -73,7 +76,8 @@ export class AddTaskComponent implements OnInit {
     private settingsService: SettingsService,
     private router: Router,
     @Optional() private dialogRef: MatDialogRef<DialogEditComponent>,
-    private userItemsService: UserItemsService
+    private userItemsService: UserItemsService,
+    private authService: AuthService
   ) {
     this.settingsService.getCategories().subscribe(categories => {
       if (categories)
@@ -91,6 +95,12 @@ export class AddTaskComponent implements OnInit {
       if (staffs) {
         this.staffs = staffs;
         // this.loadImageUrls();
+        staffs.forEach((staff, index) => {
+          if (staff.uid === authService.getUser()?.uid) {
+            this.selectedStaff = staff;
+          }
+        })
+
       }
     });
     this.userItemsService.userItems$.subscribe({
@@ -98,6 +108,8 @@ export class AddTaskComponent implements OnInit {
         this.userItems = user
       }
     })
+
+
   }
 
   ngOnInit(): void {
@@ -145,10 +157,10 @@ export class AddTaskComponent implements OnInit {
     return keysArray.findIndex(key => key === path);
   }
 
-  get selectedStaff(): UserObj {
+  // get selectedStaff(): UserObj {
 
-    return this.staffs[this.selectedStaffIndex];
-  }
+  //   return this.staffs[this.selectedStaffIndex];
+  // }
 
   get selectedStaffImage() {
 
@@ -161,8 +173,9 @@ export class AddTaskComponent implements OnInit {
     this.selectedStaffIndex = (this.selectedStaffIndex + 1) % this.staffs.length;
   }
 
-  saveTask() {
-    if (this.categoriesControl.value && this.prioritiesControl.value) {
+  async saveTask() {
+    if (this.categoriesControl.value && this.prioritiesControl.value && this.userItems) {
+      const ticketNumber = `Ticket-${await this.firebaseService.getSetTicketNumber()}`;
       let task: Task = {
         title: this.title,
         category: this.categoriesControl.value.toString(),
@@ -174,6 +187,8 @@ export class AddTaskComponent implements OnInit {
         },
         status: 'BACKLOG',
         createdAt: this.formatCurrentDate(),
+        ticketNumber: ticketNumber,
+        creator: this.userItems?.display_name
       }
       if (this.projectControl.value) {
         task = {
@@ -198,8 +213,8 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-  saveEditedTask() {
-    if (this.categoriesControl.value && this.prioritiesControl.value && this.task?.id) {
+  async saveEditedTask() {
+    if (this.categoriesControl.value && this.prioritiesControl.value && this.task?.id && this.userItems) {
       let task: Task = {
         title: this.title,
         category: this.categoriesControl.value.toString(),
@@ -211,6 +226,8 @@ export class AddTaskComponent implements OnInit {
         },
         status: this.task.status,
         createdAt: this.task.createdAt ? this.task.createdAt : this.formatCurrentDate(),
+        ticketNumber: this.task.ticketNumber || `Ticket-${await this.firebaseService.getSetTicketNumber()}`,
+        creator: this.task.creator || this.userItems?.display_name
       }
       if (this.projectControl.value) {
         task = {
