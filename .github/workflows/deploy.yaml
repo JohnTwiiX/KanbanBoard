@@ -36,7 +36,7 @@ jobs:
           MESSAGING_SENDER_ID: ${{ secrets.MESSAGING_SENDER_ID }}
           APP_ID: ${{ secrets.APP_ID }}
           MEASUREMENT_ID: ${{ secrets.MEASUREMENT_ID }}
-        run: pnpm run build:prod --base-href /${{github.event.repository.name}}/ && cp -r dist/kanban-board/browser github-pages
+        run: pnpm run build:prod && cp -r dist/kanban-board/browser github-pages
 
       - name: Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
