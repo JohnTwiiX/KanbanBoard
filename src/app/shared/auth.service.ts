@@ -7,7 +7,7 @@ import { SettingsService } from './settings.service';
 import { UserItemsService } from './user-items.service';
 import { UserItems } from '../types/UserItems';
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../environments/environment.dev';
+import { firebaseConfig } from '../../environments/environment';
 
 
 @Injectable({

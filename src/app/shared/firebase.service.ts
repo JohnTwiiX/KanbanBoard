@@ -8,7 +8,7 @@ import { UserObj } from '../types/User';
 import { SubTasks } from '../types/SubTasks';
 import { FirebaseStorage, getStorage } from 'firebase/storage'; // Entferne 'provideStorage'
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../environments/environment.dev';
+import { firebaseConfig } from '../../environments/environment';
 import { getDatabase, Database, set, ref } from "firebase/database";
 
 @Injectable({

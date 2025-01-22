@@ -5,7 +5,7 @@ import { TicketComponent } from './ticket.component';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { importProvidersFrom } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { firebaseConfig } from '../../environments/environment.dev';
+import { firebaseConfig } from '../../environments/environment';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { Task } from '../types/Task';
