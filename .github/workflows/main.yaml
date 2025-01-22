@@ -24,3 +24,4 @@ jobs:
   build-and-deploy-to-pages:
     name: Build website and deploy to GitHub Pages
     uses: ./.github/workflows/deploy.yaml
+    secrets: inherit

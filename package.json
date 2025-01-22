@@ -5,7 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "setup": "cd ./src/environments && cp environment.ts environment.dev.ts && cd ../..",
-    "prebuild": "node set-env.js",
+    "prebuild:prod": "node set-env.js",
+    "build:prod": "ng build --configuration production",
+    "postbuild:prod": "node generate-404.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
