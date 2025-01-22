@@ -27,7 +27,7 @@ export class DialogDeleteComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private firebaseService: FirebaseService, private dialog: MatDialog) { }
 
   deleteTask() {
-    this.firebaseService.deleteFromCollection(this.data.col, this.data.id);
+    this.firebaseService.deleteFromCollection(this.data.id);
     this.dialog.closeAll();
   }
 

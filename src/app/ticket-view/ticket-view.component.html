@@ -22,13 +22,6 @@
         <div>
             <h4 style="margin-bottom: 0;">Subtasks</h4>
             <div class="subtasks-container">
-                <!-- @for (subTask of task.subTasks; track $index) {
-                <div>
-                    <mat-checkbox [(ngModel)]="subTask.checked"
-                        (ngModelChange)="onSubTaskCheckedChange(subTask, $event)"></mat-checkbox>
-                    <span>{{subTask.title}}</span>
-                </div>
-                } -->
 
                 <button mat-raised-button (click)="openSubtaskDialog()">View Subtasks</button>
 
@@ -56,6 +49,23 @@
             @if (priorities) {
             <div class="priority-box" [ngStyle]="{ 'background-color': getColor}"></div>
             }
+        </div>
+        @if (task.deadline) {
+        <div>
+            <span>Deadline:</span>
+            <span>{{task.deadline}}</span>
+        </div>
+
+        }
+        <div>
+            <span>Assignee:</span>
+            <span class="assignee">
+                <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">{{task.staff.name}}
+            </span>
+        </div>
+        <div>
+            <span>Creator:</span>
+            <mat-chip>{{task.creator}}</mat-chip>
         </div>
     </div>
 </div>

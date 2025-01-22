@@ -24,12 +24,11 @@ export class BacklogComponent {
   priority: { [key: string]: string } = {};
   imageUrls: Map<string, string> = new Map();
   constructor(private settingsService: SettingsService, public dialog: MatDialog, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
-    this.firebaseService.getFromCollection('backlog')?.subscribe((tasks: Task[] | null) => {
+    this.firebaseService.tasks$.subscribe((tasks: Task[] | null) => {
       if (tasks) {
-        this.backlogTasks = tasks;
-        console.log('---------------------------');
+        this.backlogTasks = tasks.filter(task => task.status === 'BACKLOG');
 
-        this.loadImageUrls();
+        // this.loadImageUrls();
       }
 
     });
@@ -64,10 +63,7 @@ export class BacklogComponent {
   switchToBoard(task: Task) {
     try {
       if (task.id) {
-        this.firebaseService.deleteFromCollection('backlog', task.id);
-        task.status = 'TO DO';
-        delete task.id;
-        this.firebaseService.addToCollection('tasks', task);
+        this.firebaseService.updateTaskColumn(task.id, 'TO DO');
       }
     } catch (error) {
       console.error('Error switching task to board:', error);

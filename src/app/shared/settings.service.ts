@@ -23,46 +23,37 @@ export class SettingsService {
   }
 
   init() {
-    this.initTasks()
+    this.firebaseService.initCollection();
     this.initSettings()
   }
 
   initSettings() {
-    this.firebaseService.initCollection('settings');
-    this.firebaseService.getSettingsCollection()?.subscribe({
+    this.firebaseService.settings$.subscribe({
       next: (value: any) => {
-        if (value.length === 0 && this.authService.getUser()) {
-          this.setDefaultSettings();
-        } else {
-
-          this.columns.next(value.columns);
-          this.categories.next(value.categories);
-          this.priorities.next(value.priorities);
-          this.projects.next(value.projects);
-          this.id = value.id;
+        if (value) {
+          if (value.length === 0 && this.authService.getUser()) {
+            this.setDefaultSettings();
+          } else {
+            this.columns.next(value.columns);
+            this.categories.next(value.categories);
+            this.priorities.next(value.priorities);
+            this.projects.next(value.projects);
+            this.id = value.id;
+          }
         }
+
       },
       error: e => console.error(e)
     })
-    this.firebaseService.getUsers()?.subscribe({
+    this.firebaseService.users$.subscribe({
       next: (value: any) => {
-        const result = value.map((user: any) => ({
-          display_name: user.display_name,
-          uid: user.uid,
-          image: user.image
-        }))
-        this.staffs.next(result);
-
+        this.staffs.next(value);
       }
     })
 
 
   }
 
-  initTasks() {
-    const user = this.authService.getUser()?.isAnonymous ? 'anonym' : 'user';
-    this.firebaseService.initCollection(user);
-  }
 
   private setDefaultSettings() {
     const settings = {

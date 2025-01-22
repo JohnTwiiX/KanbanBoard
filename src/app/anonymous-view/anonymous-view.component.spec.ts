@@ -5,7 +5,7 @@ import { AnonymousViewComponent } from './anonymous-view.component';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { importProvidersFrom } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { firebaseConfig } from '../../environments/environment.development';
+import { firebaseConfig } from '../../environments/environment';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ActivatedRoute } from '@angular/router';

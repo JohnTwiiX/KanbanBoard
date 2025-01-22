@@ -2,57 +2,100 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { addDoc, collection, CollectionReference, deleteDoc, doc, getDoc, setDoc, updateDoc, Firestore, getDocs, QuerySnapshot, getFirestore, onSnapshot } from 'firebase/firestore'; // Entferne 'collectionData'
 import { Task } from '../types/Task';
-import { Observable, from } from 'rxjs'; // Verwende 'from' für Observable
+import { BehaviorSubject, Observable, from } from 'rxjs'; // Verwende 'from' für Observable
 import { Settings } from '../types/Settings';
 import { UserObj } from '../types/User';
 import { SubTasks } from '../types/SubTasks';
 import { FirebaseStorage, getStorage } from 'firebase/storage'; // Entferne 'provideStorage'
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../environments/environment.development';
+import { firebaseConfig } from '../../environments/environment';
+import { getDatabase, Database, set, ref, get } from "firebase/database";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
   private app: FirebaseApp;
-  public firestore: Firestore;
-  public storage: FirebaseStorage;
+  private firestore: Firestore;
+  private storage: FirebaseStorage;
+  private database: Database;
 
 
-
-  private backlogCollection: CollectionReference<any> | null = null;
-  private anonymousBacklogCollection: CollectionReference<any> | null = null;
-  private boardCollection: CollectionReference<any> | null = null;
-  private anonymousBoardCollection: CollectionReference<any> | null = null;
+  private tasksCollection: CollectionReference<any> | null = null;
   private settingsCollection: CollectionReference<any> | null = null;
   private usersCollection: CollectionReference<any> | null = null;
 
+  tasks$ = new BehaviorSubject<Task[] | null>(null);
+  settings$ = new BehaviorSubject<Settings | null>(null);
+  users$ = new BehaviorSubject<UserObj[] | null>(null);
+
   constructor(private authService: AuthService) {
-    // Firebase App initialisieren
     this.app = initializeApp(firebaseConfig);
-    // Firebase-Dienste bereitstellen
     this.firestore = getFirestore(this.app);
     this.storage = getStorage(this.app);
-
-
+    this.database = getDatabase(this.app);
   }
 
-  initCollection(col: string) {
-    if (col === 'anonym') {
-      this.anonymousBacklogCollection = collection(this.firestore, 'anonymousBacklog');
-      this.anonymousBoardCollection = collection(this.firestore, 'anonymousBoard');
-    } else if (col === 'user') {
-      this.backlogCollection = collection(this.firestore, 'backlog');
-      this.boardCollection = collection(this.firestore, 'tasks');
-    } else if (col === 'settings') {
-      this.settingsCollection = collection(this.firestore, 'settings');
+  initCollection() {
+    const tasks = this.authService.getUser()?.isAnonymous ? 'anonymousTasks' : 'tasks';
+
+    this.tasksCollection = collection(this.firestore, tasks);
+    this.getFromCollection('tasks')?.subscribe((tasks: Task[] | null) => {
+      this.tasks$.next(tasks);
+    });
+
+    this.settingsCollection = collection(this.firestore, 'settings');
+    this.getSettingsCollection()?.subscribe((settings: Settings | null) => {
+      this.settings$.next(settings);
+    });
+
+    this.usersCollection = collection(this.firestore, 'users');
+    this.getUsers()?.subscribe((users: UserObj[] | null) => {
+      this.users$.next(users);
+    });
+
+    this.addUserToDatabase();
+  }
+
+  async getIPFromAmazon() {
+    return fetch("https://checkip.amazonaws.com/").then(res => res.text());
+  }
+
+  async addUserToDatabase() {
+    const ip = await this.getIPFromAmazon();
+    const user = this.authService.getUser();
+
+    set(ref(this.database, 'users/' + user?.uid), {
+      ip,
+      isAnonymous: user?.isAnonymous,
+      displayName: user?.displayName,
+    });
+  }
+
+  async getSetTicketNumber() {
+    try {
+      const ticketRef = ref(this.database, 'ticketNumber');
+      const snapshot = await get(ticketRef);
+      let number
+
+      if (snapshot.exists()) {
+        number = snapshot.val() + 1;
+      } else {
+        console.log('No data available');
+        number = 1;
+      }
+
+      set(ticketRef, number);
+      return number
+    } catch (error) {
+      console.error('Error fetching ticket number:', error);
+      throw error;
     }
-    this.usersCollection = collection(this.firestore, 'users')
   }
 
   updateTaskColumn(taskId: string, newColumn: string): void {
     try {
-      const tasksRef = this.getCollection('tasks');
+      const tasksRef = this.tasksCollection;
       if (tasksRef) {
         const documentRef = doc(tasksRef, taskId);
         updateDoc(documentRef, { status: newColumn });
@@ -64,7 +107,7 @@ export class FirebaseService {
 
   updateSubTask(taskId: string, subTask: SubTasks): void {
     try {
-      const tasksRef = this.getCollection('tasks');
+      const tasksRef = this.tasksCollection;
       if (tasksRef) {
         const documentRef = doc(tasksRef, taskId);
 
@@ -90,12 +133,7 @@ export class FirebaseService {
 
   updateTask(taskId: string, task: Task): void {
     try {
-      let tasksRef
-      if (task.status === 'BACKLOG') {
-        tasksRef = this.getCollection('backlog');
-      } else {
-        tasksRef = this.getCollection('tasks');
-      }
+      const tasksRef = this.tasksCollection;
 
       if (tasksRef) {
         const documentRef = doc(tasksRef, taskId);
@@ -106,9 +144,9 @@ export class FirebaseService {
     }
   }
 
-  addToCollection(col: string, task: Task) {
+  addToCollection(task: Task) {
     try {
-      const colConnection = this.getCollection(col);
+      const colConnection = this.tasksCollection;
       if (colConnection) {
         addDoc(colConnection, task);
       }
@@ -117,9 +155,9 @@ export class FirebaseService {
     }
   }
 
-  deleteFromCollection(col: string, id: string) {
+  deleteFromCollection(id: string) {
     try {
-      const colConnection = this.getCollection(col);
+      const colConnection = this.tasksCollection;
       if (colConnection) {
         const documentRef = doc(colConnection, id);
         deleteDoc(documentRef);
@@ -142,20 +180,18 @@ export class FirebaseService {
 
   }
 
-  getCollection(col: string) {
-    const user = this.authService.getUser();
-    if (user && user.isAnonymous) {
-      if (col === 'tasks') return this.anonymousBoardCollection;
-      return this.anonymousBacklogCollection;
-    } else {
-      if (col === 'tasks') return this.boardCollection;
-      return this.backlogCollection;
-    }
-  }
+  // getCollection() {
+  //   const user = this.authService.getUser();
+  //   if (user && user.isAnonymous) {
+  //     return this.anonymousTasksCollection;
+  //   } else {
+  //     return this.tasksCollection;
+  //   }
+  // }
 
   getFromCollection(col: string): Observable<Task[] | null> {
     return new Observable(observer => {
-      const colConnection = this.getCollection(col);
+      const colConnection = this.tasksCollection;
 
       if (!colConnection) {
         console.log(`No collection found for: ${col}`);
@@ -281,7 +317,7 @@ export class FirebaseService {
     return new Observable(observer => {
       if (!this.usersCollection) {
         console.log('No settings collection found!');
-        observer.next(null);  // Sende ein `null`, wenn die Sammlung nicht existiert
+        observer.next(null);
         return;
       }
 
@@ -291,16 +327,15 @@ export class FirebaseService {
           return {
             id: doc.id,
             display_name: data['display_name'],
+            image: data['image'],
             uid: data['uid'],
-            image: data['image'], // Standardwerte setzen, falls Felder fehlen
           };
         });
-        observer.next(users); // Rückgabe der UserObj-Daten bei jedem Update
+        observer.next(users);
       }, error => {
-        observer.error(error); // Fehlerbehandlung
+        observer.error(error);
       });
 
-      // Rückgabe der unsubscribe-Funktion, um das Abonnement zu beenden
       return () => unsubscribe();
     });
   }

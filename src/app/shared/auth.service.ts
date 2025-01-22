@@ -7,7 +7,7 @@ import { SettingsService } from './settings.service';
 import { UserItemsService } from './user-items.service';
 import { UserItems } from '../types/UserItems';
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../environments/environment.development';
+import { firebaseConfig } from '../../environments/environment';
 
 
 @Injectable({
@@ -27,12 +27,9 @@ export class AuthService {
     this.app = initializeApp(firebaseConfig);
     // Firebase-Dienste bereitstellen
     this.auth = getAuth(this.app);
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(this.auth, (user) => {
       this.userSubject.next(user);
     });
-
-
   }
 
   async registerWithEmail(email: string, password: string, displayName: string): Promise<void> {
@@ -53,14 +50,14 @@ export class AuthService {
 
 
   async loginWithEmail(email: string, password: string): Promise<void> {
-    await signInWithEmailAndPassword(getAuth(), email, password);
+    await signInWithEmailAndPassword(this.auth, email, password);
     this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
 
   async loginWithGoogle(): Promise<void> {
-    const userCredential = await signInWithPopup(getAuth(), new GoogleAuthProvider());
+    const userCredential = await signInWithPopup(this.auth, new GoogleAuthProvider());
     const user = userCredential.user;
     console.log(user);
     await this.userItemsService.googleLoginCheck(user);
@@ -71,7 +68,7 @@ export class AuthService {
 
 
   async loginAnonymously(): Promise<void> {
-    const userCredential = await signInAnonymously(getAuth());
+    const userCredential = await signInAnonymously(this.auth);
     const user = userCredential.user;
     this.setAnonymousLoginFlag(user.uid);
     this.setTimeInStorage();
@@ -88,7 +85,7 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
-    await signOut(getAuth());
+    await signOut(this.auth);
     localStorage.removeItem('loginTime');
     this.router.navigate(['/login']);
   }
@@ -111,7 +108,7 @@ export class AuthService {
 
   async resetPassword(email: string): Promise<void> {
     try {
-      await sendPasswordResetEmail(getAuth(), email);
+      await sendPasswordResetEmail(this.auth, email);
       console.log('Password reset email sent');
     } catch (error) {
       console.error('Error sending password reset email', error);
@@ -143,7 +140,7 @@ export class AuthService {
   }
 
   getUser() {
-    return getAuth().currentUser;
+    return this.auth.currentUser;
   }
 
 
