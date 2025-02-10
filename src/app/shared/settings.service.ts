@@ -7,6 +7,7 @@ import { FirebaseService } from './firebase.service';
 import { Router } from '@angular/router';
 import { Priorities, Settings } from '../types/Settings';
 import { UserObj } from '../types/User';
+import { User } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +19,21 @@ export class SettingsService {
   private projects: BehaviorSubject<string[] | null> = new BehaviorSubject<string[] | null>(null);
   private staffs: BehaviorSubject<UserObj[] | null> = new BehaviorSubject<UserObj[] | null>(null);
   private id!: string;
+  private isInitialized: boolean = false;
   constructor(private firebaseService: FirebaseService, private authService: AuthService) {
-    this.init();
+    authService.user$.subscribe((user) => {
+      if (user) {
+        this.init(user);
+      } else if (this.isInitialized) {
+        firebaseService.unsubscribeAll();
+      }
+    })
   }
 
-  init() {
-    this.firebaseService.initCollection();
-    this.initSettings()
+  init(user: User) {
+    this.firebaseService.initCollection(user);
+    this.initSettings();
+    this.isInitialized = true;
   }
 
   initSettings() {

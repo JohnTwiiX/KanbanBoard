@@ -11,6 +11,7 @@ import { FirebaseService } from '../shared/firebase.service';
 import { UserItemsService } from '../shared/user-items.service';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
 import { TicketComponent } from '../ticket/ticket.component';
+import { UserItems } from '../types/UserItems';
 
 @Component({
   selector: 'app-backlog',
@@ -22,7 +23,7 @@ export class BacklogComponent {
   backlogTasks!: Task[];
   displayedColumns = ['title', 'description', 'category', 'deadline'];
   priority: { [key: string]: string } = {};
-  imageUrls: Map<string, string> = new Map();
+  userItems: UserItems | null = null;
   constructor(private settingsService: SettingsService, public dialog: MatDialog, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
     this.firebaseService.tasks$.subscribe((tasks: Task[] | null) => {
       if (tasks) {
@@ -36,24 +37,12 @@ export class BacklogComponent {
       .subscribe((prioritys: any) => {
         this.priority = prioritys;
       });
-  }
 
-  async loadImageUrls() {
-    console.log('drin');
-
-    for (const task of this.backlogTasks) {
-      const filePath = `images/${task.staff.image}`;
-      console.log(this.imageUrls.get(filePath));
-
-      if (!this.imageUrls.has(filePath)) {
-        try {
-          // const url = await this.userItemsService.getImageUrl(filePath);
-          // this.imageUrls.set(filePath, url);
-        } catch (error) {
-          console.error('Fehler beim Abrufen der Bild-URL:', error);
-        }
+    userItemsService.userItems$.subscribe((userItems: UserItems | null) => {
+      if (userItems) {
+        this.userItems = userItems;
       }
-    }
+    });
   }
 
   getColorPriority(priority: string): string {
@@ -91,11 +80,4 @@ export class BacklogComponent {
     });
     dialogRef.afterClosed
   }
-
-  // async getImageUrl(img: string) {
-  //   // const result = await this.userItemsService.getImageUrl(`images/${img}`)
-  //   console.log(result);
-
-  //   return result
-  // }
 }

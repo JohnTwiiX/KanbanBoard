@@ -1,5 +1,7 @@
 <div class="settings-container">
     <h2>Settings</h2>
+    @if(userItems.role === 'admin') {
+
     <div class="w-50p">
         <h3>Change Categories</h3>
         <app-input-chips style="display: contents;" [signal]="categories" title="Categories"
@@ -24,6 +26,7 @@
             }
         </div>
     </div>
+    }
     <div class="change-container w-50p">
         <div>
             <h3>Change Password</h3>

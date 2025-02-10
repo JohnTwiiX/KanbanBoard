@@ -8,13 +8,14 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Task } from '../types/Task';
 import { FirebaseService } from '../shared/firebase.service';
-import { AuthService } from '../shared/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { TicketComponent } from '../ticket/ticket.component';
+import { UserItemsService } from '../shared/user-items.service';
+import { UserItems } from '../types/UserItems';
 
 @Component({
   selector: 'app-board',
@@ -31,9 +32,15 @@ export class BoardComponent {
   searchTerm: string = '';
   filteredTasks: Task[] = [];
   isTaskBeingDragged = '';
+  userItems: UserItems | null = null;
+  noProjects = true;
 
-  constructor(private settingsService: SettingsService, private firebaseService: FirebaseService) {
-
+  constructor(private settingsService: SettingsService, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
+    userItemsService.userItems$.subscribe(userItems => {
+      if (userItems) {
+        this.userItems = userItems;
+      }
+    })
   }
 
   ngOnInit() {
@@ -54,8 +61,10 @@ export class BoardComponent {
           this.filteredTasks = tasks;
         };
         this.filteredTasks = this.sortTasksByCreatedAt(this.filteredTasks);
+        this.noProjects = false;
       } else {
         this.tasks = tasks;
+        this.noProjects = true;
       }
     });
   }
@@ -87,6 +96,7 @@ export class BoardComponent {
   }
 
   drop(event: CdkDragDrop<any>) {
+    if (!(this.userItems?.permissions === 'read-write')) return
     const task = event.item.data;
     const newColumn = event.container.data;
     if (task.status !== newColumn) {
@@ -109,6 +119,7 @@ export class BoardComponent {
 
   // Handle the drag entered event
   onDragEntered(event: any, column: string) {
+    if (!(this.userItems?.permissions === 'read-write')) return
     const element = event.container.element.nativeElement.children[0] as HTMLElement
     console.log('ich drag den', element);
     if (element.classList.value.includes('no-task') && event.container.data === column) {

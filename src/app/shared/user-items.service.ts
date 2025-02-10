@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from 'firebase/auth';
 import { Router } from '@angular/router';
-import { doc, getDoc, setDoc, getFirestore } from 'firebase/firestore';
+import { doc, getDoc, setDoc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { UserItems } from '../types/UserItems';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { getDownloadURL, ref, getStorage } from 'firebase/storage';
@@ -14,17 +14,9 @@ export class UserItemsService {
   public userItems$: Observable<UserItems | null> = this.userItemsSubject.asObservable();
   isUserItemsSet: boolean = false;
 
-  private imageCache: Map<string, string> = new Map();
+  unsubscribeUserItems: any;
 
   constructor(private router: Router) {
-    // this.loadCacheFromLocalStorage();
-  }
-
-  private loadCacheFromLocalStorage() {
-    const storedCache = localStorage.getItem('imageCache');
-    if (storedCache) {
-      this.imageCache = new Map<string, string>(JSON.parse(storedCache));
-    }
   }
 
   async checkEmailVerificationAndAssignRole(user: User): Promise<void> {
@@ -33,10 +25,10 @@ export class UserItemsService {
       if (user.emailVerified) {
         await this.setUserItems(user, {
           'display_name': user.displayName || 'anonym user',
-          'Email': user.email || 'anonym user',
+          'email': user.email || 'anonym user',
           'role': 'user',
-          'uid': user.uid,
-          'image': 'profile-dummy.png'
+          'permissions': 'read',
+          'projects': []
         });
         this.router.navigate(['/board']);
       } else {
@@ -48,17 +40,18 @@ export class UserItemsService {
   async googleLoginCheck(user: User) {
     if (user) {
       const firestore = getFirestore();
-      const userDocRef = doc(firestore, `users/${this.getStorageName(user.uid, user.displayName || 'anonym user')}`);
+      const userDocRef = doc(firestore, `users/${user.uid}`);
 
       const docSnapshot = await getDoc(userDocRef);
 
       if (!docSnapshot.exists()) {
         await this.setUserItems(user, {
           'display_name': user.displayName || 'anonym user',
-          'Email': user.email || 'anonym user',
+          'email': user.email || 'anonym user',
           'role': 'user',
           'uid': user.uid,
-          'image': 'profile-dummy.png'
+          'permissions': 'read',
+          'projects': []
         });
       }
     }
@@ -66,58 +59,61 @@ export class UserItemsService {
 
   async setUserItems(user: User, userItem: UserItems): Promise<void> {
     const firestore = getFirestore();
-    const userDocRef = doc(firestore, `users/${this.getStorageName(user.uid, user.displayName || 'anonym user')}`);
+    const userDocRef = doc(firestore, `users/${user.uid}`);
+    const userDocRefPrivate = doc(firestore, `users/${user.uid}/private/privateData`);
+
+    const privateItems = {
+      'email': userItem.email,
+      'role': userItem.role,
+      'permissions': userItem.permissions,
+      'projects': userItem.projects
+    };
+
+    const publicItems = {
+      'display_name': userItem.display_name,
+      'image': userItem.image || ''
+    }
 
     const docSnapshot = await getDoc(userDocRef);
 
     if (docSnapshot.exists()) {
       console.log('Dokument existiert bereits');
     } else {
-      await setDoc(userDocRef, userItem);
+      await setDoc(userDocRef, publicItems);
+      await setDoc(userDocRefPrivate, privateItems);
       console.log('Dokument erfolgreich geschrieben!');
     }
   }
 
-  getStorageName(uid: string, displayName: string) {
-    let first_name = displayName.split(' ')[0];
-    return `${first_name}-${uid}`;
+  async setPrivateUserItems(userItem: UserItems): Promise<void> {
+
+
+    console.log('Dokument erfolgreich geschrieben!');
+
   }
 
-  getUserItems(user: User): Observable<UserItems | null> {
+  getUserItems(user: User): void {
     const firestore = getFirestore();
-    const userDocRef = doc(firestore, `users/${this.getStorageName(user.uid, user.displayName || 'anonym user')}`);
-    return from(getDoc(userDocRef).then((docSnapshot) => {
+    const userDocRef = doc(firestore, `users/${user.uid}/private/privateData`);
+
+    // onSnapshot für Echtzeit-Updates
+    const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const userItemsData = docSnapshot.data() as UserItems;
         this.userItemsSubject.next(userItemsData);
         this.isUserItemsSet = true;
-        return userItemsData;
       } else {
         this.userItemsSubject.next(null);
-        return null;
+        this.isUserItemsSet = false;
       }
-    }));
+    }, (error) => {
+      console.error("Error fetching user items:", error);
+      this.userItemsSubject.next(null);
+      this.isUserItemsSet = false;
+    });
+
+    // Optional: Speichere den unsubscribe-Callback, falls du die Listener später beenden möchtest
+    this.unsubscribeUserItems = unsubscribe;
   }
 
-  // async getImageUrl(filePath: string): Promise<string> {
-  //   if (this.imageCache.has(filePath)) {
-  //     return this.imageCache.get(filePath)!;
-  //   }
-
-  //   try {
-  //     const storage = getStorage();
-  //     const storageRef = ref(storage, filePath);
-  //     const url = await getDownloadURL(storageRef);
-  //     this.imageCache.set(filePath, url);
-  //     this.saveCacheToLocalStorage();
-  //     return url;
-  //   } catch (error) {
-  //     console.error('Fehler beim Abrufen der URL:', error);
-  //     throw error;
-  //   }
-  // }
-
-  private saveCacheToLocalStorage() {
-    localStorage.setItem('imageCache', JSON.stringify(Array.from(this.imageCache.entries())));
-  }
 }

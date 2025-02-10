@@ -9,8 +9,13 @@
                 alt="{{task.staff.name}}">
             <div class="header-container">
                 <mat-card-title class="header-title">{{task.title}}</mat-card-title>
-                <mat-card-subtitle class="header-title">{{task.category}}</mat-card-subtitle>
-                <mat-card-subtitle class="header-title">{{task.ticketNumber}}</mat-card-subtitle>
+                <div class="header-subtitle">
+                    <mat-card-subtitle class="header-title">{{task.category}}</mat-card-subtitle>
+                    @if(task.project){
+                    <mat-card-subtitle class="header-title">{{task.project}}</mat-card-subtitle>
+                    }
+                    <mat-card-subtitle class="header-title">{{task.ticketNumber}}</mat-card-subtitle>
+                </div>
             </div>
 
         </mat-card-header>

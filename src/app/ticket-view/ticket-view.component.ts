@@ -15,6 +15,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DialogViewSubtasksComponent } from '../dialog-view-subtasks/dialog-view-subtasks.component';
+import { UserItemsService } from '../shared/user-items.service';
+import { UserItems } from '../types/UserItems';
 
 @Component({
   selector: 'app-ticket-view',
@@ -28,12 +30,17 @@ export class TicketViewComponent implements OnInit {
   // @Input() openEditDialog!: (task: Task) => void
   @Output("openDialogEdit") openDialogEdit: EventEmitter<any> = new EventEmitter();
   priorities!: Priorities | null;
+  userItems: UserItems | null = null;
 
-  constructor(public dialogRef: MatDialogRef<DialogViewComponent>, private settingsService: SettingsService, private firebaseService: FirebaseService, public dialog: MatDialog) {
+  constructor(public dialogRef: MatDialogRef<DialogViewComponent>, private settingsService: SettingsService, private firebaseService: FirebaseService, public dialog: MatDialog, private userItemsService: UserItemsService) {
     this.settingsService.getPrioritys().subscribe({
       next: value => this.priorities = value
     })
-
+    userItemsService.userItems$.subscribe(userItems => {
+      if (userItems) {
+        this.userItems = userItems;
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -87,6 +94,7 @@ export class TicketViewComponent implements OnInit {
   }
 
   onSubTaskCheckedChange(subTask: SubTasks, isChecked: boolean): void {
+    if (!(this.userItems?.permissions === 'read-write')) return
     subTask.checked = isChecked;
     // Additional logic can be added here, e.g., updating progress, saving state, etc.
     console.log(`${subTask.title} is now ${isChecked ? 'checked' : 'unchecked'}`);
