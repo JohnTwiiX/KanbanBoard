@@ -13,38 +13,40 @@ export const authGuard: CanActivateFn = (route, state) => {
   const userItemsService = inject(UserItemsService);
 
 
-  return authService.isLoggedIn().pipe(
+  return authService.user$.pipe(
     switchMap(isLoggedIn => {
       if (isLoggedIn) {
+
         if (!userItemsService.isUserItemsSet && isLoggedIn.emailVerified) {
-          console.log(isLoggedIn);
           userItemsService.getUserItems(isLoggedIn);
         }
 
-        if (isLoggedIn.isAnonymous && authService.isTimeOver()) {
-          authService.logout();
-          router.navigate(['/anonym']);
-          return of(false);
-        } else if (isLoggedIn && !isLoggedIn.isAnonymous && !isLoggedIn.emailVerified) {
+        // if (isLoggedIn.isAnonymous && authService.isTimeOver()) {
+        //   authService.logout();
+        //   router.navigate(['/anonym']);
+        //   return of(false);
+        // } else 
+        if (isLoggedIn && !isLoggedIn.isAnonymous && !isLoggedIn.emailVerified) {
           if (!state.url.includes('/verified')) router.navigate(['/verified']);
           return of(true);
         }
-        const loginTime = localStorage.getItem('loginTime');
-        const currentTime = Date.now();
-        const oneDayInMilliseconds = 7 * 24 * 60 * 60 * 1000;
-        if (loginTime) {
-          if (currentTime - JSON.parse(loginTime) >= oneDayInMilliseconds) {
-            authService.logout();
-            router.navigate(['/login']);
-            return of(false);
-          } else {
-            authService.setTimeInStorage();
-            return of(true);
-          }
-        } else {
-          authService.logout();
-          router.navigate(['/login']);
-          return of(false);
+        // const loginTime = localStorage.getItem('loginTime');
+        // const currentTime = Date.now();
+        // const oneDayInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+        // if (loginTime) {
+        //   if (currentTime - JSON.parse(loginTime) >= oneDayInMilliseconds) {
+        //     authService.logout();
+        //     router.navigate(['/login']);
+        //     return of(false);
+        //   } else {
+        //     authService.setTimeInStorage();
+        //     return of(true);
+        //   }
+        // }
+
+        else {
+          // router.navigate(['/backlog']);
+          return of(true);
         }
       } else {
         // authService.logout();

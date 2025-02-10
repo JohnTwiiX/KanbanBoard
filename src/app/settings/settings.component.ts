@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { UserItemsService } from '../shared/user-items.service';
+import { UserItems } from '../types/UserItems';
 export interface Fruit {
   name: string;
 }
@@ -29,8 +31,9 @@ export class SettingsComponent {
   isDialogOpen: boolean = false;
   isSettingsChanged: boolean = false;
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  userItems!: UserItems
 
-  constructor(private settingsService: SettingsService, private firebaseService: FirebaseService, private router: Router, private authService: AuthService) {
+  constructor(private settingsService: SettingsService, private firebaseService: FirebaseService, private router: Router, private authService: AuthService, private userItemsService: UserItemsService) {
     this.settingsService.getCategories().subscribe({
       next: value => {
         if (value)
@@ -49,6 +52,11 @@ export class SettingsComponent {
           this.projects.update(() => value);
       }
     });
+    this.userItemsService.userItems$.subscribe(userItems => {
+      if (userItems) {
+        this.userItems = userItems;
+      }
+    })
   }
 
   saveSettings() {

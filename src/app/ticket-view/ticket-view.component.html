@@ -1,5 +1,6 @@
 <div class="task-view-container">
     <div class="more-menu">
+        @if(userItems?.permissions === 'read-write') {
         <button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu" class="trash-done" mat-icon-button
             aria-label="Example icon button with a vertical three dot icon">
             <mat-icon>more_vert</mat-icon>
@@ -9,6 +10,8 @@
             <button mat-menu-item (click)="editTask()">Edit</button>
             <button mat-menu-item (click)="deleteTask(task)">Delete</button>
         </mat-menu>
+        }
+
     </div>
     <!-- <button class="edit-btn" mat-raised-button (click)="editTask()">Edit</button> -->
     <h2>{{task.title}}</h2>

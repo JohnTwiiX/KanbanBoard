@@ -8,7 +8,7 @@
         </div>
     </header>
     <div class="sidebar-container">
-        @if (isLoggedIn) {
+        @if (isLoggedIn && userItems && userItems.projects.length > 0) {
         <div class="sidebar">
             <!-- <span>Title</span> -->
             <nav class="nav">
@@ -16,7 +16,9 @@
                     <a routerLink="/board" routerLinkActive="active-link"
                         [routerLinkActiveOptions]="{ exact: true }">Board</a>
                     <a routerLink="/backlog" routerLinkActive="active-link">Backlog</a>
+                    @if(userItems.permissions === 'read-write') {
                     <a routerLink="/addTask" routerLinkActive="active-link">Add Task</a>
+                    }
                     <a routerLink="/help" routerLinkActive="active-link">Help</a>
                 </div>
 

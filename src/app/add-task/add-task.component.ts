@@ -22,6 +22,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { AuthService } from '../shared/auth.service';
+import { User } from 'firebase/auth';
 
 
 @Component({
@@ -62,6 +63,9 @@ export class AddTaskComponent implements OnInit {
   subTaskEdit = false;
   subTaskChange = '';
 
+  currentUser!: User
+  isAllProjects = false;
+
   letterOnlyValidator(control: AbstractControl): ValidationErrors | null {
     const regex = /^[A-Za-z]+$/; // Regex for letters only
     const valid = regex.test(control.value || '');
@@ -77,7 +81,7 @@ export class AddTaskComponent implements OnInit {
     private router: Router,
     @Optional() private dialogRef: MatDialogRef<DialogEditComponent>,
     private userItemsService: UserItemsService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.settingsService.getCategories().subscribe(categories => {
       if (categories)
@@ -106,6 +110,20 @@ export class AddTaskComponent implements OnInit {
     this.userItemsService.userItems$.subscribe({
       next: (user: UserItems | null) => {
         this.userItems = user
+        if (!(user?.permissions === 'read-write')) {
+          this.router.navigate(['/board']);
+        }
+        if (user?.projects[0] === 'All') {
+          this.isAllProjects = true;
+        } else {
+          this.isAllProjects = false;
+        }
+      }
+    })
+
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.currentUser = user;
       }
     })
 
@@ -128,27 +146,6 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
-  // async loadImageUrls() {
-
-  // for (const user of this.staffs) {
-  //   const filePath = `images/${user.image}`;
-  //   console.log(this.imageUrls.get(filePath));
-  //   console.log(this.imageUrls.values());
-
-  //   if (!this.imageUrls.has(filePath)) {
-  //     try {
-  //       const url = await this.userItemsService.getImageUrl(filePath);
-  //       this.imageUrls.set(filePath, url);
-  //     } catch (error) {
-  //       console.error('Fehler beim Abrufen der Bild-URL:', error);
-  //     }
-  //   }
-  // }
-  // if (!this.task && this.userItems) {
-  //   this.selectedStaffIndex = this.findStaffIndexById(`images/${this.userItems?.image}`)
-  // }
-  // }
-
   findStaffIndexById(path: string): number {
     const keysArray = Array.from(this.imageUrls);
     console.log(path);
@@ -156,11 +153,6 @@ export class AddTaskComponent implements OnInit {
 
     return keysArray.findIndex(key => key === path);
   }
-
-  // get selectedStaff(): UserObj {
-
-  //   return this.staffs[this.selectedStaffIndex];
-  // }
 
   get selectedStaffImage() {
 
@@ -188,7 +180,7 @@ export class AddTaskComponent implements OnInit {
         status: 'BACKLOG',
         createdAt: this.formatCurrentDate(),
         ticketNumber: ticketNumber,
-        creator: this.userItems?.display_name
+        creator: (this.staffs.filter(staff => staff.uid === this.currentUser.uid)[0]?.display_name),
       }
       if (this.projectControl.value) {
         task = {

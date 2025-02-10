@@ -78,11 +78,13 @@
                 </div>
                 <div>
                     <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">
-                </div>
-                <mat-menu #menu="matMenu" xPosition="before">
+                </div><mat-menu #menu="matMenu" xPosition="before">
+                    @if (userItems?.permissions === 'read-write') {
+
                     <button mat-menu-item (click)="switchToBoard(task)">Board</button>
                     <button mat-menu-item (click)="editTask(task)">Edit</button>
                     <button mat-menu-item (click)="deleteTask(task)">Delete</button>
+                    }
                 </mat-menu>
             </div>
         </div>
@@ -99,9 +101,13 @@
                     <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">
                 </div>
                 <mat-menu #menu="matMenu" xPosition="before">
+                    @if (userItems?.permissions === 'read-write') {
+
                     <button mat-menu-item (click)="switchToBoard(task)">Board</button>
                     <button mat-menu-item (click)="editTask(task)">Edit</button>
                     <button mat-menu-item (click)="deleteTask(task)">Delete</button>
+
+                    }
                 </mat-menu>
             </div>
         </div>

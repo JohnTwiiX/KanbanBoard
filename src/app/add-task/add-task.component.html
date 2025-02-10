@@ -52,9 +52,16 @@
                     <mat-option (click)="openAddDialog('projects')">- add new -</mat-option>
                     }
                     <mat-option>- empty -</mat-option>
+                    @if(isAllProjects){
                     @for (project of projects; track project) {
                     <mat-option [value]="project">{{project}}</mat-option>
                     }
+                    }@else {
+                    @for (project of userItems?.projects; track project) {
+                    <mat-option [value]="project">{{project}}</mat-option>
+                    }
+                    }
+
                 </mat-select>
             </mat-form-field>
         </div>

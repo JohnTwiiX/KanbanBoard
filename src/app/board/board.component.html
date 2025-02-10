@@ -1,4 +1,11 @@
 <div class="board-container">
+    @if(noProjects){
+    <div class="no-projects">
+        <h1>Your board is empty</h1>
+        <h3>Please contact the admin</h3>
+    </div>
+
+    }@else {
     <div class="searchbar-container">
         <mat-form-field style="width: 350px;" class="example-full-width">
             <!-- <mat-label>Searchbar</mat-label> -->
@@ -47,4 +54,6 @@
         </div>
         }
     </div>
+    }
+
 </div>

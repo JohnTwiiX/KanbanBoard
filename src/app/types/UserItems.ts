@@ -1,7 +1,9 @@
 export interface UserItems {
-    Email: string
-    image: string
+    email: string
     display_name: string
     role: string
-    uid: string
+    permissions: 'read' | 'read-write'
+    projects: string[]
+    uid?: string
+    image?: string
 }

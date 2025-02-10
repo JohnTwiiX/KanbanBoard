@@ -3,11 +3,9 @@ import { Auth, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPasswo
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SettingsService } from './settings.service';
-import { UserItemsService } from './user-items.service';
-import { UserItems } from '../types/UserItems';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../environments/environment';
+import { UserItemsService } from './user-items.service';
 
 
 @Injectable({
@@ -23,11 +21,18 @@ export class AuthService {
 
   private timeIsOver = false;
 
+  interval: any
+
   constructor(private router: Router, private userItemsService: UserItemsService) {
     this.app = initializeApp(firebaseConfig);
     // Firebase-Dienste bereitstellen
     this.auth = getAuth(this.app);
     onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.checkLoginTime(user);
+      } else {
+        clearInterval(this.interval);
+      }
       this.userSubject.next(user);
     });
   }
@@ -61,11 +66,34 @@ export class AuthService {
     const user = userCredential.user;
     console.log(user);
     await this.userItemsService.googleLoginCheck(user);
+
     this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
+  checkLoginTime(user: User) {
+    const lastSignInTime = user.metadata.lastSignInTime;
 
+    if (lastSignInTime) {
+      const lastSignInMillis = new Date(lastSignInTime).getTime();
+      const currentTime = new Date().getTime();
+      const twoHoursInMillis = 2 * 60 * 60 * 1000;
+
+      if (currentTime - lastSignInMillis >= twoHoursInMillis) {
+        this.logout();
+      } else {
+        this.interval = setInterval(() => {
+          const currentTime = new Date().getTime();
+          if (currentTime - lastSignInMillis >= twoHoursInMillis) {
+
+            this.logout();
+          }
+        }, 60000);
+      }
+    } else {
+      console.warn('lastSignInTime ist nicht definiert.');
+    }
+  }
 
   async loginAnonymously(): Promise<void> {
     const userCredential = await signInAnonymously(this.auth);
@@ -86,6 +114,7 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await signOut(this.auth);
+    clearInterval(this.interval);
     localStorage.removeItem('loginTime');
     this.router.navigate(['/login']);
   }

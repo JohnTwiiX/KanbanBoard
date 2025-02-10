@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import { addDoc, collection, CollectionReference, deleteDoc, doc, getDoc, setDoc, updateDoc, Firestore, getDocs, QuerySnapshot, getFirestore, onSnapshot } from 'firebase/firestore'; // Entferne 'collectionData'
+import { addDoc, collection, CollectionReference, deleteDoc, doc, getDoc, setDoc, updateDoc, Firestore, query, where, QuerySnapshot, getFirestore, onSnapshot } from 'firebase/firestore'; // Entferne 'collectionData'
 import { Task } from '../types/Task';
 import { BehaviorSubject, Observable, from } from 'rxjs'; // Verwende 'from' für Observable
 import { Settings } from '../types/Settings';
@@ -10,6 +10,9 @@ import { FirebaseStorage, getStorage } from 'firebase/storage'; // Entferne 'pro
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../../environments/environment';
 import { getDatabase, Database, set, ref, get } from "firebase/database";
+import { User } from 'firebase/auth';
+import { UserItemsService } from './user-items.service';
+import { UserItems } from '../types/UserItems';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +23,7 @@ export class FirebaseService {
   private storage: FirebaseStorage;
   private database: Database;
 
+  private unsubscribeFunctions: { [key: string]: () => void } = {};
 
   private tasksCollection: CollectionReference<any> | null = null;
   private settingsCollection: CollectionReference<any> | null = null;
@@ -29,46 +33,79 @@ export class FirebaseService {
   settings$ = new BehaviorSubject<Settings | null>(null);
   users$ = new BehaviorSubject<UserObj[] | null>(null);
 
-  constructor(private authService: AuthService) {
+  oldProjects: string[] = [];
+
+  constructor(private authService: AuthService, private userItemsService: UserItemsService) {
     this.app = initializeApp(firebaseConfig);
     this.firestore = getFirestore(this.app);
     this.storage = getStorage(this.app);
     this.database = getDatabase(this.app);
   }
 
-  initCollection() {
-    const tasks = this.authService.getUser()?.isAnonymous ? 'anonymousTasks' : 'tasks';
+  initCollection(user: User) {
 
-    this.tasksCollection = collection(this.firestore, tasks);
-    this.getFromCollection('tasks')?.subscribe((tasks: Task[] | null) => {
-      this.tasks$.next(tasks);
-    });
+    this.userItemsService.userItems$.subscribe((userItems: UserItems | null) => {
+      if (userItems) {
+        if (userItems.projects.length > 0 && !this.arraysContentEqual(userItems.projects)) {
+          if (this.unsubscribeFunctions['tasks'])
+            this.unsubscribeFunctions['tasks']();
+          const tasks = user.isAnonymous ? 'anonymousTasks' : 'tasks';
+          this.tasksCollection = collection(this.firestore, tasks);
+          this.getFromCollection(tasks, userItems.projects).subscribe((tasks: Task[] | null) => {
+            this.tasks$.next(tasks);
+          });
+        } else {
+          this.tasks$.next(null);
+          if (this.unsubscribeFunctions['tasks'])
+            this.unsubscribeFunctions['tasks']();
+        }
+
+        this.oldProjects = [...userItems.projects];
+      } else {
+        this.tasks$.next(null);
+        if (this.unsubscribeFunctions['tasks'])
+          this.unsubscribeFunctions['tasks']();
+      }
+    })
+
 
     this.settingsCollection = collection(this.firestore, 'settings');
-    this.getSettingsCollection()?.subscribe((settings: Settings | null) => {
+    this.getSettingsCollection().subscribe((settings: Settings | null) => {
       this.settings$.next(settings);
     });
 
     this.usersCollection = collection(this.firestore, 'users');
-    this.getUsers()?.subscribe((users: UserObj[] | null) => {
+    this.getUsers().subscribe((users: UserObj[] | null) => {
       this.users$.next(users);
     });
 
-    this.addUserToDatabase();
+    this.addUserToDatabase(user);
+
+  }
+
+  arraysContentEqual(projects: string[]) {
+    if (projects.length !== this.oldProjects.length) {
+      return false;
+    }
+
+    let sorted1 = [...this.oldProjects].sort();
+    let sorted2 = [...projects].sort();
+
+    return sorted1.every((value, index) => value === sorted2[index]);
   }
 
   async getIPFromAmazon() {
     return fetch("https://checkip.amazonaws.com/").then(res => res.text());
   }
 
-  async addUserToDatabase() {
+  async addUserToDatabase(user: User) {
     const ip = await this.getIPFromAmazon();
-    const user = this.authService.getUser();
 
-    set(ref(this.database, 'users/' + user?.uid), {
+    set(ref(this.database, `users/${user?.uid}-${user?.displayName}`), {
       ip,
       isAnonymous: user?.isAnonymous,
       displayName: user?.displayName,
+      uid: user?.uid
     });
   }
 
@@ -189,17 +226,24 @@ export class FirebaseService {
   //   }
   // }
 
-  getFromCollection(col: string): Observable<Task[] | null> {
+  getFromCollection(col: string, projects: string[]): Observable<Task[] | null> {
     return new Observable(observer => {
-      const colConnection = this.tasksCollection;
+      let colCollection
 
-      if (!colConnection) {
+      if (!this.tasksCollection) {
         console.log(`No collection found for: ${col}`);
-        observer.next(null); // Sende ein `null`, wenn die Sammlung nicht existiert
+        observer.next(null);
         return;
       }
 
-      const unsubscribe = onSnapshot(colConnection, querySnapshot => {
+      if (projects[0] === 'All') {
+        colCollection = query(this.tasksCollection);
+      } else {
+        colCollection = query(this.tasksCollection, where('project', 'in', projects));
+      }
+      // const q = query(colConnection, where('project', '==', projects));
+
+      const unsubscribe = onSnapshot(colCollection, querySnapshot => {
         if (!querySnapshot.empty) {
           const tasks: Task[] = querySnapshot.docs.map(doc => ({
             id: doc.id,
@@ -213,7 +257,8 @@ export class FirebaseService {
       }, error => {
         observer.error(error);
       });
-
+      // Speichere die unsubscribe-Funktion
+      this.unsubscribeFunctions[col] = unsubscribe;
       // Rückgabe der unsubscribe-Funktion, um das Abonnement zu beenden
       return () => unsubscribe();
     });
@@ -223,7 +268,7 @@ export class FirebaseService {
     return new Observable(observer => {
       if (!this.settingsCollection) {
         console.log('No settings collection found!');
-        observer.next(null);  // Sende ein `null`, wenn die Sammlung nicht existiert
+        observer.next(null);
         return;
       }
 
@@ -240,6 +285,8 @@ export class FirebaseService {
         observer.error(error);
       });
 
+      // Speichere die unsubscribe-Funktion
+      this.unsubscribeFunctions['settings'] = unsubscribe;
       // Rückgabe der unsubscribe-Funktion, um das Abonnement zu beenden
       return () => unsubscribe();
     });
@@ -316,27 +363,37 @@ export class FirebaseService {
   getUsers(): Observable<UserObj[] | null> {
     return new Observable(observer => {
       if (!this.usersCollection) {
-        console.log('No settings collection found!');
+        console.log('No users collection found!');
         observer.next(null);
         return;
       }
 
-      const unsubscribe = onSnapshot(this.usersCollection, querySnapshot => {
-        const users: UserObj[] = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            display_name: data['display_name'],
-            image: data['image'],
-            uid: data['uid'],
-          };
-        });
-        observer.next(users);
-      }, error => {
-        observer.error(error);
-      });
+      const unsubscribe = onSnapshot(this.usersCollection,
+        (querySnapshot) => {
+          const users: UserObj[] = querySnapshot.docs.map(doc => {
+            const data = doc.data();
 
+            return {
+              id: doc.id,
+              display_name: data.display_name,
+              image: data.image,
+              uid: doc.id,
+            };
+          });
+          observer.next(users);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+      // Speichere die unsubscribe-Funktion
+      this.unsubscribeFunctions['users'] = unsubscribe;
       return () => unsubscribe();
     });
+  }
+
+  unsubscribeAll(): void {
+    Object.values(this.unsubscribeFunctions).forEach(unsubscribe => unsubscribe());
+    this.unsubscribeFunctions = {}; // Leere das Objekt, nachdem alle Listener beendet wurden
   }
 }

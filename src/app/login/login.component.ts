@@ -20,7 +20,7 @@ export class LoginComponent {
   });
 
   constructor(public authService: AuthService, public router: Router) {
-    authService.isLoggedIn().subscribe((user) => {
+    authService.user$.subscribe((user) => {
       if (user) {
         this.router.navigate(['/board']);
       }
