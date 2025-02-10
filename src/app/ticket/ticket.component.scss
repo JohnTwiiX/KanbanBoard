@@ -35,6 +35,12 @@
 
     .header-container {
         width: calc(100% - 26px);
+
+        .header-subtitle {
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+        }
     }
 
     .deadline {
