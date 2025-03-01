@@ -12,6 +12,7 @@ import { UserItemsService } from '../shared/user-items.service';
 import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
 import { TicketComponent } from '../ticket/ticket.component';
 import { UserItems } from '../types/UserItems';
+import { DialogViewComponent } from '../dialog-view/dialog-view.component';
 
 @Component({
   selector: 'app-backlog',
@@ -59,23 +60,8 @@ export class BacklogComponent {
     }
   }
 
-  editTask(task: Task) {
-    this.openDialogEdit(task);
-  }
-
-  deleteTask(task: Task) {
-    this.openDialogDelete(task)
-  }
-
-  openDialogDelete(task: Task) {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      data: { title: task.title, id: task.id, col: 'backlog' }
-    });
-    dialogRef.afterClosed
-  }
-
-  openDialogEdit(task: Task) {
-    const dialogRef = this.dialog.open(DialogEditComponent, {
+  openTaskDialog(task: Task) {
+    const dialogRef = this.dialog.open(DialogViewComponent, {
       data: { task: task }
     });
     dialogRef.afterClosed

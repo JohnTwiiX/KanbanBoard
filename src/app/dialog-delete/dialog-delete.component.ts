@@ -14,7 +14,6 @@ import { FirebaseService } from '../shared/firebase.service';
 interface DialogData {
   title: string,
   id: string,
-  col: string
 }
 
 @Component({

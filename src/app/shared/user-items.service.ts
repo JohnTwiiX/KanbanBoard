@@ -17,43 +17,21 @@ export class UserItemsService {
   unsubscribeUserItems: any;
 
   constructor(private router: Router) {
+
   }
 
-  async checkEmailVerificationAndAssignRole(user: User): Promise<void> {
-    if (user) {
-      await user.reload();
-      if (user.emailVerified) {
-        await this.setUserItems(user, {
-          'display_name': user.displayName || 'anonym user',
-          'email': user.email || 'anonym user',
-          'role': 'user',
-          'permissions': 'read',
-          'projects': []
-        });
-        this.router.navigate(['/board']);
-      } else {
-        this.router.navigate(['/verified']);
-      }
-    }
-  }
-
-  async googleLoginCheck(user: User) {
-    if (user) {
-      const firestore = getFirestore();
-      const userDocRef = doc(firestore, `users/${user.uid}`);
-
-      const docSnapshot = await getDoc(userDocRef);
-
-      if (!docSnapshot.exists()) {
-        await this.setUserItems(user, {
-          'display_name': user.displayName || 'anonym user',
-          'email': user.email || 'anonym user',
-          'role': 'user',
-          'uid': user.uid,
-          'permissions': 'read',
-          'projects': []
-        });
-      }
+  async checkUserCredentials(user: User): Promise<void> {
+    await user.reload();
+    if (user.emailVerified && !user.isAnonymous) {
+      await this.setUserItems(user, {
+        'display_name': user.displayName || 'anonym user',
+        'email': user.email || 'anonym user',
+        'role': 'user',
+        'permissions': 'read',
+        'projects': []
+      });
+    } else {
+      this.router.navigate(['/verified']);
     }
   }
 
@@ -85,23 +63,15 @@ export class UserItemsService {
     }
   }
 
-  async setPrivateUserItems(userItem: UserItems): Promise<void> {
-
-
-    console.log('Dokument erfolgreich geschrieben!');
-
-  }
-
   getUserItems(user: User): void {
     const firestore = getFirestore();
     const userDocRef = doc(firestore, `users/${user.uid}/private/privateData`);
-
     // onSnapshot für Echtzeit-Updates
     const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const userItemsData = docSnapshot.data() as UserItems;
-        this.userItemsSubject.next(userItemsData);
         this.isUserItemsSet = true;
+        this.userItemsSubject.next(userItemsData);
       } else {
         this.userItemsSubject.next(null);
         this.isUserItemsSet = false;
@@ -114,6 +84,14 @@ export class UserItemsService {
 
     // Optional: Speichere den unsubscribe-Callback, falls du die Listener später beenden möchtest
     this.unsubscribeUserItems = unsubscribe;
+  }
+
+  deleteUserItems() {
+    this.userItemsSubject.next(null);
+    if (this.unsubscribeUserItems)
+      this.unsubscribeUserItems();
+
+    this.isUserItemsSet = false;
   }
 
 }

@@ -1,4 +1,9 @@
 <div class="board-container">
+    @if(isLoading){
+    <div class="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+    }@else {
     @if(noProjects){
     <div class="no-projects">
         <h1>Your board is empty</h1>
@@ -55,5 +60,7 @@
         }
     </div>
     }
+    }
+
 
 </div>

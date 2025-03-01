@@ -17,9 +17,9 @@ export class IsVerifiedComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const user = this.authService.getUser();
     if (user) {
-      this.userItemsService.checkEmailVerificationAndAssignRole(user);
+      this.userItemsService.checkUserCredentials(user);
       this.intervalId = setInterval(() => {
-        this.userItemsService.checkEmailVerificationAndAssignRole(user);
+        this.userItemsService.checkUserCredentials(user);
       }, 5000);
     }
   }

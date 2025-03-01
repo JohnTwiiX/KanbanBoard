@@ -309,6 +309,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   addToSubTasks() {
+    if (!this.value) return;
     this.subTasks.push({
       title: this.value,
       checked: false

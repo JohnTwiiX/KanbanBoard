@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { TicketComponent } from '../ticket/ticket.component';
 import { UserItemsService } from '../shared/user-items.service';
@@ -19,7 +20,7 @@ import { UserItems } from '../types/UserItems';
 
 @Component({
   selector: 'app-board',
-  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule, CommonModule],
+  imports: [CdkDropListGroup, CdkDropList, CdkDrag, TicketComponent, MatButtonModule, FormsModule, MatInputModule, MatIconModule, CommonModule, MatProgressSpinnerModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -35,10 +36,13 @@ export class BoardComponent {
   userItems: UserItems | null = null;
   noProjects = true;
 
+  isLoading = true;
+
   constructor(private settingsService: SettingsService, private firebaseService: FirebaseService, private userItemsService: UserItemsService) {
     userItemsService.userItems$.subscribe(userItems => {
       if (userItems) {
         this.userItems = userItems;
+        this.subscribeTasks();
       }
     })
   }
@@ -51,20 +55,27 @@ export class BoardComponent {
         this.columns = columns;
       }
     });
+
+  }
+
+  subscribeTasks() {
     this.firebaseService.tasks$.subscribe((tasks: Task[] | null) => {
-      if (tasks) {
-        this.checkTasks(tasks);
-        this.tasks = tasks;
-        if (this.searchTerm) {
-          this.filterTasks();
+      if (this.userItemsService.isUserItemsSet) {
+        if (tasks) {
+          this.checkTasks(tasks);
+          this.tasks = tasks;
+          if (this.searchTerm) {
+            this.filterTasks();
+          } else {
+            this.filteredTasks = tasks;
+          };
+          this.filteredTasks = this.sortTasksByCreatedAt(this.filteredTasks);
+          this.noProjects = false;
         } else {
-          this.filteredTasks = tasks;
-        };
-        this.filteredTasks = this.sortTasksByCreatedAt(this.filteredTasks);
-        this.noProjects = false;
-      } else {
-        this.tasks = tasks;
-        this.noProjects = true;
+          this.tasks = tasks;
+          this.noProjects = true;
+        }
+        this.isLoading = false;
       }
     });
   }

@@ -45,26 +45,24 @@ export class FirebaseService {
   initCollection(user: User) {
 
     this.userItemsService.userItems$.subscribe((userItems: UserItems | null) => {
-      if (userItems) {
-        if (userItems.projects.length > 0 && !this.arraysContentEqual(userItems.projects)) {
-          if (this.unsubscribeFunctions['tasks'])
-            this.unsubscribeFunctions['tasks']();
-          const tasks = user.isAnonymous ? 'anonymousTasks' : 'tasks';
+
+      const tasks = user.isAnonymous ? 'anonymousTasks' : 'tasks';
+      if (userItems && userItems.projects.length > 0) {
+        if (!this.arraysContentEqual(userItems.projects)) {
+          if (this.unsubscribeFunctions[tasks])
+            this.unsubscribeFunctions[tasks]();
           this.tasksCollection = collection(this.firestore, tasks);
           this.getFromCollection(tasks, userItems.projects).subscribe((tasks: Task[] | null) => {
             this.tasks$.next(tasks);
           });
-        } else {
-          this.tasks$.next(null);
-          if (this.unsubscribeFunctions['tasks'])
-            this.unsubscribeFunctions['tasks']();
         }
 
         this.oldProjects = [...userItems.projects];
       } else {
         this.tasks$.next(null);
-        if (this.unsubscribeFunctions['tasks'])
-          this.unsubscribeFunctions['tasks']();
+        this.oldProjects = [];
+        if (this.unsubscribeFunctions[tasks])
+          this.unsubscribeFunctions[tasks]();
       }
     })
 

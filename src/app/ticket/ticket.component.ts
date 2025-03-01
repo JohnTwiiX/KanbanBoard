@@ -5,13 +5,10 @@ import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  MatDialog,
-  MatDialogRef
+  MatDialog
 } from '@angular/material/dialog';
-import { DialogDeleteComponent } from '../../../../KanbanBoard/src/app/dialog-delete/dialog-delete.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { Task } from '../types/Task';
-import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
 import { FirebaseService } from '../../../../KanbanBoard/src/app/shared/firebase.service';
 import { UserItemsService } from '../../../../KanbanBoard/src/app/shared/user-items.service';
 import { TicketViewComponent } from '../ticket-view/ticket-view.component';
@@ -63,30 +60,11 @@ export class TicketComponent implements OnInit {
     return this.priority[priority] || 'defaultColor';
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogDeleteComponent, {
-      data: { title: this.task.title, id: this.task.id, col: 'tasks' }
-    });
-    dialogRef.afterClosed
-  }
-
   openTaskDialog() {
     const dialogRef = this.dialog.open(DialogViewComponent, {
-      data: { task: this.task, func: this.editTask.bind(this) }
+      data: { task: this.task }
     });
     dialogRef.afterClosed
   }
-
-  editTask(task: Task) {
-    this.openDialogEdit(task);
-  }
-
-  openDialogEdit(task: Task) {
-    const dialogRef = this.dialog.open(DialogEditComponent, {
-      data: { task: task }
-    });
-    dialogRef.afterClosed
-  }
-
 
 }

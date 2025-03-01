@@ -65,7 +65,7 @@
         </div>
         @for(task of backlogTasks; track task){
         <div class="long">
-            <div [matMenuTriggerFor]="menu" class="backlog-item"
+            <div (click)="openTaskDialog(task)" class="backlog-item"
                 [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
                 <div class="border-right">
                     <span>{{task.title}}</span>
@@ -78,18 +78,11 @@
                 </div>
                 <div>
                     <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">
-                </div><mat-menu #menu="matMenu" xPosition="before">
-                    @if (userItems?.permissions === 'read-write') {
-
-                    <button mat-menu-item (click)="switchToBoard(task)">Board</button>
-                    <button mat-menu-item (click)="editTask(task)">Edit</button>
-                    <button mat-menu-item (click)="deleteTask(task)">Delete</button>
-                    }
-                </mat-menu>
+                </div>
             </div>
         </div>
         <div class="short">
-            <div [matMenuTriggerFor]="menu" class="backlog-item"
+            <div (click)="openTaskDialog(task)" class="backlog-item"
                 [style.border-right]="'8px solid ' + getColorPriority(task.priority)">
                 <div class="border-right">
                     <span>{{task.title}}</span>
@@ -100,15 +93,6 @@
                 <div>
                     <img src="assets/img/profile/{{task.staff.image}}" alt="{{task.staff.name}}">
                 </div>
-                <mat-menu #menu="matMenu" xPosition="before">
-                    @if (userItems?.permissions === 'read-write') {
-
-                    <button mat-menu-item (click)="switchToBoard(task)">Board</button>
-                    <button mat-menu-item (click)="editTask(task)">Edit</button>
-                    <button mat-menu-item (click)="deleteTask(task)">Delete</button>
-
-                    }
-                </mat-menu>
             </div>
         </div>
 

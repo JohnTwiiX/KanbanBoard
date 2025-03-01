@@ -1,10 +1,12 @@
 .settings-container {
     display: flex;
     flex-direction: column;
-    height: calc(100% - 150px);
+    height: 100%;
     width: 100%;
     justify-content: space-evenly;
     align-items: center;
+    overflow-y: scroll;
+    gap: 20px;
 }
 
 .priority-container {
@@ -34,6 +36,7 @@ input[type="color"] {
 .change-container {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
 
 /* Styles for the overlay */
