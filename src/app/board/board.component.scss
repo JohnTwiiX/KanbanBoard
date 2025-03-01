@@ -11,6 +11,13 @@
         height: 100%;
         flex-direction: column;
     }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
 }
 
 .columns {

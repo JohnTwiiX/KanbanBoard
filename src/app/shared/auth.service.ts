@@ -28,8 +28,11 @@ export class AuthService {
     // Firebase-Dienste bereitstellen
     this.auth = getAuth(this.app);
     onAuthStateChanged(this.auth, (user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         this.checkLoginTime(user);
+        if (!userItemsService.isUserItemsSet) {
+          userItemsService.getUserItems(user);
+        }
       } else {
         clearInterval(this.interval);
       }
@@ -44,7 +47,6 @@ export class AuthService {
       await this.sendVerification();
       if (user) {
         await updateProfile(user, { displayName });
-        this.setTimeInStorage();
         this.router.navigate(['/verified']);
       }
     } catch (error) {
@@ -56,19 +58,11 @@ export class AuthService {
 
   async loginWithEmail(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(this.auth, email, password);
-    this.setTimeInStorage();
-    this.router.navigate(['/board']);
   }
 
 
   async loginWithGoogle(): Promise<void> {
-    const userCredential = await signInWithPopup(this.auth, new GoogleAuthProvider());
-    const user = userCredential.user;
-    console.log(user);
-    await this.userItemsService.googleLoginCheck(user);
-
-    this.setTimeInStorage();
-    this.router.navigate(['/board']);
+    await signInWithPopup(this.auth, new GoogleAuthProvider());
   }
 
   checkLoginTime(user: User) {
@@ -99,7 +93,6 @@ export class AuthService {
     const userCredential = await signInAnonymously(this.auth);
     const user = userCredential.user;
     this.setAnonymousLoginFlag(user.uid);
-    this.setTimeInStorage();
     this.router.navigate(['/board']);
   }
 
@@ -159,13 +152,6 @@ export class AuthService {
     } catch (error) {
       console.error('Error updating email', error);
     }
-  }
-
-
-
-  setTimeInStorage() {
-    const loginTimestamp = Date.now();
-    localStorage.setItem('loginTime', JSON.stringify(loginTimestamp));
   }
 
   getUser() {

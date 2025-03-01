@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Priorities, Settings } from '../types/Settings';
 import { UserObj } from '../types/User';
 import { User } from 'firebase/auth';
+import { UserItemsService } from './user-items.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +21,13 @@ export class SettingsService {
   private staffs: BehaviorSubject<UserObj[] | null> = new BehaviorSubject<UserObj[] | null>(null);
   private id!: string;
   private isInitialized: boolean = false;
-  constructor(private firebaseService: FirebaseService, private authService: AuthService) {
+  constructor(private firebaseService: FirebaseService, private authService: AuthService, private userItemsService: UserItemsService) {
     authService.user$.subscribe((user) => {
       if (user) {
         this.init(user);
       } else if (this.isInitialized) {
         firebaseService.unsubscribeAll();
+        userItemsService.deleteUserItems();
       }
     })
   }

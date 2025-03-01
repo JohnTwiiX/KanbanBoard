@@ -15,13 +15,8 @@
         justify-content: space-around;
     }
 
-    .subtask-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 20px;
-        margin-bottom: 8px;
-    }
+
+
 
     .subtasks-btn {
         display: flex;
@@ -47,7 +42,7 @@
 
         @media (max-width: 600px) {
             width: 100%;
-            overflow: scroll;
+            overflow-y: scroll;
         }
 
         .w-250 {
@@ -79,7 +74,7 @@
         .ds-container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
 
             .mat-divider {
                 border-right-color: black;
@@ -109,6 +104,27 @@
                     @media (max-width: 500px) {
                         height: 80px;
                         width: 80px;
+                    }
+                }
+            }
+
+            .subtasks-container {
+                max-height: 120px;
+                overflow-y: scroll;
+                padding: 0 20px;
+
+                .subtask-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 8px;
+                    width: 100%;
+
+                    span {
+                        text-overflow: ellipsis;
+                        display: inline-block;
+                        white-space: nowrap;
+                        overflow: hidden;
                     }
                 }
             }

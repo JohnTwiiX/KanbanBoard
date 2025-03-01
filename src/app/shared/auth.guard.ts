@@ -18,7 +18,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       if (isLoggedIn) {
 
         if (!userItemsService.isUserItemsSet && isLoggedIn.emailVerified) {
-          userItemsService.getUserItems(isLoggedIn);
+          userItemsService.checkUserCredentials(isLoggedIn);
         }
 
         // if (isLoggedIn.isAnonymous && authService.isTimeOver()) {

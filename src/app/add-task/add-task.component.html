@@ -81,9 +81,10 @@
             <div>
                 <mat-form-field class="margin-top w-250">
                     <mat-label>Add new subtask</mat-label>
-                    <input matInput type="text" [(ngModel)]="value" name="subTask">
+                    <input matInput type="text" [(ngModel)]="value" name="subTask" (keydown.enter)="addToSubTasks()"
+                        maxlength="30">
                     @if (value) {
-                    <div matSuffix class="subtasks-btn">
+                    <!-- <div matSuffix class="subtasks-btn">
                         <button mat-icon-button aria-label="Clear" (click)="value=''">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -92,23 +93,23 @@
                             (click)="addToSubTasks()">
                             <mat-icon>check</mat-icon>
                         </button>
-                    </div>
+                    </div> -->
                     }@else {
                     <button matSuffix mat-icon-button aria-label="Add">
                         <mat-icon>add</mat-icon>
                     </button>
                     }
                 </mat-form-field>
-                <div class="w-250">
+                <div class="w-250 subtasks-container">
                     @for (task of subTasks; track $index) {
                     <div class="subtask-container ">
                         @if (!subTaskEdit) {
                         <span>• {{task.title}}</span>
                         <div class="subtasks-btn">
-                            <button mat-icon-button aria-label="edit" (click)="editSubTask(); subTaskChange=task.title">
+                            <!-- <button mat-icon-button aria-label="edit" (click)="editSubTask(); subTaskChange=task.title">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider>
+                            <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider> -->
                             <button mat-icon-button aria-label="trash" (click)="deleteSubTask($index)">
                                 <mat-icon>delete</mat-icon>
                             </button>
@@ -120,11 +121,11 @@
                                 <button mat-icon-button aria-label="Clear" (click)="editSubTask()">
                                     <mat-icon>delete</mat-icon>
                                 </button>
-                                <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider>
+                                <!-- <mat-divider style=" --mat-divider-width: 2px;" vertical="true"></mat-divider>
                                 <button style="margin-bottom: 4px;" mat-icon-button aria-label="Clear"
                                     (click)="changeSubTask($index)">
                                     <mat-icon>check</mat-icon>
-                                </button>
+                                </button> -->
                             </div>
                         </mat-form-field>
                         }
