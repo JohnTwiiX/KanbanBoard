@@ -63,11 +63,12 @@ export class TicketViewComponent implements OnInit {
     this.openDialogEdit.emit();
   }
 
-  switchToBacklog(task: Task) {
+  switchTo(task: Task) {
     try {
       if (task.id) {
+        const status = task.status === 'BACKLOG' ? 'TO DO' : 'BACKLOG';
 
-        this.firebaseService.updateTaskColumn(task.id, 'BACKLOG');
+        this.firebaseService.updateTaskColumn(task.id, status);
         this.dialog.closeAll();
       }
     } catch (error) {
