@@ -6,7 +6,13 @@
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="switchToBacklog(task)">Backlog</button>
+            <button mat-menu-item (click)="switchTo(task)">
+                @if(task.status === 'BACKLOG'){
+                Board
+                }@else {
+                Backlog
+                }
+            </button>
             <button mat-menu-item (click)="editTask()">Edit</button>
             <button mat-menu-item (click)="deleteTask(task)">Delete</button>
         </mat-menu>
